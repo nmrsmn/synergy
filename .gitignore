@@ -38,7 +38,3 @@ premake5
 
 # Directories
 build/
-
-# Libraries
-!*/libs/
-*/libs/*

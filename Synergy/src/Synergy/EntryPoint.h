@@ -12,13 +12,15 @@ extern Synergy::Application* Synergy::CreateApplication();
 
 int main(int argc, char** argv)
 {
+    Synergy::Logger::Init();
+    
     auto application = Synergy::CreateApplication();
     application->Start();
     
     delete application;
 
     #ifdef SYNERGY_DEBUG
-        std::cout << "Press another key to exit..." << std::endl;
+        SYNERGY_LOG_ERROR("Press any key to continue...");
         std::cin.get();
     #endif
 }

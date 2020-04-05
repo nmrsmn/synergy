@@ -11,6 +11,7 @@ workspace "Synergy"
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 dependencies = {}
+dependencies["spdlog"] = "Synergy/libs/spdlog/include"
 
 group "Dependencies"
 
@@ -34,8 +35,13 @@ project "Synergy"
 
 	includedirs
 	{
-		"%{prj.name}/src"
+		"%{prj.name}/src/"
 	}
+
+    sysincludedirs
+    {
+    	"%{dependencies.spdlog}"
+    }
 
 	defines
 	{
@@ -81,7 +87,12 @@ group "Examples"
 
         includedirs
         {
-            "Synergy/src"
+            "Synergy/src/"
+        }
+
+        sysincludedirs
+        {
+        	"%{dependencies.spdlog}"
         }
 
         links

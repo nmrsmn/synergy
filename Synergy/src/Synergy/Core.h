@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "Synergy/Log.h"
+#include "Synergy/Logger.h"
 
 #ifndef SYNERGY_CORE_H
 #define SYNERGY_CORE_H
@@ -62,13 +62,15 @@
 #endif
 
 // Debug and release settings and defines
-#if defined SYNERGY_DEBUG
-    #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_OFF
-    #define SYNERGY_ENABLE_ASSERTS
-#elif defined SYNERGY_RELEASE
-    #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
-#else
-    #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_OFF
+#ifndef SPDLOG_ACTIVE_LEVEL
+    #if defined SYNERGY_DEBUG
+        #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_OFF
+        #define SYNERGY_ENABLE_ASSERTS
+    #elif defined SYNERGY_RELEASE
+        #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
+    #else
+        #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_OFF
+    #endif
 #endif
 
 // Asserts

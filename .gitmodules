@@ -1,0 +1,3 @@
+[submodule "Synergy/libs/spdlog"]
+	path = Synergy/libs/spdlog
+	url = https://github.com/gabime/spdlog.git
