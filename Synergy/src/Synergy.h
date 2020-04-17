@@ -5,6 +5,8 @@
 #define SYNERGY_H
 
 #include "Synergy/Application.h"
+#include "Synergy/Platform.h"
+
 #include "Synergy/EntryPoint.h"
 
 #endif
