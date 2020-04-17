@@ -5,18 +5,32 @@
 #define SYNERGY_APPLICATION_H
 
 #include "Synergy/Core.h"
+#include "Synergy/Platform.h"
 
 namespace Synergy
 {
-    class Application
+    class SYNERGY_API Application
     {
     public:
         virtual ~Application() = default;
         
-        void Start();
+        bool Start();
+        
+        virtual bool OnUserCreate() { return true; }
+        virtual bool OnUserUpdate() { return true; }
+        virtual void OnUserShutdown() { };
         
     protected:
         Application();
+        
+    private:
+        void Run();
+        void Prepare();
+        void Update();
+        
+    private:
+        static std::atomic<bool> running;
+        Platform* platform;
     };
 
     Application* CreateApplication();

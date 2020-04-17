@@ -5,13 +5,52 @@
 
 namespace Synergy
 {
-    Application::Application()
+    extern Platform* CreatePlatform();
+
+    std::atomic<bool> Application::running = false;
+
+    Application::Application(): platform(CreatePlatform())
     {
         
     }
     
-    void Application::Start()
+    bool Application::Start()
     {
+        if (!platform->Init()) return false;
+        if (!platform->CreateWindow(0, 0, 800, 600, false)) return false;
         
+        platform->StartEventLoop();
+        
+        running = true;
+        Run();
+        
+        if (!platform->Shutdown()) return false;
+        return true;
+    }
+
+    void Application::Run()
+    {
+        Prepare();
+        
+        if (!OnUserCreate()) running = false;
+        
+        while (running)
+        {
+            Update();
+        }
+        
+        OnUserShutdown();
+    }
+
+    void Application::Prepare()
+    {
+        if (!platform->CreateContext()) return;
+    }
+
+    void Application::Update()
+    {
+        platform->HandleEvent();
+        
+        if (!OnUserUpdate()) running = false;
     }
 }

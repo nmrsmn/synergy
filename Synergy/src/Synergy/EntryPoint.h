@@ -4,6 +4,8 @@
 #ifndef SYNERGY_ENTRYPOINT_H
 #define SYNERGY_ENTRYPOINT_H
 
+#include "Synergy/Platform/GLFW.h"
+
 #ifdef SYNERGY_DEBUG
     #import <iostream>
 #endif
@@ -23,6 +25,13 @@ int main(int argc, char** argv)
         SYNERGY_LOG_ERROR("Press any key to continue...");
         std::cin.get();
     #endif
+    
+    return 0;
+}
+
+Synergy::Platform* Synergy::CreatePlatform()
+{
+    return new Synergy::Platforms::GLFW();
 }
 
 #endif
