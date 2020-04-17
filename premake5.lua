@@ -10,10 +10,16 @@ workspace "Synergy"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
-dependencies = {}
-dependencies["spdlog"] = "Synergy/libs/spdlog/include"
+includes = {}
+includes["spdlog"] = "Synergy/libs/spdlog/include"
+includes["glfw"] = "Synergy/libs/GLFW/include"
+
+libraries = {}
+libraries["gflw"] = "build/bin/" .. outputdir .. "/GLFW"
 
 group "Dependencies"
+
+	include "Synergy/libs/premake/GLFW"
 
 group ""
 
@@ -40,12 +46,23 @@ project "Synergy"
 
     sysincludedirs
     {
-    	"%{dependencies.spdlog}"
+    	"%{includes.spdlog}",
+    	"%{includes.glfw}"
+    }
+
+    libdirs
+    {
+    	"%{libraries.glfw}"
     }
 
 	defines
 	{
 		"SYNERGY_STATIC_LIBRARY"
+	}
+
+	links
+	{
+		"GLFW"
 	}
 
 	filter "configurations:Debug"
@@ -66,6 +83,15 @@ project "Synergy"
 
     filter "system:macosx"
         systemversion "latest"
+        
+        links
+        {
+            "CoreFoundation.framework",
+            "Cocoa.framework",
+            "OpenGL.framework",
+            "IOKit.framework",
+            "CoreVideo.framework"
+        }
 
 group "Examples"
 
@@ -92,12 +118,14 @@ group "Examples"
 
         sysincludedirs
         {
-        	"%{dependencies.spdlog}"
+        	"%{includes.spdlog}",
+    		"%{includes.glfw}"
         }
 
         links
         {
-            "Synergy"
+            "Synergy",
+            "GLFW"
         }
 
 	    filter "configurations:Debug"
@@ -118,3 +146,12 @@ group "Examples"
 
 	    filter "system:macosx"
 	        systemversion "latest"
+        
+	        links
+	        {
+	            "CoreFoundation.framework",
+	            "Cocoa.framework",
+	            "OpenGL.framework",
+	            "IOKit.framework",
+	            "CoreVideo.framework"
+	        }
