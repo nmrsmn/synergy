@@ -13,13 +13,16 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 includes = {}
 includes["spdlog"] = "Synergy/libs/spdlog/include"
 includes["glfw"] = "Synergy/libs/GLFW/include"
+includes["glad"] = "Synergy/libs/glad/include"
 
 libraries = {}
 libraries["gflw"] = "build/bin/" .. outputdir .. "/GLFW"
+libraries["glad"] = "build/bin/" .. outputdir .. "/glad"
 
 group "Dependencies"
 
 	include "Synergy/libs/premake/GLFW"
+	include "Synergy/libs/premake/glad"
 
 group ""
 
@@ -47,12 +50,8 @@ project "Synergy"
     sysincludedirs
     {
     	"%{includes.spdlog}",
-    	"%{includes.glfw}"
-    }
-
-    libdirs
-    {
-    	"%{libraries.glfw}"
+    	"%{includes.glfw}",
+    	"%{includes.glad}"
     }
 
 	defines
@@ -62,7 +61,8 @@ project "Synergy"
 
 	links
 	{
-		"GLFW"
+		"GLFW",
+		"glad"
 	}
 
 	filter "configurations:Debug"
@@ -113,19 +113,19 @@ group "Examples"
 
         includedirs
         {
-            "Synergy/src/"
+            "Synergy/src/",
+            "Synergy/libs/"
         }
 
         sysincludedirs
         {
         	"%{includes.spdlog}",
-    		"%{includes.glfw}"
+        	"%{includes.glfw}"
         }
 
         links
         {
-            "Synergy",
-            "GLFW"
+            "Synergy"
         }
 
 	    filter "configurations:Debug"
