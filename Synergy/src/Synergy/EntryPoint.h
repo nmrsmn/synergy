@@ -5,6 +5,7 @@
 #define SYNERGY_ENTRYPOINT_H
 
 #include "Synergy/Platform/GLFW.h"
+#include "Synergy/RendererAPI/OpenGL.h"
 
 #ifdef SYNERGY_DEBUG
     #import <iostream>
@@ -36,7 +37,7 @@ Synergy::Platform* Synergy::CreatePlatform()
 
 Synergy::RendererAPI* Synergy::CreateRendererAPI()
 {
-    return nullptr;
+    return new Synergy::RendererAPIs::OpenGL();
 }
 
 #endif

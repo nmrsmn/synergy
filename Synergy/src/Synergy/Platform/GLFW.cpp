@@ -1,6 +1,8 @@
 // Created by Niels Marsman on 15-04-2020.
 // Copyright © 2019 Niels Marsman. All rights reserved.
 
+#include <glad/glad.h>
+
 #include "Synergy/Platform/GLFW.h"
 
 namespace Synergy::Platforms
@@ -28,6 +30,8 @@ namespace Synergy::Platforms
     bool GLFW::CreateContext()
     {
         glfwMakeContextCurrent(window);
+        int status = gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
+        SYNERGY_ASSERT(status, "Failed to initialize glad!");
         
         return true;
     }
