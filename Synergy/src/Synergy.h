@@ -6,6 +6,7 @@
 
 #include "Synergy/Application.h"
 #include "Synergy/Platform.h"
+#include "Synergy/RendererAPI.h"
 
 #include "Synergy/EntryPoint.h"
 

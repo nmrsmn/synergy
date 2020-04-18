@@ -34,4 +34,9 @@ Synergy::Platform* Synergy::CreatePlatform()
     return new Synergy::Platforms::GLFW();
 }
 
+Synergy::RendererAPI* Synergy::CreateRendererAPI()
+{
+    return nullptr;
+}
+
 #endif
