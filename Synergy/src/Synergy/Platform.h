@@ -6,6 +6,8 @@
 
 #include <map>
 
+#include <glm/glm.hpp>
+
 #include "Synergy/Core.h"
 #include "Synergy/Input.h"
 
@@ -23,7 +25,7 @@ namespace Synergy
         virtual bool Shutdown() = 0;
         
         virtual bool CreateContext() = 0;
-        virtual bool CreateWindow(int x, int y, int width, int height, bool fullscreen) = 0;
+        virtual bool CreateWindow(glm::vec2 offset, glm::vec2 size, bool fullscreen) = 0;
         virtual bool UpdateWindow() = 0;
         
         virtual bool StartEventLoop() = 0;
@@ -37,6 +39,7 @@ namespace Synergy
         
         void UpdateKeyState(Input::Key key, bool state);
         void UpdateMouseState(uint8_t button, bool state);
+        void UpdateMousePosition(glm::vec2 position);
         
     protected:
         Application* application;

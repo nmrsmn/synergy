@@ -4,6 +4,8 @@
 #ifndef SYNERGY_INPUT_H
 #define SYNERGY_INPUT_H
 
+#include <glm/glm.hpp>
+
 #include "Synergy/Core.h"
 
 namespace Synergy
@@ -313,6 +315,8 @@ namespace Synergy
         static State Get(Key key);
         static State Get(Mouse button);
         
+        static glm::vec2 GetMousePosition();
+        
     private:
         Input() {}
         
@@ -326,6 +330,9 @@ namespace Synergy
         bool mousePreviousState[8] { 0 };
         bool mouseNextState[8] { 0 };
         State mouseCurrentState[8] { 0 };
+        
+        glm::vec2 mousePositionCurrent = { 0, 0 };
+        glm::vec2 mousePositionCache = { 0, 0 };
         
         friend class Platform;
     };

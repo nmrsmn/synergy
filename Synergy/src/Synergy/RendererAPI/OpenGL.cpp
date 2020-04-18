@@ -31,15 +31,15 @@ namespace Synergy::RendererAPIs
     {
         
     }
-    
-    void OpenGL::UpdateViewport(int x, int y, int width, int height)
+
+    void OpenGL::UpdateViewport(glm::vec2 offset, glm::vec2 size)
     {
-        glViewport(x, y, width, height);
+        glViewport(offset.x, offset.y, size.x, size.y);
     }
     
-    void OpenGL::ClearBuffer(int r, int g, int b, int a, bool depth)
+    void OpenGL::ClearBuffer(glm::vec4 color, bool depth)
     {
-        glClearColor(r, g, b, a);
+        glClearColor(color.r, color.g, color.b, color.a);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
     

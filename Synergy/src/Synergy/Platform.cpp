@@ -25,4 +25,9 @@ namespace Synergy
     {
         Input::Instance().mouseNextState[button] = state;
     }
+
+    void Platform::UpdateMousePosition(glm::vec2 position)
+    {
+        Input::Instance().mousePositionCurrent = position;
+    }
 }

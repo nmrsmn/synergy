@@ -16,7 +16,7 @@ namespace Synergy
     bool Application::Start()
     {
         if (!platform->Init()) return false;
-        if (!platform->CreateWindow(0, 0, 800, 600, false)) return false;
+        if (!platform->CreateWindow({ 0, 0 }, { 800, 600 }, false)) return false;
         
         platform->StartEventLoop();
         
@@ -76,8 +76,8 @@ namespace Synergy
         
         if (!OnUserUpdate()) running = false;
         
-        api->UpdateViewport(0, 0, 800, 600);
-        api->ClearBuffer(0, 0, 0, 255, true);
+        api->UpdateViewport({ 0, 0 }, { 800, 600 });
+        api->ClearBuffer({ 0, 0, 0, 1 }, true);
         
         for (Layer* layer : layers)
             layer->OnUpdate();

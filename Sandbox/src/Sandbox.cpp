@@ -10,7 +10,34 @@ public:
     
     virtual void OnUpdate() override
     {
+        //Synergy::Renderer2D::Submit(Renderable);
+        //Synergy::Renderer3D::Submit(Renderable);
         
+        if (Synergy::Input::Get(Synergy::Input::Key::Q).pressed)
+        {
+            SYNERGY_LOG_ERROR("'Q' is pressed!");
+        }
+        
+        if (Synergy::Input::Get(Synergy::Input::Key::Q).released)
+        {
+            SYNERGY_LOG_ERROR("'Q' is released!");
+        }
+        
+        if (Synergy::Input::Get(Synergy::Input::Key::Q).held)
+        {
+            SYNERGY_LOG_ERROR("'Q' is held down!");
+        }
+        
+        if (Synergy::Input::Get(Synergy::Input::Mouse::BUTTON_LEFT).pressed)
+        {
+            SYNERGY_LOG_ERROR("The left mouse button is clicked");
+        }
+        
+        if (Synergy::Input::Get(Synergy::Input::Key::SPACE).pressed)
+        {
+            glm::vec2 position = Synergy::Input::GetMousePosition();
+            SYNERGY_LOG_ERROR("Current mouse position: {} x {}", position.x, position.y);
+        }
     }
 };
 

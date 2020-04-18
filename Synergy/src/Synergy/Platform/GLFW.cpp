@@ -37,9 +37,9 @@ namespace Synergy::Platforms
         return true;
     }
 
-    bool GLFW::CreateWindow(int x, int y, int width, int height, bool fullscreen)
+    bool GLFW::CreateWindow(glm::vec2 offset, glm::vec2 size, bool fullscreen)
     {
-        window = glfwCreateWindow(width, height, "Synergy", nullptr, nullptr);
+        window = glfwCreateWindow(size.x, size.y, "Synergy", nullptr, nullptr);
         glfwSetInputMode(window, GLFW_STICKY_MOUSE_BUTTONS, GLFW_FALSE);
         glfwSetWindowUserPointer(window, this);
         
@@ -57,8 +57,14 @@ namespace Synergy::Platforms
         
         glfwSetMouseButtonCallback(window, [](GLFWwindow* window, int button, int action, int mods)
         {
-            GLFW* platform = (GLFW*) glfwGetWindowUserPointer(window);            
+            GLFW* platform = (GLFW*) glfwGetWindowUserPointer(window);
             platform->UpdateMouseState(button, action != GLFW_RELEASE);
+        });
+        
+        glfwSetCursorPosCallback(window, [](GLFWwindow* window, double x, double y)
+        {
+            GLFW* platform = (GLFW*) glfwGetWindowUserPointer(window);
+            platform->UpdateMousePosition({ x, y });
         });
         
         keys[GLFW_KEY_UNKNOWN] = Input::Key::UNKNOWN;

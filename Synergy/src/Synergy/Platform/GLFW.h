@@ -22,7 +22,7 @@ namespace Synergy::Platforms
         virtual bool Shutdown() override;
         
         virtual bool CreateContext() override;
-        virtual bool CreateWindow(int x, int y, int width, int height, bool fullscreen) override;
+        virtual bool CreateWindow(glm::vec2 offset, glm::vec2 size, bool fullscreen) override;
         virtual bool UpdateWindow() override;
         
         virtual bool StartEventLoop() override;

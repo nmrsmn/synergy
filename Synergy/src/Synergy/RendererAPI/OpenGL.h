@@ -20,8 +20,8 @@ namespace Synergy::RendererAPIs
         
         virtual void PrepareRendering() override;
         
-        virtual void UpdateViewport(int x, int y, int width, int height) override;
-        virtual void ClearBuffer(int r, int g, int b, int a, bool depth) override;
+        virtual void UpdateViewport(glm::vec2 offset, glm::vec2 size) override;
+        virtual void ClearBuffer(glm::vec4 color, bool depth) override;
     };
 }
 

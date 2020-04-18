@@ -21,6 +21,11 @@ namespace Synergy
         return Instance().mouseCurrentState[(int) button];
     }
 
+    glm::vec2 Input::GetMousePosition()
+    {
+        return Instance().mousePositionCurrent;
+    }
+
     void UpdateInputStates(Input::State* states, bool* previous, bool* current, uint32_t count)
     {
         for (uint32_t index = 0; index < count; index++)
