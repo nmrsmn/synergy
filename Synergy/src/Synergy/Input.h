@@ -4,18 +4,14 @@
 #ifndef SYNERGY_INPUT_H
 #define SYNERGY_INPUT_H
 
+#include "Synergy/Core.h"
+
 namespace Synergy
 {
     class SYNERGY_API Input
     {
-        struct State
-        {
-            bool pressed = false;
-            bool released = false;
-            bool held = false;
-        };
-        
-        enum class SYNERGY_API Key: uint16_t
+    public:
+        enum SYNERGY_API Key: uint16_t
         {
             UNKNOWN = 0x00,
             
@@ -63,7 +59,7 @@ namespace Synergy
             TAB         = 0x2b, // Keyboard Tab
             SPACE       = 0x2c, // Keyboard Spacebar
             
-            MINUS           = 0x2d, // Keyboard - and _
+            SUBTRACT        = 0x2d, // Keyboard - and _
             EQUALS          = 0x2e, // Keyboard = and +
             LEFT_BRACKET    = 0x2f, // Keyboard [ and {
             RIGHT_BRACKET   = 0x30, // Keyboard ] and }
@@ -102,6 +98,7 @@ namespace Synergy
             F22 = 0x71, // Keyboard F22
             F23 = 0x72, // Keyboard F23
             F24 = 0x73, // Keyboard F24
+            F25 = 0x74, // Keyboard F25
 
             PRINTSCREEN = 0x46, // Keyboard Print Screen
             SCROLLLOCK  = 0x47, // Keyboard Scroll Lock
@@ -121,8 +118,8 @@ namespace Synergy
             
             KEYPAD_DIVIDE               = 0x54, // Keypad /
             KEYPAD_MULTIPLY             = 0x55, // Keypad *
-            KEYPAD_MINUS                = 0x56, // Keypad -
-            KEYPAD_PLUS                 = 0x57, // Keypad +
+            KEYPAD_SUBTRACT             = 0x56, // Keypad -
+            KEYPAD_ADD                  = 0x57, // Keypad +
             KEYPAD_RETURN               = 0x58, // Keypad ENTER
             KEYPAD_1                    = 0x59, // Keypad 1 and End
             KEYPAD_2                    = 0x5a, // Keypad 2 and Down Arrow
@@ -236,14 +233,14 @@ namespace Synergy
             CRSEL       = 0xa3,
             EXSEL       = 0xa4,
             
-            LEFT_CTRL    = 0xe0, // Keyboard Left Control
-            LEFT_SHIFT   = 0xe1, // Keyboard Left Shift
-            LEFT_ALT     = 0xe2, // Keyboard Left Alt
-            LEFT_GUI     = 0xe3, // Keyboard Left GUI
-            RIGHT_CTRL   = 0xe4, // Keyboard Right Control
-            RIGHT_SHIFT  = 0xe5, // Keyboard Right Shift
-            RIGHT_ALT    = 0xe6, // Keyboard Right Alt
-            RIGHT_GUI    = 0xe7, // Keyboard Right GUI
+            LEFT_CTRL       = 0xe0, // Keyboard Left Control
+            LEFT_SHIFT      = 0xe1, // Keyboard Left Shift
+            LEFT_ALT        = 0xe2, // Keyboard Left Alt
+            LEFT_PLATFORM   = 0xe3, // Keyboard Left Platform
+            RIGHT_CTRL      = 0xe4, // Keyboard Right Control
+            RIGHT_SHIFT     = 0xe5, // Keyboard Right Shift
+            RIGHT_ALT       = 0xe6, // Keyboard Right Alt
+            RIGHT_PLATFORM  = 0xe7, // Keyboard Right Platform
             
             AUDIONEXT           = 0x102,
             AUDIOPREV           = 0x103,
@@ -279,7 +276,7 @@ namespace Synergy
 
             COUNT
         };
-    
+
         enum class SYNERGY_API Mouse: uint8_t
         {
             UKNOWN = 0x00,
@@ -299,9 +296,38 @@ namespace Synergy
             COUNT
         };
         
+        struct State
+        {
+            bool pressed = false;
+            bool released = false;
+            bool held = false;
+        };
+        
+    private:
+        static Input& Instance();
+        
     public:
-        State Get(Key key);
-        State Get(Button button);
+        Input(const Input&) = delete;
+        Input& operator=(const Input&) = delete;
+        
+        static State Get(Key key);
+        static State Get(Mouse button);
+        
+    private:
+        Input() {}
+        
+        void UpdateState();
+        
+    private:
+        bool keyboardPreviousState[256] { 0 };
+        bool keyboardNextState[256] { 0 };
+        State keyboardCurrentState[256] { 0 };
+        
+        bool mousePreviousState[8] { 0 };
+        bool mouseNextState[8] { 0 };
+        State mouseCurrentState[8] { 0 };
+        
+        friend class Platform;
     };
 }
 

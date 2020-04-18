@@ -72,6 +72,7 @@ namespace Synergy
     void Application::Update()
     {
         platform->HandleEvent();
+        platform->UpdateKeyStates();
         
         if (!OnUserUpdate()) running = false;
         

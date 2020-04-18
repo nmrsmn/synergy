@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "Synergy/Core.h"
+#include "Synergy/Input.h"
 #include "Synergy/Layer.h"
 #include "Synergy/Platform.h"
 #include "Synergy/RendererAPI.h"
@@ -22,6 +23,8 @@ namespace Synergy
         
     protected:
         Application();
+        
+        Input::State GetState(Input::Key key) { return {}; }
         
         void PushLayer(Layer* layer);
         void PushOverlay(Layer* layer);
@@ -40,8 +43,6 @@ namespace Synergy
         
         void OnEvent();
         
-        friend class Platform;
-        
     private:
         bool running = false;
         
@@ -49,6 +50,8 @@ namespace Synergy
         
         Platform* platform;
         RendererAPI* api;
+        
+        friend class Platform;
     };
 
     Application* CreateApplication();

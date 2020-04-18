@@ -4,6 +4,11 @@
 #ifndef SYNERGY_PLATFORM_H
 #define SYNERGY_PLATFORM_H
 
+#include <map>
+
+#include "Synergy/Core.h"
+#include "Synergy/Input.h"
+
 namespace Synergy
 {
     class Application;
@@ -24,12 +29,19 @@ namespace Synergy
         virtual bool StartEventLoop() = 0;
         virtual bool HandleEvent() = 0;
         
+        void UpdateKeyStates();
+        
     protected:
         void OnEvent();
         void CloseWindow();
         
+        void UpdateKeyState(Input::Key key, bool state);
+        void UpdateMouseState(uint8_t button, bool state);
+        
     protected:
         Application* application;
+        
+        std::map<uint16_t, Input::Key> keys;
     };
 
     Platform* CreatePlatform(Synergy::Application* application);
