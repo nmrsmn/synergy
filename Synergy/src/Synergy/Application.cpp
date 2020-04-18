@@ -53,5 +53,12 @@ namespace Synergy
         platform->HandleEvent();
         
         if (!OnUserUpdate()) running = false;
+        
+        api->UpdateViewport(0, 0, 800, 600);
+        api->ClearBuffer(0, 0, 0, 255, true);
+        
+        api->PrepareRendering();
+        
+        api->DisplayFrame();
     }
 }
