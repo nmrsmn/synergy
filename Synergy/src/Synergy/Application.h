@@ -4,7 +4,10 @@
 #ifndef SYNERGY_APPLICATION_H
 #define SYNERGY_APPLICATION_H
 
+#include <vector>
+
 #include "Synergy/Core.h"
+#include "Synergy/Layer.h"
 #include "Synergy/Platform.h"
 #include "Synergy/RendererAPI.h"
 
@@ -17,12 +20,18 @@ namespace Synergy
         
         bool Start();
         
+    protected:
+        Application();
+        
+        void PushLayer(Layer* layer);
+        void PushOverlay(Layer* layer);
+        
+        void PopLayer(Layer* layer);
+        void PopOverlay(Layer* layer);
+        
         virtual bool OnUserCreate() { return true; }
         virtual bool OnUserUpdate() { return true; }
         virtual void OnUserShutdown() { };
-        
-    protected:
-        Application();
         
     private:
         void Run();
@@ -30,7 +39,10 @@ namespace Synergy
         void Update();
         
     private:
-        static std::atomic<bool> running;
+        bool running = false;
+        
+        std::vector<Layer*> layers;
+        
         Platform* platform;
         RendererAPI* api;
     };

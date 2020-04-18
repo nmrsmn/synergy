@@ -8,8 +8,6 @@ namespace Synergy
     extern Platform* CreatePlatform();
     extern RendererAPI* CreateRendererAPI();
 
-    std::atomic<bool> Application::running = false;
-
     Application::Application(): platform(CreatePlatform()), api(CreateRendererAPI())
     {
         
@@ -29,6 +27,21 @@ namespace Synergy
         return true;
     }
 
+    void Application::PushLayer(Layer* layer)
+    {
+        layers.emplace(layers.begin(), layer);
+        layer->OnAttach();
+    }
+
+    void Application::PushOverlay(Layer* layer)
+    {
+        layers.emplace_back(layer);
+        layer->OnAttach();
+    }
+
+    void Application::PopLayer(Layer* layer) {}
+    void Application::PopOverlay(Layer* layer) {}
+
     void Application::Run()
     {
         Prepare();
@@ -41,11 +54,19 @@ namespace Synergy
         }
         
         OnUserShutdown();
+        
+        for (Layer* layer : layers)
+        {
+            layer->OnDetach();
+            delete layer;
+        }
     }
 
     void Application::Prepare()
     {
         if (!platform->CreateContext()) return;
+        
+        SYNERGY_ASSERT((layers.size() > 0), "Atleast one layer should be pushed to render something.");
     }
 
     void Application::Update()
@@ -56,6 +77,9 @@ namespace Synergy
         
         api->UpdateViewport(0, 0, 800, 600);
         api->ClearBuffer(0, 0, 0, 255, true);
+        
+        for (Layer* layer : layers)
+            layer->OnUpdate();
         
         api->PrepareRendering();
         

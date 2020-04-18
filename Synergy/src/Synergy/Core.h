@@ -62,15 +62,14 @@
 #endif
 
 // Debug and release settings and defines
-#ifndef SPDLOG_ACTIVE_LEVEL
-    #if defined SYNERGY_DEBUG
-        #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_OFF
-        #define SYNERGY_ENABLE_ASSERTS
-    #elif defined SYNERGY_RELEASE
-        #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
-    #else
-        #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_OFF
-    #endif
+#undef SPDLOG_ACTIVE_LEVEL
+#if defined SYNERGY_DEBUG
+    #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_OFF
+    #define SYNERGY_ENABLE_ASSERTS
+#elif defined SYNERGY_RELEASE
+    #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
+#else
+    #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_OFF
 #endif
 
 // Asserts
