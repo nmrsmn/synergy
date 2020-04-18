@@ -6,10 +6,11 @@
 namespace Synergy
 {
     extern Platform* CreatePlatform();
+    extern RendererAPI* CreateRendererAPI();
 
     std::atomic<bool> Application::running = false;
 
-    Application::Application(): platform(CreatePlatform())
+    Application::Application(): platform(CreatePlatform()), api(CreateRendererAPI())
     {
         
     }

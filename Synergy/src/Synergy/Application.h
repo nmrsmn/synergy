@@ -6,6 +6,7 @@
 
 #include "Synergy/Core.h"
 #include "Synergy/Platform.h"
+#include "Synergy/RendererAPI.h"
 
 namespace Synergy
 {
@@ -31,6 +32,7 @@ namespace Synergy
     private:
         static std::atomic<bool> running;
         Platform* platform;
+        RendererAPI* api;
     };
 
     Application* CreateApplication();
