@@ -6,9 +6,13 @@
 
 namespace Synergy
 {
+    class Application;
+
     class SYNERGY_API Platform
     {
     public:
+        Platform(Application* application): application(application) {}
+        
         virtual bool Init() = 0;
         virtual bool Start() = 0;
         virtual bool Shutdown() = 0;
@@ -19,9 +23,16 @@ namespace Synergy
         
         virtual bool StartEventLoop() = 0;
         virtual bool HandleEvent() = 0;
+        
+    protected:
+        void OnEvent();
+        void CloseWindow();
+        
+    protected:
+        Application* application;
     };
 
-    Platform* CreatePlatform();
+    Platform* CreatePlatform(Synergy::Application* application);
 }
 
 #endif

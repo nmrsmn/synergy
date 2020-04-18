@@ -5,10 +5,10 @@
 
 namespace Synergy
 {
-    extern Platform* CreatePlatform();
+    extern Platform* CreatePlatform(Application* application);
     extern RendererAPI* CreateRendererAPI();
 
-    Application::Application(): platform(CreatePlatform()), api(CreateRendererAPI())
+    Application::Application(): platform(CreatePlatform(this)), api(CreateRendererAPI())
     {
         
     }

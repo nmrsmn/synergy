@@ -38,6 +38,10 @@ namespace Synergy
         void Prepare();
         void Update();
         
+        void OnEvent();
+        
+        friend class Platform;
+        
     private:
         bool running = false;
         

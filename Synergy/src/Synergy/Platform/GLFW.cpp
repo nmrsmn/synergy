@@ -39,6 +39,13 @@ namespace Synergy::Platforms
     bool GLFW::CreateWindow(int x, int y, int width, int height, bool fullscreen)
     {
         window = glfwCreateWindow(width, height, "Synergy", nullptr, nullptr);
+        glfwSetWindowUserPointer(window, this);
+        
+        glfwSetWindowCloseCallback(window, [](GLFWwindow* window)
+        {
+            Platform* platform = (Platform*) glfwGetWindowUserPointer(window);
+            platform->CloseWindow();
+        });
         
         return true;
     }

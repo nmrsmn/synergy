@@ -30,9 +30,9 @@ int main(int argc, char** argv)
     return 0;
 }
 
-Synergy::Platform* Synergy::CreatePlatform()
+Synergy::Platform* Synergy::CreatePlatform(Application* application)
 {
-    return new Synergy::Platforms::GLFW();
+    return new Synergy::Platforms::GLFW(application);
 }
 
 Synergy::RendererAPI* Synergy::CreateRendererAPI()

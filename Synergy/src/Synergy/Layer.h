@@ -14,9 +14,7 @@ namespace Synergy
         
         virtual void OnAttach() {}
         virtual void OnDetach() {}
-        virtual void OnUpdate() {
-            SYNERGY_LOG_ERROR(name);
-        }
+        virtual void OnUpdate() {}
         
     protected:
         const char* name;

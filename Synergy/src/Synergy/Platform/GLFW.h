@@ -6,6 +6,7 @@
 
 #include <GLFW/glfw3.h>
 
+#include "Synergy/Application.h"
 #include "Synergy/Core.h"
 #include "Synergy/Platform.h"
 
@@ -14,6 +15,8 @@ namespace Synergy::Platforms
     class SYNERGY_API GLFW: public Synergy::Platform
     {
     public:
+        explicit GLFW(Application* application): Synergy::Platform(application) {}
+        
         virtual bool Init() override;
         virtual bool Start() override;
         virtual bool Shutdown() override;
