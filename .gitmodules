@@ -4,6 +4,3 @@
 [submodule "Synergy/libs/glfw"]
 	path = Synergy/libs/GLFW
 	url = https://github.com/glfw/glfw.git
-[submodule "Synergy/libs/GLAD"]
-	path = Synergy/libs/GLAD
-	url = https://github.com/Dav1dde/glad.git
