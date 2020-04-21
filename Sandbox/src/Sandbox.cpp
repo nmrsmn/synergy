@@ -10,8 +10,9 @@ public:
     
     virtual void OnUpdate() override
     {
-        //Synergy::Renderer2D::Submit(Renderable);
-        //Synergy::Renderer3D::Submit(Renderable);
+        Synergy::Renderer::Renderer2D::BeginScene();
+        Synergy::Renderer::Renderer2D::Submit(Synergy::Quad {{ 0, 0 }, { 5.0, 5.0 }, { 1, 1, 1 }});
+        Synergy::Renderer::Renderer2D::EndScene();
         
         if (Synergy::Input::Get(Synergy::Input::Key::Q).pressed)
         {
