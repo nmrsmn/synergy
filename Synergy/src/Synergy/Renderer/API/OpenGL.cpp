@@ -11,6 +11,19 @@
 
 namespace Synergy::Renderer::API
 {
+    void OpenGLMessageCallback(unsigned source, unsigned type, unsigned id, unsigned severity, int length, const char* message, const void* userParam)
+    {
+        switch (severity)
+        {
+            case GL_DEBUG_SEVERITY_HIGH:         SYNERGY_LOG_FATAL(message); return;
+            case GL_DEBUG_SEVERITY_MEDIUM:       SYNERGY_LOG_ERROR(message); return;
+            case GL_DEBUG_SEVERITY_LOW:          SYNERGY_LOG_WARN(message); return;
+            case GL_DEBUG_SEVERITY_NOTIFICATION: SYNERGY_LOG_INFO(message); return;
+        }
+        
+        SYNERGY_ASSERT(false, "Unknown severity level!");
+    }
+
     void OpenGL::PrepareDevice()
     {
         
@@ -33,8 +46,12 @@ namespace Synergy::Renderer::API
     
     void OpenGL::PrepareRendering()
     {
+        InitializeRenderers(this);
+        
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        glEnable(GL_DEPTH_TEST);
     }
 
     void OpenGL::UpdateViewport(glm::vec2 offset, glm::vec2 size)
@@ -48,9 +65,10 @@ namespace Synergy::Renderer::API
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
-    void OpenGL::DrawIndexed(const Ref<VertexArray>& vertexArray)
+    void OpenGL::DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t count)
     {
-        glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+        uint32_t indices = count ? count : vertexArray->GetIndexBuffer()->GetCount();
+        glDrawElements(GL_TRIANGLES, indices, GL_UNSIGNED_INT, nullptr);
     }
 
     Ref<VertexArray> OpenGL::CreateVertexArray()

@@ -14,28 +14,7 @@ namespace Synergy
     extern Platform* CreatePlatform(Application* application);
     extern Renderer::RendererAPI* CreateRendererAPI();
 
-    Application::Application(): platform(CreatePlatform(this)), api(Renderer::CreateRendererAPI())
-    {
-        vertex_shader_source = R"(
-            #version 330 core
-            
-            layout(location = 0) in vec3 vertexPosition_modelspace;
-            
-            void main()
-            {
-                gl_Position.xyz = vertexPosition_modelspace;
-                gl_Position.w = 1.0;
-            }
-        )";
-        
-        fragment_shader_source = R"(
-            #version 330 core
-            out vec3 color;
-            void main(){
-              color = vec3(1,0,0);
-            }
-        )";
-    }
+    Application::Application(): platform(CreatePlatform(this)), api(Renderer::CreateRendererAPI()) {}
     
     bool Application::Start()
     {
@@ -69,50 +48,12 @@ namespace Synergy
     void Application::Run()
     {
         Prepare();
-        
-        /**
-         * Simple test
-         */
-        
-        vertexArray = api->CreateVertexArray();
-        
-        // An array of 3 vectors which represents 3 vertices
-        static const GLfloat g_vertex_buffer_data[] = {
-           -1.0f, -1.0f, 0.0f,
-           1.0f, -1.0f, 0.0f,
-           0.0f,  1.0f, 0.0f,
-        };
-        
-        vertexBuffer = api->CreateVertexBuffer(sizeof(g_vertex_buffer_data));
-        vertexBuffer->SetLayout({
-            { Renderer::Shader::DataType::VEC3, "position" }
-        });
-        
-        uint32_t indices[3] = { 0, 1, 2 };
-        indexBuffer = api->CreateIndexBuffer(indices, 3);
-        
-        vertexArray->AddVertexBuffer(vertexBuffer);
-        vertexArray->SetIndexBuffer(indexBuffer);
-        
-        std::map<Renderer::Shader::Type, const std::string&> sources = {
-            { Renderer::Shader::Type::VERTEX, vertex_shader_source },
-            { Renderer::Shader::Type::FRAGMENT, fragment_shader_source }
-        };
-        
-        shader = api->CreateShader("Test", sources);
                 
         if (!OnUserCreate()) running = false;
         
         while (running)
         {
-            //Update();
-            
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            shader->Bind();
-  
-            vertexBuffer->SetData(g_vertex_buffer_data, sizeof(g_vertex_buffer_data));
-            
-            Renderer::RenderCommand::DrawIndexed(vertexArray);
+            Update();
             
             api->DisplayFrame();
             platform->UpdateWindow();
@@ -131,6 +72,8 @@ namespace Synergy
     {
         if (!platform->CreateContext()) return;
         
+        api->PrepareRendering();
+        
         SYNERGY_ASSERT((layers.size() > 0), "Atleast one layer should be pushed to render something.");
     }
 
@@ -143,7 +86,6 @@ namespace Synergy
         
         api->UpdateViewport({ 0, 0 }, { 800, 600 });
         api->ClearBuffer({ 0, 0, 0, 1 }, true);
-        api->PrepareRendering();
         
         for (Layer* layer : layers)
             layer->OnUpdate();

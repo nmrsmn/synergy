@@ -23,7 +23,7 @@ namespace Synergy::Renderer::API
         virtual void UpdateViewport(glm::vec2 offset, glm::vec2 size) override;
         virtual void ClearBuffer(glm::vec4 color, bool depth) override;
         
-        virtual void DrawIndexed(const Ref<VertexArray>& vertexArray) override;
+        virtual void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t count = 0) override;
         
         virtual Ref<VertexArray> CreateVertexArray() override;
         virtual Ref<VertexBuffer> CreateVertexBuffer(uint32_t size) override;

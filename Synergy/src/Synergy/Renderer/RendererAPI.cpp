@@ -2,13 +2,14 @@
 // Copyright © 2020 Niels Marsman. All rights reserved.
 
 #include "Synergy/Renderer/RendererAPI.h"
-#include "Synergy/Renderer/RenderCommand.h"
+#include "Synergy/Renderer/Renderer2D.h"
 
 namespace Synergy::Renderer
 {
-    RendererAPI::RendererAPI()
+    void RendererAPI::InitializeRenderers(RendererAPI* api)
     {
-        RenderCommand::Instance().api = this;
+        Renderer2D::Initialize(api);
+        //Renderer3D::Initialize(this);
     }
 }
 
