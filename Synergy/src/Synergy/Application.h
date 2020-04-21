@@ -10,7 +10,12 @@
 #include "Synergy/Input.h"
 #include "Synergy/Layer.h"
 #include "Synergy/Platform.h"
-#include "Synergy/RendererAPI.h"
+#include "Synergy/Renderer/RendererAPI.h"
+
+#include "Synergy/Renderer/Shader.h"
+#include "Synergy/Renderer/IndexBuffer.h"
+#include "Synergy/Renderer/VertexArray.h"
+#include "Synergy/Renderer/VertexArray.h"
 
 namespace Synergy
 {
@@ -49,9 +54,18 @@ namespace Synergy
         std::vector<Layer*> layers;
         
         Platform* platform;
-        RendererAPI* api;
+        Renderer::RendererAPI* api;
         
         friend class Platform;
+        
+        /* Test */
+        std::string vertex_shader_source;
+        std::string fragment_shader_source;
+        
+        Ref<Renderer::Shader> shader;
+        Ref<Renderer::VertexArray> vertexArray;
+        Ref<Renderer::VertexBuffer> vertexBuffer;
+        Ref<Renderer::IndexBuffer> indexBuffer;
     };
 
     Application* CreateApplication();

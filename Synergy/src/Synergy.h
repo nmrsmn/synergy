@@ -8,7 +8,6 @@
 #include "Synergy/Application.h"
 #include "Synergy/Input.h"
 #include "Synergy/Platform.h"
-#include "Synergy/RendererAPI.h"
 
 #include "Synergy/EntryPoint.h"
 
