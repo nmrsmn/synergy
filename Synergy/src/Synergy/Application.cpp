@@ -111,8 +111,8 @@ namespace Synergy
             shader->Bind();
   
             vertexBuffer->SetData(g_vertex_buffer_data, sizeof(g_vertex_buffer_data));
-            glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
-            //glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
+            
+            Renderer::RenderCommand::DrawIndexed(vertexArray);
             
             api->DisplayFrame();
             platform->UpdateWindow();

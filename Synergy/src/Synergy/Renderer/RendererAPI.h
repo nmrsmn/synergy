@@ -19,6 +19,8 @@ namespace Synergy::Renderer
     class SYNERGY_API RendererAPI
     {
     public:
+        RendererAPI();
+        
         virtual void PrepareDevice() = 0;
         virtual bool CreateDevice() = 0;
         virtual bool DestroyDevice() = 0;
@@ -29,6 +31,8 @@ namespace Synergy::Renderer
         
         virtual void UpdateViewport(glm::vec2 offset, glm::vec2 size) = 0;
         virtual void ClearBuffer(glm::vec4 color, bool depth) = 0;
+        
+        virtual void DrawIndexed(const Ref<VertexArray>& vertexArray) = 0;
         
         virtual Ref<VertexArray> CreateVertexArray() = 0;
         virtual Ref<VertexBuffer> CreateVertexBuffer(uint32_t size) = 0;

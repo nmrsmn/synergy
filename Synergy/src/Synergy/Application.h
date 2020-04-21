@@ -16,6 +16,7 @@
 #include "Synergy/Renderer/IndexBuffer.h"
 #include "Synergy/Renderer/VertexArray.h"
 #include "Synergy/Renderer/VertexArray.h"
+#include "Synergy/Renderer/RenderCommand.h"
 
 namespace Synergy
 {
