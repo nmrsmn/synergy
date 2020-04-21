@@ -11,6 +11,10 @@ namespace Synergy::Platforms
     bool GLFW::Init()
     {
         glfwInit();
+        glfwSetErrorCallback([](int error, const char* description)
+        {
+            SYNERGY_LOG_ERROR("Platform error ({0}): {1}", error, description);
+        });
         
         return true;
     }
@@ -34,12 +38,24 @@ namespace Synergy::Platforms
         int status = gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
         SYNERGY_ASSERT(status, "Failed to initialize glad!");
         
+        SYNERGY_LOG_INFO("Graphic info:");
+        SYNERGY_LOG_INFO("\tVendor:\t\t\t{}", glGetString(GL_VENDOR));
+        SYNERGY_LOG_INFO("\tRenderer:\t\t{}", glGetString(GL_RENDERER));
+        SYNERGY_LOG_INFO("\tVersion:\t\t{}", glGetString(GL_VERSION));
+
         return true;
     }
 
     bool GLFW::CreateWindow(glm::vec2 offset, glm::vec2 size, bool fullscreen)
     {
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        
         window = glfwCreateWindow(size.x, size.y, "Synergy", nullptr, nullptr);
+        SYNERGY_ASSERT(window, "Failed to create window.");
+        
         glfwSetInputMode(window, GLFW_STICKY_MOUSE_BUTTONS, GLFW_FALSE);
         glfwSetWindowUserPointer(window, this);
         
@@ -158,6 +174,9 @@ namespace Synergy::Platforms
 
     bool GLFW::UpdateWindow()
     {
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+        
         return true;
     }
 
@@ -168,9 +187,6 @@ namespace Synergy::Platforms
 
     bool GLFW::HandleEvent()
     {
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-        
         return true;
     }
 }
