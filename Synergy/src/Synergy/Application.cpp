@@ -53,7 +53,16 @@ namespace Synergy
         
         while (running)
         {
-            Update();
+            platform->HandleEvent();
+            platform->UpdateKeyStates();
+            
+            if (!OnUserUpdate()) running = false;
+            
+            api->UpdateViewport({ 0, 0 }, { 800, 600 });
+            api->ClearBuffer({ 0, 0, 0, 1 }, true);
+            
+            for (Layer* layer : layers)
+                layer->OnUpdate();
             
             api->DisplayFrame();
             platform->UpdateWindow();
@@ -75,22 +84,5 @@ namespace Synergy
         api->PrepareRendering();
         
         SYNERGY_ASSERT((layers.size() > 0), "Atleast one layer should be pushed to render something.");
-    }
-
-    void Application::Update()
-    {
-        platform->HandleEvent();
-        platform->UpdateKeyStates();
-        
-        if (!OnUserUpdate()) running = false;
-        
-        api->UpdateViewport({ 0, 0 }, { 800, 600 });
-        api->ClearBuffer({ 0, 0, 0, 1 }, true);
-        
-        for (Layer* layer : layers)
-            layer->OnUpdate();
-        
-        api->DisplayFrame();
-        platform->UpdateWindow();
     }
 }

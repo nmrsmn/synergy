@@ -90,34 +90,6 @@ namespace Synergy::Renderer
         data.positions[1] = {  0.5f, -0.5f, -1.0f, 1.0f };
         data.positions[2] = {  0.5f,  0.5f, -1.0f, 1.0f };
         data.positions[3] = { -0.5f,  0.5f, -1.0f, 1.0f };
-        
-        /*
-        ////////////////////////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        // An array of 3 vectors which represents 3 vertices
-        static const GLfloat g_vertex_buffer_data[] = {
-            -1.0f, -1.0f, 0.0f,
-            1.0f, -1.0f, 0.0f,
-            0.0f,  1.0f, 0.0f,
-        };
-
-        std::map<Renderer::Shader::Type, const std::string&> sources = {
-            { Renderer::Shader::Type::VERTEX, vertex_shader_source },
-            { Renderer::Shader::Type::FRAGMENT, fragment_shader_source }
-        };
-
-        shader = api->CreateShader("Test", sources);
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        shader->Bind();
- 
-         */
     }
 
     void Renderer2D::Initialize(RendererAPI* api)

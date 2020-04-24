@@ -39,7 +39,6 @@ namespace Synergy
     private:
         void Run();
         void Prepare();
-        void Update();
         
         void OnEvent();
         
