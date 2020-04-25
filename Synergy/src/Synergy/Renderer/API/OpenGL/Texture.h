@@ -24,7 +24,9 @@ namespace Synergy::Renderer::OpenGL
         
         virtual void SetData(void* data, uint32_t size) override;
         
-        virtual void Bind(uint32_t slot) const override;
+        virtual void Activate(uint32_t slot) const override;
+        virtual void Bind() const override;
+        virtual void Unbind() const override;
         
         virtual bool operator==(const Synergy::Renderer::Texture& other) const override;
         

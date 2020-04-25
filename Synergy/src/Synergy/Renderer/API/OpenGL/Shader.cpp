@@ -3,6 +3,8 @@
 
 #include "Synergy/Renderer/API/OpenGL/Shader.h"
 
+#include <glm/gtc/type_ptr.hpp>
+
 namespace Synergy::Renderer::OpenGL
 {
     static GLenum OpenGLShaderType(const Synergy::Renderer::Shader::Type type)
@@ -41,6 +43,37 @@ namespace Synergy::Renderer::OpenGL
     void Shader::Unbind() const
     {
         glUseProgram(0);
+    }
+
+    
+    void Shader::SetInt(const std::string& name, int value)
+    {
+        glUniform1i(getUniformLocation(name), value);
+    }
+
+    void Shader::SetIntArray(const std::string& name, int* values, uint32_t count)
+    {
+        glUniform1iv(getUniformLocation(name), count, values);
+    }
+
+    void Shader::SetFloat(const std::string& name, float value)
+    {
+        glUniform1f(getUniformLocation(name), value);
+    }
+
+    void Shader::SetFloat3(const std::string& name, const glm::vec3& value)
+    {
+        glUniform3f(getUniformLocation(name), value.x, value.y, value.z);
+    }
+
+    void Shader::SetFloat4(const std::string& name, const glm::vec4& value)
+    {
+        glUniform4f(getUniformLocation(name), value.x, value.y, value.z, value.w);
+    }
+
+    void Shader::SetMat4(const std::string& name, const glm::mat4& value)
+    {
+        glUniformMatrix3fv(getUniformLocation(name), 1, GL_FALSE, glm::value_ptr(value));
     }
 
     void Shader::Compile(const std::unordered_map<GLenum, std::string>& sources)
@@ -113,5 +146,18 @@ namespace Synergy::Renderer::OpenGL
         }
         
         id = program;
+    }
+
+    GLint Shader::getUniformLocation(const std::string& name)
+    {
+        if (auto location{ uniformLocations.find(name) }; location != uniformLocations.end())
+        {
+            return location->second;
+        }
+        
+        GLint location = glGetUniformLocation(id, name.c_str());
+        uniformLocations[name] = location;
+        
+        return location;
     }
 }

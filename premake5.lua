@@ -138,6 +138,10 @@ group "Examples"
             "Synergy"
         }
 
+        postbuildcommands {
+			"{COPY} assets/ %{cfg.targetdir}/assets/"
+        }
+
 	    filter "configurations:Debug"
 	        defines "SYNERGY_DEBUG"
 	        runtime "Debug"

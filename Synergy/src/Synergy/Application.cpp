@@ -35,13 +35,13 @@ namespace Synergy
     void Application::PushLayer(Layer* layer)
     {
         layers.emplace(layers.begin(), layer);
-        layer->OnAttach();
+        layer->api = api;
     }
 
     void Application::PushOverlay(Layer* layer)
     {
         layers.emplace_back(layer);
-        layer->OnAttach();
+        layer->api = api;
     }
 
     void Application::PopLayer(Layer* layer) {}
@@ -59,6 +59,9 @@ namespace Synergy
         uint32_t frameCount = 0;
                 
         if (!OnUserCreate()) running = false;
+        
+        for (Layer* layer : layers)
+            layer->OnAttach();
         
         while (running)
         {

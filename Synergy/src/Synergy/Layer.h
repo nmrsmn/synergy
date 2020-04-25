@@ -4,6 +4,8 @@
 #ifndef SYNERGY_LAYER_H
 #define SYNERGY_LAYER_H
 
+#include "Synergy/Renderer/RendererAPI.h"
+
 namespace Synergy
 {
     class SYNERGY_API Layer
@@ -18,6 +20,10 @@ namespace Synergy
         
     protected:
         const char* name;
+        
+        Renderer::RendererAPI* api;
+        
+        friend class Application;
     };
 }
 

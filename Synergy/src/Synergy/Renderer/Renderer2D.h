@@ -44,20 +44,37 @@ namespace Synergy::Renderer
         std::string vertex_shader_source = R"(
             #version 330 core
 
-            layout(location = 0) in vec3 position;
-            layout(location = 1) in vec4 color;
+            layout(location = 0) in vec3 a_position;
+            layout(location = 1) in vec4 a_color;
+            layout(location = 2) in vec2 a_uv;
+            layout(location = 3) in float a_texture_index;
+        
+            out vec4 v_color;
+            out vec2 v_uv;
+            out float v_texture_index;
 
             void main()
             {
-                gl_Position = vec4(position, 1.0);
+                v_color = a_color;
+                v_uv = a_uv;
+                v_texture_index = a_texture_index;
+                gl_Position = vec4(a_position, 1.0);
             }
         )";
 
         std::string fragment_shader_source = R"(
             #version 330 core
-            out vec3 color;
+            
+            layout(location = 0) out vec4 color;
+
+            in vec4 v_color;
+            in vec2 v_uv;
+            in float v_texture_index;
+
+            uniform sampler2D u_textures[16];
+            
             void main(){
-                color = vec3(1,0,0);
+                color = texture(u_textures[int(v_texture_index)], v_uv) * v_color;
             }
         )";
     };
