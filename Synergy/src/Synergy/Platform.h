@@ -27,6 +27,7 @@ namespace Synergy
         virtual bool CreateContext() = 0;
         virtual bool CreateWindow(glm::vec2 offset, glm::vec2 size, bool fullscreen) = 0;
         virtual bool UpdateWindow() = 0;
+        virtual void UpdateWindowTitle(const char* title) = 0;
         
         virtual bool StartEventLoop() = 0;
         virtual bool HandleEvent() = 0;

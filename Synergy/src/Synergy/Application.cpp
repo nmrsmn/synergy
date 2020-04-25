@@ -1,6 +1,8 @@
 // Created by Niels Marsman on 05-04-2020.
 // Copyright © 2019 Niels Marsman. All rights reserved.
 
+#include <chrono>
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -48,24 +50,48 @@ namespace Synergy
     void Application::Run()
     {
         Prepare();
+        
+        std::chrono::time_point<std::chrono::system_clock> point1, point2;
+        point1 = std::chrono::system_clock::now();
+        point2 = std::chrono::system_clock::now();
+        
+        float frameTimer = 0.f;
+        uint32_t frameCount = 0;
                 
         if (!OnUserCreate()) running = false;
         
         while (running)
         {
+            point2 = std::chrono::system_clock::now();
+            std::chrono::duration<float> difference = point2 - point1;
+            point1 = point2;
+            
+            float deltaTime = difference.count();
+            
             platform->HandleEvent();
             platform->UpdateKeyStates();
             
-            if (!OnUserUpdate()) running = false;
+            if (!OnUserUpdate(deltaTime)) running = false;
             
             api->UpdateViewport({ 0, 0 }, { 800, 600 });
             api->ClearBuffer({ 0, 0, 0, 1 }, true);
             
             for (Layer* layer : layers)
-                layer->OnUpdate();
+                layer->OnUpdate(deltaTime);
             
             api->DisplayFrame();
             platform->UpdateWindow();
+            
+            frameTimer += deltaTime;
+            frameCount++;
+            
+            if (frameTimer >= 1.0f)
+            {
+                frameTimer -= 1.0f;
+                std::string title = "Synergy - Game Engine - FPS: " + std::to_string(frameCount);
+                platform->UpdateWindowTitle(title.c_str());
+                frameCount = 0;
+            }
         }
         
         OnUserShutdown();

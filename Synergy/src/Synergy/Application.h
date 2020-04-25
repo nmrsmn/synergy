@@ -33,7 +33,7 @@ namespace Synergy
         void PopOverlay(Layer* layer);
         
         virtual bool OnUserCreate() { return true; }
-        virtual bool OnUserUpdate() { return true; }
+        virtual bool OnUserUpdate(float deltaTime) { return true; }
         virtual void OnUserShutdown() { };
         
     private:

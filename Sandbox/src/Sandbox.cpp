@@ -8,7 +8,7 @@ class SandboxLayer: public Synergy::Layer
 public:
     explicit SandboxLayer(): Synergy::Layer("SandboxLayer") {}
     
-    virtual void OnUpdate() override
+    virtual void OnUpdate(float deltaTime) override
     {
         Synergy::Renderer::Renderer2D::BeginScene();
         Synergy::Renderer::Renderer2D::Submit(Synergy::Quad {{ 0, 0 }, { 5.0, 5.0 }, { 1, 1, 1 }});

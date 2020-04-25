@@ -35,6 +35,8 @@ namespace Synergy::Platforms
     bool GLFW::CreateContext()
     {
         glfwMakeContextCurrent(window);
+        glfwSwapInterval(0);
+        
         int status = gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
         SYNERGY_ASSERT(status, "Failed to initialize glad!");
         
@@ -178,6 +180,11 @@ namespace Synergy::Platforms
         glfwPollEvents();
         
         return true;
+    }
+
+    void GLFW::UpdateWindowTitle(const char* title)
+    {
+        glfwSetWindowTitle(window, title);
     }
 
     bool GLFW::StartEventLoop()
