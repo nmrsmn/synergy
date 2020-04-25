@@ -3,6 +3,7 @@
 
 #include "Synergy/Renderer/API/OpenGL.h"
 #include "Synergy/Renderer/API/OpenGL/Shader.h"
+#include "Synergy/Renderer/API/OpenGL/Texture.h"
 #include "Synergy/Renderer/API/OpenGL/IndexBuffer.h"
 #include "Synergy/Renderer/API/OpenGL/VertexArray.h"
 #include "Synergy/Renderer/API/OpenGL/VertexBuffer.h"
@@ -89,5 +90,15 @@ namespace Synergy::Renderer::API
     Ref<Shader> OpenGL::CreateShader(const std::string &name, std::map<Shader::Type, const std::string&> sources)
     {
         return Synergy::CreateRef<Synergy::Renderer::OpenGL::Shader>(name, sources);
+    }
+
+    Ref<Texture> OpenGL::CreateTexture(uint32_t width, uint32_t height)
+    {
+        return Synergy::CreateRef<Synergy::Renderer::OpenGL::Texture>(width, height);
+    }
+
+    Ref<Texture> OpenGL::CreateTexture(const char* path)
+    {
+        return Synergy::CreateRef<Synergy::Renderer::OpenGL::Texture>(path);
     }
 }
