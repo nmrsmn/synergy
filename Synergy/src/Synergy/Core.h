@@ -74,8 +74,8 @@
 
 // Asserts
 #ifdef SYNERGY_ENABLE_ASSERTS
-    #define SYNERGY_ASSERT_WITH_MESSAGE(file, line, expression, ...) if (!expression) { SYNERGY_LOG_ERROR("Assertion Failed: {0} @ {1}:{2}", __VA_ARGS__, file, line); SYNERGY_DEBUGBREAK }
-    #define SYNERGY_ASSERT_WITHOUT_MESSAGE(file, line, expression) if (!expression) { SYNERGY_LOG_ERROR("Assertion Failed @ {0}:{1}", file, line); SYNERGY_DEBUGBREAK }
+    #define SYNERGY_ASSERT_WITH_MESSAGE(file, line, expression, ...) if (!(expression)) { SYNERGY_LOG_ERROR("Assertion Failed: {0} @ {1}:{2}", __VA_ARGS__, file, line); SYNERGY_DEBUGBREAK }
+    #define SYNERGY_ASSERT_WITHOUT_MESSAGE(file, line, expression) if (!(expression)) { SYNERGY_LOG_ERROR("Assertion Failed @ {0}:{1}", file, line); SYNERGY_DEBUGBREAK }
     #define SYNERGY_RESOLVE_ASSERTION(_1, _2, WHICH_, ...) WHICH_
     #define SYNERGY_CREATE_ASSERTION(...) SYNERGY_RESOLVE_ASSERTION(__VA_ARGS__, SYNERGY_ASSERT_WITH_MESSAGE, SYNERGY_ASSERT_WITHOUT_MESSAGE)
 
