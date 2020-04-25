@@ -15,6 +15,7 @@ includes["spdlog"] = "Synergy/libs/spdlog/include"
 includes["glfw"] = "Synergy/libs/GLFW/include"
 includes["glad"] = "Synergy/libs/glad/include"
 includes["glm"] = "Synergy/libs/glm"
+includes["stb"] = "Synergy/libs/stb"
 
 libraries = {}
 libraries["gflw"] = "build/bin/" .. outputdir .. "/GLFW"
@@ -42,7 +43,9 @@ project "Synergy"
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp",
 		"%{prj.name}/libs/glm/glm/**.hpp",
-		"%{prj.name}/libs/glm/glm/**.inl"
+		"%{prj.name}/libs/glm/glm/**.inl",
+		"%{prj.name}/libs/stb/**.cpp",
+		"%{prj.name}/libs/stb/**.h"
 	}
 
 	includedirs
@@ -55,7 +58,8 @@ project "Synergy"
     	"%{includes.spdlog}",
     	"%{includes.glfw}",
     	"%{includes.glad}",
-    	"%{includes.glm}"
+    	"%{includes.glm}",
+    	"%{includes.stb}"
     }
 
 	defines
@@ -125,7 +129,8 @@ group "Examples"
         {
         	"%{includes.spdlog}",
         	"%{includes.glfw}",
-    		"%{includes.glm}"
+    		"%{includes.glm}",
+    		"%{includes.stb}"
         }
 
         links
