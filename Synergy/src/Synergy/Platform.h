@@ -42,6 +42,8 @@ namespace Synergy
         void UpdateMouseState(uint8_t button, bool state);
         void UpdateMousePosition(glm::vec2 position);
         
+        void UpdateWindowSize(glm::vec2 size);
+        
     protected:
         Application* application;
         

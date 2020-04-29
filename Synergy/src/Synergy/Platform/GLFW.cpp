@@ -37,6 +37,10 @@ namespace Synergy::Platforms
         glfwMakeContextCurrent(window);
         glfwSwapInterval(0);
         
+        int width, height;
+        glfwGetFramebufferSize(window, &width, &height);
+        UpdateWindowSize({ width, height });
+        
         int status = gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
         SYNERGY_ASSERT(status, "Failed to initialize glad!");
         
@@ -83,6 +87,12 @@ namespace Synergy::Platforms
         {
             GLFW* platform = (GLFW*) glfwGetWindowUserPointer(window);
             platform->UpdateMousePosition({ x, y });
+        });
+        
+        glfwSetFramebufferSizeCallback(window, [](GLFWwindow* window, int width, int height)
+        {
+            GLFW* platform = (GLFW*) glfwGetWindowUserPointer(window);
+            platform->UpdateWindowSize({ width, height });
         });
         
         keys[GLFW_KEY_UNKNOWN] = Input::Key::UNKNOWN;

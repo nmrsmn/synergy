@@ -42,10 +42,17 @@ namespace Synergy
         
         void OnEvent();
         
+        void UpdateWindowSize(glm::vec2 size);
+        void UpdateViewPort();
+        
     private:
         bool running = false;
         
         std::vector<Layer*> layers;
+        
+        glm::vec2 windowSize = { 800, 600 };
+        glm::vec2 viewportPosition = { 0, 0 };
+        glm::vec2 viewportSize = { 0, 0 };
         
         Platform* platform;
         Renderer::RendererAPI* api;

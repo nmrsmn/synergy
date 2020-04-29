@@ -30,4 +30,9 @@ namespace Synergy
     {
         Input::Instance().mousePositionCurrent = position;
     }
+
+    void Platform::UpdateWindowSize(glm::vec2 size)
+    {
+        application->UpdateWindowSize(size);
+    }
 }

@@ -21,7 +21,8 @@ namespace Synergy
     bool Application::Start()
     {
         if (!platform->Init()) return false;
-        if (!platform->CreateWindow({ 0, 0 }, { 800, 600 }, false)) return false;
+        if (!platform->CreateWindow(viewportPosition, windowSize, false)) return false;
+        
         
         platform->StartEventLoop();
         
@@ -76,7 +77,7 @@ namespace Synergy
             
             if (!OnUserUpdate(deltaTime)) running = false;
             
-            api->UpdateViewport({ 0, 0 }, { 800, 600 });
+            api->UpdateViewport(viewportPosition, viewportSize);
             api->ClearBuffer({ 0, 0, 0, 1 }, true);
             
             for (Layer* layer : layers)
@@ -113,5 +114,27 @@ namespace Synergy
         api->PrepareRendering();
         
         SYNERGY_ASSERT((layers.size() > 0), "Atleast one layer should be pushed to render something.");
+    }
+
+    void Application::UpdateWindowSize(glm::vec2 size)
+    {
+        windowSize = size;
+        UpdateViewPort();
+    }
+
+    void Application::UpdateViewPort()
+    {
+        float ratio = windowSize.x / windowSize.y;
+        
+        viewportSize.x = windowSize.x;
+        viewportSize.y = windowSize.x / ratio;
+        
+        if (viewportSize.y > windowSize.y)
+        {
+            viewportSize.y = windowSize.y;
+            viewportSize.x = windowSize.y * ratio;
+        }
+        
+        viewportPosition = (windowSize - viewportSize) / 2.0f;
     }
 }
