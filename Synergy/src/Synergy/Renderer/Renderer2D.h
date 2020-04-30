@@ -5,6 +5,7 @@
 #define SYNERGY_RENDERER_RENDERER2D_H
 
 #include "Synergy/Core.h"
+#include "Synergy/Camera.h"
 #include "Synergy/Renderer/Renderable.h"
 #include "Synergy/Renderer/RendererAPI.h"
 #include "Synergy/Renderer/Renderer.h"
@@ -20,7 +21,7 @@ namespace Synergy::Renderer
         Renderer2D(const Renderer2D&) = delete;
         Renderer2D& operator=(const Renderer2D&) = delete;
         
-        static void BeginScene();
+        static void BeginScene(const Synergy::Camera::Camera& camera);
         static void EndScene();
         
     private:
@@ -52,13 +53,15 @@ namespace Synergy::Renderer
             out vec4 v_color;
             out vec2 v_uv;
             out float v_texture_index;
+        
+            uniform mat4 u_view_projection;
 
             void main()
             {
                 v_color = a_color;
                 v_uv = a_uv;
                 v_texture_index = a_texture_index;
-                gl_Position = vec4(a_position, 1.0);
+                gl_Position = u_view_projection * vec4(a_position, 1.0);
             }
         )";
 

@@ -6,7 +6,7 @@
 class SandboxLayer: public Synergy::Layer
 {
 public:
-    explicit SandboxLayer(): Synergy::Layer("SandboxLayer") {}
+    explicit SandboxLayer(): controller(800.0f / 600.0f), Synergy::Layer("SandboxLayer") {}
     
     virtual void OnAttach() override
     {
@@ -15,41 +15,30 @@ public:
     
     virtual void OnUpdate(float deltaTime) override
     {
-        Synergy::Renderer::Renderer2D::BeginScene();
+        controller.Update(deltaTime);
+        
+        Synergy::Renderer::Renderer2D::BeginScene(controller.GetCamera());
         Synergy::Renderer::Renderer2D::Submit(Synergy::Quad { {  0,  0, 1 }, { 1.0, 1.0 }, { 1, 0, 0, 1 } });
-        Synergy::Renderer::Renderer2D::Submit(Synergy::Quad { { -.75f, -.75f, 0 }, { 1.0, 1.0 }, { 0, 1, 0, 1 } });
-        Synergy::Renderer::Renderer2D::Submit(Synergy::Quad { { .75f, .75f, 0 }, { 1.0, 1.0 }, texture, { .2, .4, .8, 1 } });
+        Synergy::Renderer::Renderer2D::Submit(Synergy::Quad { { -.75f, -.75f, 1 }, { 1.0, 1.0 }, { 0, 1, 0, 1 } });
+        Synergy::Renderer::Renderer2D::Submit(Synergy::Quad { { .75f, .75f, 1 }, { 1.0, 1.0 }, texture, { .2, .4, .8, 1 } });
         Synergy::Renderer::Renderer2D::EndScene();
         
-        if (Synergy::Input::Get(Synergy::Input::Key::Q).pressed)
+        Synergy::Renderer::Renderer2D::BeginScene(controller.GetCamera());
+        for (float y = -5.0f; y < 5.0f; y += 0.5f)
         {
-            SYNERGY_LOG_ERROR("'Q' is pressed!");
+            for (float x = -5.0f; x < 5.0f; x += 0.5f)
+            {
+                glm::vec4 color = { (x + 5.0f) / 10.0f, 0.4f, (y + 5.0f) / 10.0f, 0.7f };
+                Synergy::Renderer::Renderer2D::Submit(Synergy::Quad { { x, y }, { 0.48f, 0.48f }, color });
+            }
         }
-        
-        if (Synergy::Input::Get(Synergy::Input::Key::Q).released)
-        {
-            SYNERGY_LOG_ERROR("'Q' is released!");
-        }
-        
-        if (Synergy::Input::Get(Synergy::Input::Key::Q).held)
-        {
-            SYNERGY_LOG_ERROR("'Q' is held down!");
-        }
-        
-        if (Synergy::Input::Get(Synergy::Input::Mouse::BUTTON_LEFT).pressed)
-        {
-            SYNERGY_LOG_ERROR("The left mouse button is clicked");
-        }
-        
-        if (Synergy::Input::Get(Synergy::Input::Key::SPACE).pressed)
-        {
-            glm::vec2 position = Synergy::Input::GetMousePosition();
-            SYNERGY_LOG_ERROR("Current mouse position: {} x {}", position.x, position.y);
-        }
+        Synergy::Renderer::Renderer2D::EndScene();
     }
     
 private:
     Synergy::Ref<Synergy::Renderer::Texture> texture;
+    
+    Synergy::CameraController controller;
 };
 
 class Sandbox: public Synergy::Application

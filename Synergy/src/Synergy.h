@@ -8,6 +8,9 @@
 #include "Synergy/Application.h"
 #include "Synergy/Input.h"
 #include "Synergy/Platform.h"
+
+#include "Synergy/CameraController.h"
+
 #include "Synergy/Renderer/Renderer2D.h"
 #include "Synergy/Renderer/Texture.h"
 

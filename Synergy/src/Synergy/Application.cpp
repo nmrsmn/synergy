@@ -23,7 +23,6 @@ namespace Synergy
         if (!platform->Init()) return false;
         if (!platform->CreateWindow(viewportPosition, windowSize, false)) return false;
         
-        
         platform->StartEventLoop();
         
         running = true;

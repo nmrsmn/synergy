@@ -73,7 +73,7 @@ namespace Synergy::Renderer::OpenGL
 
     void Shader::SetMat4(const std::string& name, const glm::mat4& value)
     {
-        glUniformMatrix3fv(getUniformLocation(name), 1, GL_FALSE, glm::value_ptr(value));
+        glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, glm::value_ptr(value));
     }
 
     void Shader::Compile(const std::unordered_map<GLenum, std::string>& sources)
