@@ -11,11 +11,11 @@ workspace "Synergy"
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 includes = {}
-includes["spdlog"] = "Synergy/libs/spdlog/include"
-includes["glfw"] = "Synergy/libs/GLFW/include"
-includes["glad"] = "Synergy/libs/glad/include"
-includes["glm"] = "Synergy/libs/glm"
-includes["stb"] = "Synergy/libs/stb"
+includes["spdlog"] = "%{wks.location}/Synergy/libs/spdlog/include"
+includes["glfw"] = "%{wks.location}/Synergy/libs/GLFW/include"
+includes["glad"] = "%{wks.location}/Synergy/libs/glad/include"
+includes["glm"] = "%{wks.location}/Synergy/libs/glm"
+includes["stb"] = "%{wks.location}/Synergy/libs/stb"
 
 libraries = {}
 libraries["gflw"] = "build/bin/" .. outputdir .. "/GLFW"
@@ -102,6 +102,8 @@ project "Synergy"
         }
 
 group "Examples"
+
+	include "Examples/Snake"
 
 	project "Sandbox"
 		location "Sandbox"
