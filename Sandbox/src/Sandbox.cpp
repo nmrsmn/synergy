@@ -39,6 +39,7 @@ public:
         
         float ratio = 45.f / 190.f;
         
+        Synergy::Renderer::CanvasRenderer::Submit(Synergy::Quad { { 0, 0, 0.1 }, { 4, 3 }, { 0, 0, 0, .8 } });
         Synergy::Renderer::CanvasRenderer::Submit(Synergy::Quad { { 0, .8, 0 }, { 1, 1 * ratio }, button });
         Synergy::Renderer::CanvasRenderer::Submit(Synergy::Quad { { 0, .5, 0 }, { 1, 1 * ratio }, button });
         
