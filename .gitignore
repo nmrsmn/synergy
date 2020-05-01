@@ -30,3 +30,11 @@
 *.exe
 *.out
 *.app
+premake5
+
+# Project files
+*.xcworkspace
+*.xcodeproj
+
+# Directories
+build/
