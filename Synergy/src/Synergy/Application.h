@@ -53,6 +53,9 @@ namespace Synergy
         Renderer::RendererAPI* api;
         
         friend class Platform;
+        
+    public:
+        static Renderer::RendererAPI* current;
     };
 
     Application* CreateApplication();

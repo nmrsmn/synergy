@@ -125,6 +125,8 @@ namespace Synergy::Renderer
 
     void Renderer2D::BeginScene(const Synergy::Camera::Camera& camera)
     {
+        data.vertexArray->Bind();
+        
         data.shader->Bind();
         data.shader->SetMat4("u_view_projection", camera.GetViewProjectionMatrix());
         

@@ -12,6 +12,10 @@ namespace Synergy::Renderer
     class SYNERGY_API Texture: public Bindable
     {
     public:
+        static Ref<Texture> Create(uint32_t width, uint32_t height);
+        static Ref<Texture> Create(const char* path);
+        
+    public:
         virtual ~Texture() = default;
         
         virtual uint32_t GetWidth() const = 0;

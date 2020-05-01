@@ -141,7 +141,7 @@ group "Examples"
         }
 
         postbuildcommands {
-			"{COPY} assets/ %{cfg.targetdir}/assets/"
+			"{COPY} assets/ %{cfg.targetdir}/"
         }
 
 	    filter "configurations:Debug"

@@ -11,10 +11,14 @@
 
 #include "Synergy/Application.h"
 
+#include "Synergy/Renderer/Renderer.h"
+
 namespace Synergy
 {
     extern Platform* CreatePlatform(Application* application);
     extern Renderer::RendererAPI* CreateRendererAPI();
+
+    Renderer::RendererAPI* Application::current = nullptr;
 
     Application::Application(): platform(CreatePlatform(this)), api(Renderer::CreateRendererAPI()) {}
     
@@ -22,6 +26,8 @@ namespace Synergy
     {
         if (!platform->Init()) return false;
         if (!platform->CreateWindow(viewportPosition, windowSize, false)) return false;
+        
+        Application::current = this->api;
         
         platform->StartEventLoop();
         

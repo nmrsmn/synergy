@@ -12,19 +12,6 @@
 
 namespace Synergy::Renderer::API
 {
-    void OpenGLMessageCallback(unsigned source, unsigned type, unsigned id, unsigned severity, int length, const char* message, const void* userParam)
-    {
-        switch (severity)
-        {
-            case GL_DEBUG_SEVERITY_HIGH:         SYNERGY_LOG_FATAL(message); return;
-            case GL_DEBUG_SEVERITY_MEDIUM:       SYNERGY_LOG_ERROR(message); return;
-            case GL_DEBUG_SEVERITY_LOW:          SYNERGY_LOG_WARN(message); return;
-            case GL_DEBUG_SEVERITY_NOTIFICATION: SYNERGY_LOG_INFO(message); return;
-        }
-        
-        SYNERGY_ASSERT(false, "Unknown severity level!");
-    }
-
     void OpenGL::PrepareDevice()
     {
         
