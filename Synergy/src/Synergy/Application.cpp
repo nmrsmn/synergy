@@ -44,9 +44,6 @@ namespace Synergy
         layer->api = api;
     }
 
-    void Application::PopLayer(Layer* layer) {}
-    void Application::PopOverlay(Layer* layer) {}
-
     void Application::Run()
     {
         Prepare();
@@ -74,10 +71,10 @@ namespace Synergy
             platform->HandleEvent();
             platform->UpdateKeyStates();
             
-            if (!OnUserUpdate(deltaTime)) running = false;
-            
             api->UpdateViewport(viewportPosition, viewportSize);
             api->ClearBuffer({ 0, 0, 0, 1 }, true);
+            
+            if (!OnUserUpdate(deltaTime)) running = false;
             
             for (Layer* layer : layers)
                 layer->OnUpdate(deltaTime);
@@ -111,8 +108,6 @@ namespace Synergy
         if (!platform->CreateContext()) return;
         
         api->PrepareRendering();
-        
-        SYNERGY_ASSERT((layers.size() > 0), "Atleast one layer should be pushed to render something.");
     }
 
     void Application::UpdateWindowSize(glm::vec2 size)

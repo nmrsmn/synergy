@@ -24,16 +24,11 @@ namespace Synergy
     protected:
         Application();
         
-        Input::State GetState(Input::Key key) { return {}; }
-        
         void PushLayer(Layer* layer);
         void PushOverlay(Layer* layer);
         
-        void PopLayer(Layer* layer);
-        void PopOverlay(Layer* layer);
-        
         virtual bool OnUserCreate() { return true; }
-        virtual bool OnUserUpdate(float deltaTime) { return true; }
+        virtual bool OnUserUpdate(float) { return true; }
         virtual void OnUserShutdown() { };
         
     private:
