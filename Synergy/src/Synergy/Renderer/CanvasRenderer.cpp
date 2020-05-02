@@ -71,10 +71,6 @@ namespace Synergy::Renderer
 
     void CanvasRenderer::SubmitRenderable(Renderable2D renderable)
     {
-        static constexpr glm::vec2 uvs[] = {
-            { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f }
-        };
-        
         RendererAPI* api = Instance().api;
         
         data.shader->Bind();
@@ -96,6 +92,8 @@ namespace Synergy::Renderer
         
         texture->Activate(0);
         texture->Bind();
+        
+        std::array<const glm::vec2, 4> uvs = texture->GetUVs();
         
         Vertex buffer[4];
         

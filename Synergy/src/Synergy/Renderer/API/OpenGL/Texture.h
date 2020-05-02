@@ -14,13 +14,9 @@ namespace Synergy::Renderer::OpenGL
     class SYNERGY_API Texture: public Synergy::Renderer::Texture
     {
     public:
-        Texture(uint32_t width, uint32_t height);
-        Texture(const char* path);
+        explicit Texture(uint32_t width, uint32_t height, Texture::Parameters parameters = Texture::Parameters());
         
         virtual ~Texture() = default;
-        
-        virtual uint32_t GetWidth() const override;
-        virtual uint32_t GetHeight() const override;
         
         virtual void SetData(void* data, uint32_t size) override;
         
@@ -31,10 +27,14 @@ namespace Synergy::Renderer::OpenGL
         virtual bool operator==(const Synergy::Renderer::Texture& other) const override;
         
     private:
-        uint32_t id;
-        uint32_t width, height;
-        const char* path;
+        static uint32_t GetBitsPerPixel(Texture::Format format);
+        static GLenum GetInternalFormat(Texture::Format format);
+        static GLenum GetDataFormat(Texture::Format format);
+        static GLenum GetFilter(Texture::Filter filter);
+        static GLenum GetWrap(Texture::Wrap wrap);
         
+    private:
+        uint32_t id;
         GLenum internalFormat, dataFormat;
     };
 }

@@ -39,8 +39,7 @@ namespace Synergy::Renderer
         
         virtual Ref<Shader> CreateShader(const std::string& name, std::map<Shader::Type, const std::string&> sources) = 0;
         
-        virtual Ref<Texture> CreateTexture(uint32_t width, uint32_t height) = 0;
-        virtual Ref<Texture> CreateTexture(const char* path) = 0;
+        virtual Ref<Texture> CreateTexture(uint32_t width, uint32_t height, Texture::Parameters parameters = Texture::Parameters()) = 0;
         
     protected:
         void InitializeRenderers(RendererAPI* api);

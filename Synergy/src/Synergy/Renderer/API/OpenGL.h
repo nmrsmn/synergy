@@ -31,8 +31,7 @@ namespace Synergy::Renderer::API
         
         virtual Ref<Shader> CreateShader(const std::string& name, std::map<Shader::Type, const std::string&> sources) override;
         
-        virtual Ref<Texture> CreateTexture(uint32_t width, uint32_t height) override;
-        virtual Ref<Texture> CreateTexture(const char* path) override;
+        virtual Ref<Texture> CreateTexture(uint32_t width, uint32_t height, Texture::Parameters parameters = Texture::Parameters()) override;
     };
 }
 

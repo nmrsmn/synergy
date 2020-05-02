@@ -10,8 +10,10 @@ public:
     
     virtual bool OnUserCreate() override
     {
-        texture = Synergy::Renderer::Texture::Create("assets/textures/checkerboard.png");
-        button = Synergy::Renderer::Texture::Create("assets/textures/red_button00.png");
+        texture = Synergy::Renderer::Texture::Load("assets/textures/checkerboard.png", Synergy::Renderer::Texture::Parameters(Synergy::Renderer::Texture::Filter::NEAREST, Synergy::Renderer::Texture::Wrap::REPEAT));
+        button = Synergy::Renderer::Texture::Load("assets/textures/red_button00.png");
+        
+        atlas = Synergy::Renderer::TextureAtlas::Load("assets/textures/RPGpack_sheet.png", 13, 20);
         
         return true;
     }
@@ -42,6 +44,9 @@ public:
         Synergy::Renderer::CanvasRenderer::Submit(Synergy::Quad { { 0, 0, 0.1 }, { 4, 3 }, { 0, 0, 0, .8 } });
         Synergy::Renderer::CanvasRenderer::Submit(Synergy::Quad { { 0, .8, 0 }, { 1, 1 * ratio }, button });
         Synergy::Renderer::CanvasRenderer::Submit(Synergy::Quad { { 0, .5, 0 }, { 1, 1 * ratio }, button });
+
+        Synergy::Renderer::CanvasRenderer::Submit(Synergy::Quad { { 0, 0, 0 }, { .5, .5 }, atlas->GetTexture(0, 0) });
+        Synergy::Renderer::CanvasRenderer::Submit(Synergy::Quad { { 0, -.5, 0 }, { .5, .5 }, atlas->GetTexture(1, 0) });
         
         return true;
     }
@@ -49,6 +54,7 @@ public:
 	virtual ~Sandbox() = default;
     
 private:
+    Synergy::Ref<Synergy::Renderer::TextureAtlas> atlas;
     Synergy::Ref<Synergy::Renderer::Texture> button;
     Synergy::Ref<Synergy::Renderer::Texture> texture;
     Synergy::CameraController controller;

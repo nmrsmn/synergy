@@ -79,13 +79,8 @@ namespace Synergy::Renderer::API
         return Synergy::CreateRef<Synergy::Renderer::OpenGL::Shader>(name, sources);
     }
 
-    Ref<Texture> OpenGL::CreateTexture(uint32_t width, uint32_t height)
+    Ref<Texture> OpenGL::CreateTexture(uint32_t width, uint32_t height, Texture::Parameters parameters)
     {
-        return Synergy::CreateRef<Synergy::Renderer::OpenGL::Texture>(width, height);
-    }
-
-    Ref<Texture> OpenGL::CreateTexture(const char* path)
-    {
-        return Synergy::CreateRef<Synergy::Renderer::OpenGL::Texture>(path);
+        return Synergy::CreateRef<Synergy::Renderer::OpenGL::Texture>(width, height, parameters);
     }
 }
