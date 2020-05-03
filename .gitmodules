@@ -7,3 +7,6 @@
 [submodule "Synergy/libs/glm"]
 	path = Synergy/libs/glm
 	url = https://github.com/g-truc/glm.git
+[submodule "Synergy/libs/freetype"]
+	path = Synergy/libs/freetype
+	url = git://git.sv.nongnu.org/freetype/freetype2.git
