@@ -17,6 +17,7 @@
 #include "Synergy/Renderer/TextureAtlas.h"
 
 #include "Synergy/Fonts.h"
+#include "Synergy/Font.h"
 
 #include "Synergy/EntryPoint.h"
 

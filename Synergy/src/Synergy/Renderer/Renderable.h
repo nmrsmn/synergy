@@ -73,20 +73,15 @@ namespace Synergy
     struct SYNERGY_API Text: public Renderer::Renderable2D
     {
     public:
-        Text(const std::string& text, glm::vec2 position, glm::vec3 color) : text(text), Renderer::Renderable2D(glm::vec3(position, 1.0), glm::vec4(color, 1.0)) { }
-        Text(const std::string& text, glm::vec2 position, glm::vec4 color) : text(text), Renderer::Renderable2D(glm::vec3(position, 1.0), color) { }
+        Text(const std::string& text, Synergy::Ref<Synergy::Font> font, glm::vec2 position, glm::vec3 color) : text(text), font(font), Renderer::Renderable2D(glm::vec3(position, 1.0), glm::vec4(color, 1.0)) { }
+        Text(const std::string& text, Synergy::Ref<Synergy::Font> font, glm::vec2 position, glm::vec4 color) : text(text), font(font), Renderer::Renderable2D(glm::vec3(position, 1.0), color) { }
         
-        Text(const std::string& text, Ref<Font> font, glm::vec2 position, glm::vec3 color) : text(text), Renderer::Renderable2D(glm::vec3(position, 1.0), glm::vec4(color, 1.0)) { }
-        Text(const std::string& text, Ref<Font> font, glm::vec2 position, glm::vec4 color) : text(text), Renderer::Renderable2D(glm::vec3(position, 1.0), color) { }
+        Text(const std::string& text, Synergy::Ref<Synergy::Font> font, glm::vec3 position, glm::vec3 color) : text(text), font(font), Renderer::Renderable2D(position, glm::vec4(color, 1.0)) { }
+        Text(const std::string& text, Synergy::Ref<Synergy::Font> font, glm::vec3 position, glm::vec4 color) : text(text), font(font), Renderer::Renderable2D(position, color) { }
         
-        Text(const std::string& text, glm::vec3 position, glm::vec3 color) : text(text), Renderer::Renderable2D(position, glm::vec4(color, 1.0)) { }
-        Text(const std::string& text, glm::vec3 position, glm::vec4 color) : text(text), Renderer::Renderable2D(position, color) { }
-        
-        Text(const std::string& text, Ref<Font> font, glm::vec3 position, glm::vec3 color) : text(text), Renderer::Renderable2D(position, glm::vec4(color, 1.0)) { }
-        Text(const std::string& text, Ref<Font> font, glm::vec3 position, glm::vec4 color) : text(text), Renderer::Renderable2D(position, color) { }
-        
-    private:
+    public:
         const std::string& text;
+        Synergy::Ref<Synergy::Font> font;
     };
 }
 

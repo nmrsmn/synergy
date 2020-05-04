@@ -22,7 +22,7 @@ namespace Synergy::Renderer::OpenGL
     
     void Texture::SetData(void* data, uint32_t size)
     {
-        uint32_t bitsPerPixel = dataFormat == GL_RGBA ? 4 : 3;
+        uint32_t bitsPerPixel = Texture::GetBitsPerPixel(parameters.format);
         SYNERGY_ASSERT(size == width * height * bitsPerPixel, "Data must be the entire texture!");
         
         glBindTexture(GL_TEXTURE_2D, id);
@@ -55,6 +55,7 @@ namespace Synergy::Renderer::OpenGL
     {
         switch (format)
         {
+            case Texture::Format::RED: return 1;
             case Texture::Format::RGB: return 3;
             case Texture::Format::RGBA: return 4;
             default: SYNERGY_ASSERT(false, "Unsupported texture format.");
@@ -65,6 +66,7 @@ namespace Synergy::Renderer::OpenGL
     {
         switch (format)
         {
+            case Texture::Format::RED: return GL_RED;
             case Texture::Format::RGB: return GL_RGB8;
             case Texture::Format::RGBA: return GL_RGBA8;
             default: SYNERGY_ASSERT(false, "Unsupported internal texture format.");
@@ -75,6 +77,7 @@ namespace Synergy::Renderer::OpenGL
     {
         switch (format)
         {
+            case Texture::Format::RED: return GL_RED;
             case Texture::Format::RGB: return GL_RGB;
             case Texture::Format::RGBA: return GL_RGBA;
             default: SYNERGY_ASSERT(false, "Unsupported data texture format.");

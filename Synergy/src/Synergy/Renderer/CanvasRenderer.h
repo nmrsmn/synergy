@@ -29,6 +29,7 @@ namespace Synergy::Renderer
         static void Initialize(RendererAPI* api);
         
         static void SubmitRenderable(Renderable2D renderable);
+        static void SubmitText(Text text);
         
     private:
         RendererAPI* api;
@@ -52,7 +53,7 @@ namespace Synergy::Renderer
             {
                 v_color = a_color;
                 v_uv = a_uv;
-                gl_Position = vec4(a_position, 1.0);
+                gl_Position = u_projection_view * vec4(a_position, 1.0);
             }
         )";
 
@@ -66,8 +67,42 @@ namespace Synergy::Renderer
 
             uniform sampler2D u_texture;
             
-            void main(){
+            void main()
+            {
                 color = texture(u_texture, v_uv) * v_color;
+            }
+        )";
+        
+        std::string text_vertex_shader_source = R"(
+            #version 330 core
+
+            layout(location = 0) in vec4 a_vertex;
+            
+            out vec2 v_uv;
+        
+            uniform mat4 u_projection_view;
+
+            void main()
+            {
+                gl_Position = u_projection_view * vec4(a_vertex.xy, 0.0, 1.0);
+                v_uv = a_vertex.zw;
+            }
+        )";
+
+        std::string text_fragment_shader_source = R"(
+            #version 330 core
+            
+            layout(location = 0) out vec4 color;
+
+            in vec2 v_uv;
+
+            uniform sampler2D u_texture;
+            uniform vec4 u_text_color;
+            
+            void main()
+            {
+                vec4 sampled = vec4(1.0, 1.0, 1.0, texture(u_texture, v_uv).r);
+                color = u_text_color * sampled;
             }
         )";
     };

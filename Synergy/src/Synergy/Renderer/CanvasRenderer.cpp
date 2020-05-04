@@ -7,6 +7,8 @@
 
 #include "Synergy/Renderer/CanvasRenderer.h"
 
+#include "Synergy/Font.h"
+
 #include "Synergy/Renderer/Shader.h"
 #include "Synergy/Renderer/Texture.h"
 #include "Synergy/Renderer/VertexArray.h"
@@ -25,11 +27,14 @@ namespace Synergy::Renderer
     struct Data
     {
         Ref<Shader> shader;
+        Ref<Shader> textShader;
+        
         Ref<Texture> whiteTexture;
         
         uint32_t indices[6] = { 0, 1, 2, 2, 3, 0 };
         glm::vec4 positions[4];
         
+        glm::vec3 screen;
         glm::mat4 ortho;
     };
 
@@ -55,12 +60,21 @@ namespace Synergy::Renderer
         data.shader = api->CreateShader("CanvasRenderer", sources);
         data.shader->Bind();
         
+        std::map<Shader::Type, const std::string&> text_sources = {
+            { Shader::Type::VERTEX, text_vertex_shader_source },
+            { Shader::Type::FRAGMENT, text_fragment_shader_source }
+        };
+        
+        data.textShader = api->CreateShader("CanvasRendererText", text_sources);
+        data.textShader->Bind();
+        
         data.positions[0] = { -0.5f, -0.5f, -1.0f, 1.0f };
         data.positions[1] = {  0.5f, -0.5f, -1.0f, 1.0f };
         data.positions[2] = {  0.5f,  0.5f, -1.0f, 1.0f };
         data.positions[3] = { -0.5f,  0.5f, -1.0f, 1.0f };
         
-        data.ortho = glm::ortho(-2.0, 2.0, -1.5, 1.5, -1.0, 1.0);
+        data.screen = glm::vec3 { 800, 600, 1 };
+        data.ortho = glm::ortho(0.0f, data.screen.x, 0.0f, data.screen.y, 0.0f, data.screen.z);
     }
 
     void CanvasRenderer::Initialize(RendererAPI* api)
@@ -97,8 +111,11 @@ namespace Synergy::Renderer
         
         Vertex buffer[4];
         
-        glm::mat4 transform = glm::translate(glm::mat4(1.0f), renderable.position) *
-            glm::scale(glm::mat4(1.0f), { renderable.size.x, renderable.size.y, 1.0f });
+        glm::vec3 position = renderable.position * data.screen;
+        glm::vec2 size = renderable.size * glm::vec2 { data.screen.x, data.screen.y };
+        
+        glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) *
+            glm::scale(glm::mat4(1.0f), { size, 1.0f });
         
         for (size_t offset = 0; offset < 4; offset++)
         {
@@ -109,6 +126,62 @@ namespace Synergy::Renderer
         
         vertexBuffer->SetData(buffer, 4 * sizeof(Vertex));
         api->DrawIndexed(vertexArray, 6);
+    }
+
+    void CanvasRenderer::SubmitText(Text text)
+    {
+        RendererAPI* api = Instance().api;
+        
+        data.textShader->Bind();
+        data.textShader->SetMat4("u_projection_view", data.ortho);
+        data.textShader->SetFloat4("u_text_color", text.color);
+        
+        Ref<VertexArray> vertexArray = api->CreateVertexArray();
+        Ref<VertexBuffer> vertexBuffer = api->CreateVertexBuffer(6 * 4 * sizeof(float));
+        vertexBuffer->SetLayout({
+            { Shader::DataType::VEC4, "a_vertex" }
+        });
+        
+        vertexArray->AddVertexBuffer(vertexBuffer);
+        
+        Ref<Texture> texture = data.whiteTexture;
+        
+        texture->Activate(0);
+        texture->Bind();
+        
+        float scale = 1.0;
+        
+        float x = text.position.x;
+        float y = text.position.y;
+        
+        std::string::const_iterator character;
+        for (character = text.text.begin(); character != text.text.end(); character++)
+        {
+            Synergy::Font::Character current = text.font->GetCharacter(*character);
+            
+            float xpos = x + current.bearing.x * scale;
+            float ypos = y - (current.size.y - current.bearing.y) * scale;
+            
+            float width = current.size.x * scale;
+            float height = current.size.y * scale;
+            
+            float vertices[6][4] = {
+                { xpos          , ypos + height , 0.0f, 0.0f },
+                { xpos          , ypos          , 0.0f, 1.0f },
+                { xpos + width  , ypos          , 1.0f, 1.0f },
+                
+                { xpos          , ypos + height , 0.0f, 0.0f },
+                { xpos + width  , ypos          , 1.0f, 1.0f },
+                { xpos + width  , ypos + height , 1.0f, 0.0f }
+            };
+            
+            current.texture->Bind();
+            
+            vertexBuffer->SetData(vertices, sizeof(vertices));
+            api->DrawArrays(6);
+            
+            x += (current.advance >> 6) * scale;
+        }
     }
 }
 

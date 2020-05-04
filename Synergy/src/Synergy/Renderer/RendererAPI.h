@@ -32,6 +32,7 @@ namespace Synergy::Renderer
         virtual void ClearBuffer(glm::vec4 color, bool depth) = 0;
         
         virtual void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t count = 0) = 0;
+        virtual void DrawArrays(uint32_t count) = 0;
         
         virtual Ref<VertexArray> CreateVertexArray() = 0;
         virtual Ref<VertexBuffer> CreateVertexBuffer(uint32_t size) = 0;

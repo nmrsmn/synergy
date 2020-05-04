@@ -40,6 +40,8 @@ namespace Synergy::Renderer::API
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         glEnable(GL_DEPTH_TEST);
+        
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     }
 
     void OpenGL::UpdateViewport(glm::vec2 offset, glm::vec2 size)
@@ -57,6 +59,11 @@ namespace Synergy::Renderer::API
     {
         uint32_t indices = count ? count : vertexArray->GetIndexBuffer()->GetCount();
         glDrawElements(GL_TRIANGLES, indices, GL_UNSIGNED_INT, nullptr);
+    }
+
+    void OpenGL::DrawArrays(uint32_t count)
+    {
+        glDrawArrays(GL_TRIANGLES, 0, count);
     }
 
     Ref<VertexArray> OpenGL::CreateVertexArray()

@@ -206,5 +206,10 @@ namespace Synergy::Renderer
         
         data.indexCount += 6;
     }
+
+    void Renderer2D::SubmitText(Text text)
+    {
+        
+    }
 }
 

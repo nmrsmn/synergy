@@ -17,6 +17,11 @@ namespace Synergy::Renderer
         {
             Derived::SubmitRenderable(renderable);
         };
+        
+        static void Submit(Text text)
+        {
+            Derived::SubmitText(text);
+        }
     };
 }
 

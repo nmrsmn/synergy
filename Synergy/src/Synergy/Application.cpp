@@ -11,6 +11,7 @@
 
 #include "Synergy/Application.h"
 
+#include "Synergy/Fonts.h"
 #include "Synergy/Renderer/Renderer.h"
 
 namespace Synergy
