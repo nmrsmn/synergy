@@ -35,6 +35,7 @@ namespace Synergy::Renderer
         static void FlushAndReset();
         
         static void SubmitRenderable(Renderable2D renderable);
+        static void SubmitText(Text text);
         
     private:
         RendererAPI* api;

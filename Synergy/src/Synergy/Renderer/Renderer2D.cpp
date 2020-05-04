@@ -125,6 +125,8 @@ namespace Synergy::Renderer
 
     void Renderer2D::BeginScene(const Synergy::Camera::Camera& camera)
     {
+        data.vertexArray->Bind();
+        
         data.shader->Bind();
         data.shader->SetMat4("u_view_projection", camera.GetViewProjectionMatrix());
         
@@ -168,10 +170,6 @@ namespace Synergy::Renderer
         if (data.indexCount >= Data::indices)
             FlushAndReset();
         
-        static constexpr glm::vec2 uvs[] = {
-            { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f }
-        };
-        
         float textureIndex = 0.0f;
         if (renderable.texture != nullptr)
         {
@@ -192,6 +190,8 @@ namespace Synergy::Renderer
             }
         }
         
+        std::array<const glm::vec2, 4> uvs = renderable.texture != nullptr ? renderable.texture->GetUVs() : data.whiteTexture->GetUVs();
+        
         glm::mat4 transform = glm::translate(glm::mat4(1.0f), renderable.position) *
             glm::scale(glm::mat4(1.0f), { renderable.size.x, renderable.size.y, 1.0f });
         
@@ -205,6 +205,11 @@ namespace Synergy::Renderer
         }
         
         data.indexCount += 6;
+    }
+
+    void Renderer2D::SubmitText(Text text)
+    {
+        
     }
 }
 

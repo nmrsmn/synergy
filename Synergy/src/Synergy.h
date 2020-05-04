@@ -11,8 +11,13 @@
 
 #include "Synergy/CameraController.h"
 
+#include "Synergy/Renderer/CanvasRenderer.h"
 #include "Synergy/Renderer/Renderer2D.h"
 #include "Synergy/Renderer/Texture.h"
+#include "Synergy/Renderer/TextureAtlas.h"
+
+#include "Synergy/Fonts.h"
+#include "Synergy/Font.h"
 
 #include "Synergy/EntryPoint.h"
 

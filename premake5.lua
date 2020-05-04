@@ -16,6 +16,7 @@ includes["glfw"] = "%{wks.location}/Synergy/libs/GLFW/include"
 includes["glad"] = "%{wks.location}/Synergy/libs/glad/include"
 includes["glm"] = "%{wks.location}/Synergy/libs/glm"
 includes["stb"] = "%{wks.location}/Synergy/libs/stb"
+includes["freetype"] = "%{wks.location}/Synergy/libs/freetype/include"
 
 libraries = {}
 libraries["gflw"] = "build/bin/" .. outputdir .. "/GLFW"
@@ -25,6 +26,7 @@ group "Dependencies"
 
 	include "Synergy/libs/premake/GLFW"
 	include "Synergy/libs/premake/glad"
+	include "Synergy/libs/premake/freetype"
 
 group ""
 
@@ -59,7 +61,8 @@ project "Synergy"
     	"%{includes.glfw}",
     	"%{includes.glad}",
     	"%{includes.glm}",
-    	"%{includes.stb}"
+    	"%{includes.stb}",
+    	"%{includes.freetype}"
     }
 
 	defines
@@ -70,7 +73,8 @@ project "Synergy"
 	links
 	{
 		"GLFW",
-		"glad"
+		"glad",
+		"freetype"
 	}
 
 	filter "configurations:Debug"
@@ -132,7 +136,8 @@ group "Examples"
         	"%{includes.spdlog}",
         	"%{includes.glfw}",
     		"%{includes.glm}",
-    		"%{includes.stb}"
+    		"%{includes.stb}",
+    		"%{includes.freetype}"
         }
 
         links
@@ -141,7 +146,7 @@ group "Examples"
         }
 
         postbuildcommands {
-			"{COPY} assets/ %{cfg.targetdir}/assets/"
+			"{COPY} assets/ %{cfg.targetdir}/"
         }
 
 	    filter "configurations:Debug"

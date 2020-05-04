@@ -12,19 +12,6 @@
 
 namespace Synergy::Renderer::API
 {
-    void OpenGLMessageCallback(unsigned source, unsigned type, unsigned id, unsigned severity, int length, const char* message, const void* userParam)
-    {
-        switch (severity)
-        {
-            case GL_DEBUG_SEVERITY_HIGH:         SYNERGY_LOG_FATAL(message); return;
-            case GL_DEBUG_SEVERITY_MEDIUM:       SYNERGY_LOG_ERROR(message); return;
-            case GL_DEBUG_SEVERITY_LOW:          SYNERGY_LOG_WARN(message); return;
-            case GL_DEBUG_SEVERITY_NOTIFICATION: SYNERGY_LOG_INFO(message); return;
-        }
-        
-        SYNERGY_ASSERT(false, "Unknown severity level!");
-    }
-
     void OpenGL::PrepareDevice()
     {
         
@@ -53,6 +40,8 @@ namespace Synergy::Renderer::API
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         glEnable(GL_DEPTH_TEST);
+        
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     }
 
     void OpenGL::UpdateViewport(glm::vec2 offset, glm::vec2 size)
@@ -70,6 +59,11 @@ namespace Synergy::Renderer::API
     {
         uint32_t indices = count ? count : vertexArray->GetIndexBuffer()->GetCount();
         glDrawElements(GL_TRIANGLES, indices, GL_UNSIGNED_INT, nullptr);
+    }
+
+    void OpenGL::DrawArrays(uint32_t count)
+    {
+        glDrawArrays(GL_TRIANGLES, 0, count);
     }
 
     Ref<VertexArray> OpenGL::CreateVertexArray()
@@ -92,13 +86,8 @@ namespace Synergy::Renderer::API
         return Synergy::CreateRef<Synergy::Renderer::OpenGL::Shader>(name, sources);
     }
 
-    Ref<Texture> OpenGL::CreateTexture(uint32_t width, uint32_t height)
+    Ref<Texture> OpenGL::CreateTexture(uint32_t width, uint32_t height, Texture::Parameters parameters)
     {
-        return Synergy::CreateRef<Synergy::Renderer::OpenGL::Texture>(width, height);
-    }
-
-    Ref<Texture> OpenGL::CreateTexture(const char* path)
-    {
-        return Synergy::CreateRef<Synergy::Renderer::OpenGL::Texture>(path);
+        return Synergy::CreateRef<Synergy::Renderer::OpenGL::Texture>(width, height, parameters);
     }
 }

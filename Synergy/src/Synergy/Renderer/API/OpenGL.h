@@ -24,6 +24,7 @@ namespace Synergy::Renderer::API
         virtual void ClearBuffer(glm::vec4 color, bool depth) override;
         
         virtual void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t count = 0) override;
+        virtual void DrawArrays(uint32_t count) override;
         
         virtual Ref<VertexArray> CreateVertexArray() override;
         virtual Ref<VertexBuffer> CreateVertexBuffer(uint32_t size) override;
@@ -31,8 +32,7 @@ namespace Synergy::Renderer::API
         
         virtual Ref<Shader> CreateShader(const std::string& name, std::map<Shader::Type, const std::string&> sources) override;
         
-        virtual Ref<Texture> CreateTexture(uint32_t width, uint32_t height) override;
-        virtual Ref<Texture> CreateTexture(const char* path) override;
+        virtual Ref<Texture> CreateTexture(uint32_t width, uint32_t height, Texture::Parameters parameters = Texture::Parameters()) override;
     };
 }
 

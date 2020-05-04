@@ -3,53 +3,47 @@
 
 #include "Synergy.h"
 
-class SandboxLayer: public Synergy::Layer
-{
-public:
-    explicit SandboxLayer(): controller(800.0f / 600.0f), Synergy::Layer("SandboxLayer") {}
-    
-    virtual void OnAttach() override
-    {
-        texture = api->CreateTexture("assets/textures/checkerboard.png");
-    }
-    
-    virtual void OnUpdate(float deltaTime) override
-    {
-        controller.Update(deltaTime);
-        
-        Synergy::Renderer::Renderer2D::BeginScene(controller.GetCamera());
-        Synergy::Renderer::Renderer2D::Submit(Synergy::Quad { {  0,  0, 1 }, { 1.0, 1.0 }, { 1, 0, 0, 1 } });
-        Synergy::Renderer::Renderer2D::Submit(Synergy::Quad { { -.75f, -.75f, 1 }, { 1.0, 1.0 }, { 0, 1, 0, 1 } });
-        Synergy::Renderer::Renderer2D::Submit(Synergy::Quad { { .75f, .75f, 1 }, { 1.0, 1.0 }, texture, { .2, .4, .8, 1 } });
-        Synergy::Renderer::Renderer2D::EndScene();
-        
-        Synergy::Renderer::Renderer2D::BeginScene(controller.GetCamera());
-        for (float y = -5.0f; y < 5.0f; y += 0.5f)
-        {
-            for (float x = -5.0f; x < 5.0f; x += 0.5f)
-            {
-                glm::vec4 color = { (x + 5.0f) / 10.0f, 0.4f, (y + 5.0f) / 10.0f, 0.7f };
-                Synergy::Renderer::Renderer2D::Submit(Synergy::Quad { { x, y }, { 0.48f, 0.48f }, color });
-            }
-        }
-        Synergy::Renderer::Renderer2D::EndScene();
-    }
-    
-private:
-    Synergy::Ref<Synergy::Renderer::Texture> texture;
-    
-    Synergy::CameraController controller;
-};
-
 class Sandbox: public Synergy::Application
 {
 public:
-	explicit Sandbox(): Synergy::Application()
-	{
-        PushLayer(new SandboxLayer());
-	}
+	explicit Sandbox(): controller(800.0f / 600.0f), Synergy::Application() {}
+    
+    virtual bool OnUserCreate() override
+    {
+        atlas = Synergy::Renderer::TextureAtlas::Load("assets/textures/RPGpack_sheet.png", 13, 20);
+        
+        button = Synergy::Renderer::Texture::Load("assets/textures/red_button00.png");
+        
+        narrow = Synergy::Fonts::Load("assets/fonts/Kenney Future Narrow.ttf", 48);
+        blocks = Synergy::Fonts::Load("assets/fonts/Kenney Blocks.ttf", 10);
+        
+        return true;
+    }
+    
+    virtual bool OnUserUpdate(float deltatime) override
+    {
+        float ratio = 45.f / 190.f;
+        
+        Synergy::Renderer::CanvasRenderer::Submit(Synergy::Quad { { 0.5, 0.5, 0.1 }, { 1.0, 1.0 }, { 1, 1, 1, .1 } });
+        Synergy::Renderer::CanvasRenderer::Submit(Synergy::Quad { { 0.5, 0.2, 0.5 }, { 0.5, 0.5 * ratio }, button });
+        Synergy::Renderer::CanvasRenderer::Submit(Synergy::Quad { { 0.5, 0.6, 0.5 }, { 0.1, 0.1 }, atlas->GetTexture(11, 1) });
+        
+        Synergy::Renderer::CanvasRenderer::Submit(Synergy::Text { "Hello world!", narrow, { 10.0, 560, 0.5 }, { 1, 1, 1, 1 } });
+        Synergy::Renderer::CanvasRenderer::Submit(Synergy::Text { "Copyright (c) 2020, all rights reserved Niels Marsman.", blocks, { 10, 10, 0 }, { 1, 1, 1, 1 } });
+        
+        return true;
+    }
     
 	virtual ~Sandbox() = default;
+    
+private:
+    Synergy::Ref<Synergy::Renderer::TextureAtlas> atlas;
+    
+    Synergy::Ref<Synergy::Font> narrow;
+    Synergy::Ref<Synergy::Font> blocks;
+    
+    Synergy::Ref<Synergy::Renderer::Texture> button;
+    Synergy::CameraController controller;
 };
 
 Synergy::Application* Synergy::CreateApplication()
