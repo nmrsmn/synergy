@@ -10,6 +10,8 @@
 
 #include <glad/glad.h>
 
+Synergy::Renderer::RendererAPI::API Synergy::Renderer::RendererAPI::api = Synergy::Renderer::RendererAPI::API::OpenGL;
+
 namespace Synergy::Renderer::API
 {
     void OpenGL::PrepareDevice()
@@ -79,11 +81,6 @@ namespace Synergy::Renderer::API
     Ref<IndexBuffer> OpenGL::CreateIndexBuffer(uint32_t* indices, uint32_t count)
     {
         return Synergy::CreateRef<Synergy::Renderer::OpenGL::IndexBuffer>(indices, count);
-    }
-
-    Ref<Shader> OpenGL::CreateShader(const std::string &name, std::map<Shader::Type, const std::string&> sources)
-    {
-        return Synergy::CreateRef<Synergy::Renderer::OpenGL::Shader>(name, sources);
     }
 
     Ref<Texture> OpenGL::CreateTexture(uint32_t width, uint32_t height, Texture::Parameters parameters)

@@ -9,14 +9,17 @@
 #include "Synergy/Core.h"
 #include "Synergy/Renderer/Bindable.h"
 
-namespace Synergy::Renderer
+namespace Synergy
 {
-    class SYNERGY_API Shader: public Bindable
+    class Shaders;
+
+    class SYNERGY_API Shader: public Synergy::Renderer::Bindable
     {
     public:
         enum class SYNERGY_API Type
         {
             VERTEX,
+            GEOMETRY,
             FRAGMENT,
             
             // Alternatives
@@ -32,10 +35,13 @@ namespace Synergy::Renderer
             VEC3 = VEC3F,
             VEC4 = VEC4F
         };
+        
+    private:
+        static Synergy::Ref<Synergy::Shader> Create(const std::string& name, const std::unordered_map<Synergy::Shader::Type, const std::string&> sources);
 
     public:
-        static uint32_t DataTypeComponents(DataType type);
-        static uint32_t DataTypeSize(DataType type);
+        static uint32_t DataTypeComponents(Synergy::Shader::DataType type);
+        static uint32_t DataTypeSize(Synergy::Shader::DataType type);
         
     public:
         virtual ~Shader() = default;
@@ -49,6 +55,19 @@ namespace Synergy::Renderer
         virtual void SetFloat3(const std::string& name, const glm::vec3& value) = 0;
         virtual void SetFloat4(const std::string& name, const glm::vec4& value) = 0;
         virtual void SetMat4(const std::string& name, const glm::mat4& value) = 0;
+        
+    protected:
+        Shader(const std::string& name, const std::unordered_map<Synergy::Shader::Type, const std::string&> sources);
+        
+        virtual void Compile() = 0;
+        
+    protected:
+        uint32_t id;
+        
+        const std::string& name;
+        const std::unordered_map<Synergy::Shader::Type, const std::string&> sources;
+        
+        friend class Synergy::Shaders;
     };
 }
 

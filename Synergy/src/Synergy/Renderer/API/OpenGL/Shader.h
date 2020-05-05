@@ -4,8 +4,7 @@
 #ifndef SYNERGY_RENDERER_OPENGL_SHADER_H
 #define SYNERGY_RENDERER_OPENGL_SHADER_H
 
-#include <map>
-#include <array>
+#include <unordered_map>
 
 #include <glad/glad.h>
 
@@ -14,11 +13,9 @@
 
 namespace Synergy::Renderer::OpenGL
 {
-    class SYNERGY_API Shader: public Synergy::Renderer::Shader
+    class SYNERGY_API Shader: public Synergy::Shader
     {
     public:
-        Shader(const std::string& name, std::map<Synergy::Renderer::Shader::Type, const std::string&> sources);
-        
         virtual ~Shader();
         
         virtual void Bind() const override;
@@ -32,15 +29,16 @@ namespace Synergy::Renderer::OpenGL
         virtual void SetMat4(const std::string& name, const glm::mat4& value) override;
         
     private:
-        void Compile(const std::unordered_map<GLenum, std::string>& sources);
+        Shader(const std::string& name, const std::unordered_map<Synergy::Shader::Type, const std::string&> sources);
+        
+        virtual void Compile() override;
         
         GLint getUniformLocation(const std::string& name);
         
     private:
-        uint32_t id;
-        std::string name;
-        
         std::unordered_map<std::string, GLint> uniformLocations;
+        
+        friend class Synergy::Shader;
     };
 }
 

@@ -10,6 +10,7 @@
 #include "Synergy/Font.h"
 
 #include "Synergy/Renderer/Shader.h"
+#include "Synergy/Renderer/Shaders.h"
 #include "Synergy/Renderer/Texture.h"
 #include "Synergy/Renderer/VertexArray.h"
 #include "Synergy/Renderer/VertexBuffer.h"
@@ -52,20 +53,20 @@ namespace Synergy::Renderer
         data.whiteTexture = api->CreateTexture(1, 1);
         data.whiteTexture->SetData(&textureData, sizeof(textureData));
         
-        std::map<Shader::Type, const std::string&> sources = {
-            { Shader::Type::VERTEX, vertex_shader_source },
-            { Shader::Type::FRAGMENT, fragment_shader_source }
+        std::unordered_map<Synergy::Shader::Type, const std::string&> sources = {
+            { Synergy::Shader::Type::VERTEX, vertex_shader_source },
+            { Synergy::Shader::Type::FRAGMENT, fragment_shader_source }
         };
         
-        data.shader = api->CreateShader("CanvasRenderer", sources);
+        data.shader = Synergy::Shaders::Load("CanvasRenderer", sources);
         data.shader->Bind();
         
-        std::map<Shader::Type, const std::string&> text_sources = {
-            { Shader::Type::VERTEX, text_vertex_shader_source },
-            { Shader::Type::FRAGMENT, text_fragment_shader_source }
+        std::unordered_map<Synergy::Shader::Type, const std::string&> text_sources = {
+            { Synergy::Shader::Type::VERTEX, text_vertex_shader_source },
+            { Synergy::Shader::Type::FRAGMENT, text_fragment_shader_source }
         };
         
-        data.textShader = api->CreateShader("CanvasRendererText", text_sources);
+        data.textShader = Synergy::Shaders::Load("CanvasRendererText", text_sources);
         data.textShader->Bind();
         
         data.positions[0] = { -0.5f, -0.5f, -1.0f, 1.0f };

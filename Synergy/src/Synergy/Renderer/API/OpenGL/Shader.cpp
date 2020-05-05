@@ -1,13 +1,15 @@
 // Created by Niels Marsman on 20-04-2020.
 // Copyright © 2020 Niels Marsman. All rights reserved.
 
-#include "Synergy/Renderer/API/OpenGL/Shader.h"
+#include <vector>
 
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Synergy/Renderer/API/OpenGL/Shader.h"
+
 namespace Synergy::Renderer::OpenGL
 {
-    static GLenum OpenGLShaderType(const Synergy::Renderer::Shader::Type type)
+    static GLenum OpenGLShaderType(const Synergy::Shader::Type type)
     {
         if (type == Shader::Type::VERTEX)
             return GL_VERTEX_SHADER;
@@ -19,15 +21,9 @@ namespace Synergy::Renderer::OpenGL
         return 0;
     }
 
-    Shader::Shader(const std::string& name, std::map<Synergy::Renderer::Shader::Type, const std::string&> sources): name(name)
+    Shader::Shader(const std::string& name, const std::unordered_map<Synergy::Shader::Type, const std::string&> sources) : Synergy::Shader(name, sources)
     {
-        std::unordered_map<GLenum, std::string> shaders;
-        for (auto& entry : sources)
-        {
-            shaders[OpenGLShaderType(entry.first)] = entry.second;
-        }
-        
-        Compile(shaders);
+        this->Compile();
     }
 
     Shader::~Shader()
@@ -45,7 +41,6 @@ namespace Synergy::Renderer::OpenGL
         glUseProgram(0);
     }
 
-    
     void Shader::SetInt(const std::string& name, int value)
     {
         glUniform1i(getUniformLocation(name), value);
@@ -76,14 +71,19 @@ namespace Synergy::Renderer::OpenGL
         glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, glm::value_ptr(value));
     }
 
-    void Shader::Compile(const std::unordered_map<GLenum, std::string>& sources)
+    void Shader::Compile()
     {
         GLuint program = glCreateProgram();
         
-        std::array<GLenum, 2> shaders;
-        int shaderIndex = 0;
+        std::unordered_map<GLenum, std::string> shaderSources;
+        for (auto& entry : sources)
+        {
+            shaderSources[OpenGLShaderType(entry.first)] = entry.second;
+        }
         
-        for (const std::pair<GLenum, std::string>& entry : sources)
+        std::vector<GLenum> shaders;
+        
+        for (const std::pair<GLenum, const std::string&>& entry : shaderSources)
         {
             const GLchar* source = entry.second.c_str();
             
@@ -112,7 +112,7 @@ namespace Synergy::Renderer::OpenGL
             }
             
             glAttachShader(program, shader);
-            shaders[shaderIndex++] = shader;
+            shaders.push_back(shader);
         }
         
         glLinkProgram(program);

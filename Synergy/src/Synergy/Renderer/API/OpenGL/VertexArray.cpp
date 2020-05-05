@@ -7,16 +7,16 @@
 
 namespace Synergy::Renderer::OpenGL
 {
-    static GLenum OpenGLDataType(const Synergy::Renderer::Shader::DataType type)
+    static GLenum OpenGLDataType(const Synergy::Shader::DataType type)
     {
         switch (type)
         {
-            case Shader::DataType::FLOAT: case Shader::DataType::VEC2F: case Shader::DataType::VEC3F: case Shader::DataType::VEC4F:
-            case Shader::DataType::MAT3: case Shader::DataType::MAT4: return GL_FLOAT;
+            case Synergy::Shader::DataType::FLOAT: case Synergy::Shader::DataType::VEC2F: case Synergy::Shader::DataType::VEC3F: case Synergy::Shader::DataType::VEC4F:
+            case Synergy::Shader::DataType::MAT3: case Synergy::Shader::DataType::MAT4: return GL_FLOAT;
                 
-            case Shader::DataType::INT: case Shader::DataType::VEC2I: case Shader::DataType::VEC3I: case Shader::DataType::VEC4I: return GL_INT;
+            case Synergy::Shader::DataType::INT: case Synergy::Shader::DataType::VEC2I: case Synergy::Shader::DataType::VEC3I: case Synergy::Shader::DataType::VEC4I: return GL_INT;
                 
-            case Shader::DataType::BOOL: return GL_BOOL;
+            case Synergy::Shader::DataType::BOOL: return GL_BOOL;
         }
         
         SYNERGY_ASSERT(false, "Unknown Shader::DataType supplied!");
