@@ -6,6 +6,7 @@
 
 #include <fstream>
 #include <optional>
+#include <sstream>
 #include <streambuf>
 #include <unordered_map>
 
@@ -31,7 +32,7 @@ namespace Synergy
         struct Buffer: public std::streambuf
         {
         public:
-            Buffer(std::ifstream& stream, uint32_t offset, uint32_t size);
+            Buffer(std::istream& stream, uint32_t offset, uint32_t size);
             
         public:
             std::vector<char> memory;
@@ -40,6 +41,7 @@ namespace Synergy
     public:
         static Synergy::Ref<Synergy::ResourcePack> Create();
         static Synergy::Ref<Synergy::ResourcePack> Load(const std::string& file, const std::optional<std::string> key = std::nullopt);
+        static Synergy::Ref<Synergy::ResourcePack> Load(const Synergy::ResourcePack::Buffer* buffer, const std::optional<std::string> key = std::nullopt);
         
     public:
         ~ResourcePack();
@@ -48,16 +50,14 @@ namespace Synergy
         bool Add(const std::string& file, const std::string& content);
         bool Save(const std::string& pack, const std::optional<std::string> key = std::nullopt);
         
-        bool Read(const std::string& file, auto (*read)(Synergy::ResourcePack::Buffer) -> bool);
-        
-        Synergy::Ref<Synergy::ResourcePack> Parse(const std::string& file, const std::optional<std::string> key = std::nullopt);
+        Synergy::ResourcePack::Buffer Read(const std::string& file);
                 
     private:
         ResourcePack();
         ResourcePack(const std::string& file, const std::optional<std::string> key = std::nullopt);
-        ResourcePack(Synergy::ResourcePack::Buffer, const std::optional<std::string> key = std::nullopt);
+        ResourcePack(const Synergy::ResourcePack::Buffer* buffer, const std::optional<std::string> key = std::nullopt);
         
-        void Process(std::istream& stream, const std::optional<std::string> key = std::nullopt);
+        void Process(const std::optional<std::string> key = std::nullopt);
         
         std::vector<char> Scramble(const std::vector<char>& data, const std::string& key);
         std::string MakePosix(const std::string& file);
@@ -65,7 +65,10 @@ namespace Synergy
     private:
         Synergy::ResourcePack::Mode mode;
         
-        std::ifstream stream;
+        std::ifstream file;
+        std::stringstream sstream;
+        std::istream& stream;
+        
         std::unordered_map<std::string, Synergy::ResourcePack::Resource> resources;
         std::unordered_map<std::string, const char*> sources;
     };

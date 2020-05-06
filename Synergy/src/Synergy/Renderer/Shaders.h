@@ -16,10 +16,14 @@ namespace Synergy
     public:
         static Synergy::Ref<Synergy::Shader> Load(const std::string& name);
         static Synergy::Ref<Synergy::Shader> Load(const std::string& name, const std::string& file);
-        static Synergy::Ref<Synergy::Shader> Load(const std::string& name, const std::unordered_map<Synergy::Shader::Type, const std::string&> sources);
+        static Synergy::Ref<Synergy::Shader> Load(const std::string& name, const std::unordered_map<Synergy::Shader::Type, std::string> sources);
         
     private:
         static Shaders Instance();
+        
+    private:
+        static const char* SHADER_RESOURCE_PACK;
+        static const char* SHADER_RESOURCE_PACK_SHADERS[];
         
     private:
         Shaders();
@@ -27,7 +31,7 @@ namespace Synergy
         
         Synergy::Ref<Synergy::Shader> LoadShader(const std::string& name);
         Synergy::Ref<Synergy::Shader> LoadShader(const std::string& name, const std::string& file);
-        Synergy::Ref<Synergy::Shader> LoadShader(const std::string& name, const std::unordered_map<Synergy::Shader::Type, const std::string&> sources);
+        Synergy::Ref<Synergy::Shader> LoadShader(const std::string& name, const std::unordered_map<Synergy::Shader::Type, std::string> sources);
         
     private:
         std::unordered_map<std::string_view, Synergy::Ref<Synergy::Shader>> shaders;

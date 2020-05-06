@@ -18,12 +18,14 @@ namespace Synergy
     public:
         enum class SYNERGY_API Type
         {
-            VERTEX,
+            VERTEX = 1,
             GEOMETRY,
             FRAGMENT,
             
             // Alternatives
-            PIXEL = FRAGMENT
+            PIXEL = FRAGMENT,
+            
+            LAST = FRAGMENT
         };
         
         enum class SYNERGY_API DataType : uint8_t
@@ -37,11 +39,13 @@ namespace Synergy
         };
         
     private:
-        static Synergy::Ref<Synergy::Shader> Create(const std::string& name, const std::unordered_map<Synergy::Shader::Type, const std::string&> sources);
+        static Synergy::Ref<Synergy::Shader> Create(const std::string& name, const std::unordered_map<Synergy::Shader::Type, std::string> sources);
 
     public:
         static uint32_t DataTypeComponents(Synergy::Shader::DataType type);
         static uint32_t DataTypeSize(Synergy::Shader::DataType type);
+        
+        static const char* ShaderTypeName(Synergy::Shader::Type type);
         
     public:
         virtual ~Shader() = default;
@@ -57,15 +61,14 @@ namespace Synergy
         virtual void SetMat4(const std::string& name, const glm::mat4& value) = 0;
         
     protected:
-        Shader(const std::string& name, const std::unordered_map<Synergy::Shader::Type, const std::string&> sources);
+        Shader(const std::string& name);
         
-        virtual void Compile() = 0;
+        virtual void Compile(const std::unordered_map<Synergy::Shader::Type, std::string> sources) = 0;
         
     protected:
         uint32_t id;
         
         const std::string& name;
-        const std::unordered_map<Synergy::Shader::Type, const std::string&> sources;
         
         friend class Synergy::Shaders;
     };

@@ -29,9 +29,9 @@ namespace Synergy::Renderer::OpenGL
         virtual void SetMat4(const std::string& name, const glm::mat4& value) override;
         
     private:
-        Shader(const std::string& name, const std::unordered_map<Synergy::Shader::Type, const std::string&> sources);
+        Shader(const std::string& name, const std::unordered_map<Synergy::Shader::Type, std::string> sources);
         
-        virtual void Compile() override;
+        virtual void Compile(const std::unordered_map<Synergy::Shader::Type, std::string> sources) override;
         
         GLint getUniformLocation(const std::string& name);
         

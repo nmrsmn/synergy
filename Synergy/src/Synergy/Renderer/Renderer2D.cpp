@@ -101,12 +101,7 @@ namespace Synergy::Renderer
         for (int32_t index = 0; index < Data::textures; index++)
             samplers[index] = index;
         
-        std::unordered_map<Synergy::Shader::Type, const std::string&> sources = {
-            { Synergy::Shader::Type::VERTEX, vertex_shader_source },
-            { Synergy::Shader::Type::FRAGMENT, fragment_shader_source }
-        };
-        
-        data.shader = Synergy::Shaders::Load("BatchRenderer2D", sources);
+        data.shader = Synergy::Shaders::Load("assets/shaders/BatchRenderer.shader");
         data.shader->Bind();
         data.shader->SetIntArray("u_textures", samplers, Data::textures);
         

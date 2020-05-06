@@ -5,7 +5,7 @@
 
 namespace Synergy
 {
-    Synergy::ResourcePack::Buffer::Buffer(std::ifstream& stream, uint32_t offset, uint32_t size)
+    Synergy::ResourcePack::Buffer::Buffer(std::istream& stream, uint32_t offset, uint32_t size)
     {
         memory.resize(size);
         
@@ -35,9 +35,19 @@ namespace Synergy
         return Synergy::CreateRef<RefEnabler>(file, key);
     }
 
+    Synergy::Ref<Synergy::ResourcePack> ResourcePack::Load(const Synergy::ResourcePack::Buffer* buffer, const std::optional<std::string> key)
+    {
+        struct RefEnabler: public Synergy::ResourcePack
+        {
+            explicit RefEnabler(const Synergy::ResourcePack::Buffer* buffer, const std::optional<std::string> key): Synergy::ResourcePack(buffer, key) {}
+        };
+        
+        return Synergy::CreateRef<RefEnabler>(buffer, key);
+    }
+
     ResourcePack::~ResourcePack()
     {
-        stream.close();
+        file.close();
     }
     
     bool ResourcePack::Add(const std::string& file)
@@ -165,74 +175,47 @@ namespace Synergy
         return true;
     }
 
-    bool ResourcePack::Read(const std::string& file, auto (*read)(Synergy::ResourcePack::Buffer) -> bool)
+    Synergy::ResourcePack::Buffer ResourcePack::Read(const std::string& file)
     {
         if (mode != Synergy::ResourcePack::Mode::READ)
         {
             SYNERGY_ASSERT(false, "Reading file from WRITE ONLY ResourcePack failed.");
-            return false;
+            return { stream, 0, 0 };
         }
         
         if (auto entry { resources.find(file) }; entry == resources.end())
         {
-            return false;
+            return { stream, 0, 0 };
         }
         else
         {
             Synergy::ResourcePack::Resource resource = entry->second;
             Synergy::ResourcePack::Buffer buffer(stream, resource.offset, resource.size);
-            return read(buffer);
+            return buffer;
         }
     }
 
-    Synergy::Ref<Synergy::ResourcePack> ResourcePack::Parse(const std::string& file, const std::optional<std::string> key)
-    {
-        if (mode != Synergy::ResourcePack::Mode::READ)
-        {
-            SYNERGY_ASSERT(false, "Reading file from WRITE ONLY ResourcePack failed.");
-            return nullptr;
-        }
-        
-        if (auto entry { resources.find(file) }; entry == resources.end())
-        {
-            return nullptr;
-        }
-        else
-        {
-            Synergy::ResourcePack::Resource resource = entry->second;
-            Synergy::ResourcePack::Buffer buffer(stream, resource.offset, resource.size);
-            
-            struct RefEnabler: public Synergy::ResourcePack
-            {
-                explicit RefEnabler(Synergy::ResourcePack::Buffer buffer, const std::optional<std::string> key): Synergy::ResourcePack(buffer, key) {}
-            };
-            
-            return Synergy::CreateRef<RefEnabler>(buffer, key);
-        }
-    }
+    ResourcePack::ResourcePack(): mode(Synergy::ResourcePack::Mode::WRITE), stream(this->file) { }
 
-    ResourcePack::ResourcePack(): mode(Synergy::ResourcePack::Mode::WRITE) { }
-
-    ResourcePack::ResourcePack(const std::string& file, const std::optional<std::string> key): mode(Synergy::ResourcePack::Mode::READ)
+    ResourcePack::ResourcePack(const std::string& file, const std::optional<std::string> key): mode(Synergy::ResourcePack::Mode::READ), stream(this->file)
     {
-        stream.open(file, std::ifstream::binary);
-        if (!stream.is_open())
+        this->file.open(file, std::ifstream::binary);
+        if (!this->file.is_open())
         {
             SYNERGY_ASSERT(false, "Failed to open ResourcePack for reading.");
             return;
         }
         
-        std::istream& stream = this->stream;
-        Process(stream, key);
+        Process(key);
     }
 
-    ResourcePack::ResourcePack(Synergy::ResourcePack::Buffer buffer, const std::optional<std::string> key): mode(Synergy::ResourcePack::Mode::READ)
+    ResourcePack::ResourcePack(const Synergy::ResourcePack::Buffer* buffer, const std::optional<std::string> key)
+        : mode(Synergy::ResourcePack::Mode::READ), sstream(std::string(buffer->memory.begin(), buffer->memory.end())), stream(this->sstream)
     {
-        std::istream stream = std::istream { &buffer };
-        Process(stream, key);
+        Process(key);
     }
 
-    void ResourcePack::Process(std::istream& stream, const std::optional<std::string> key)
+    void ResourcePack::Process(const std::optional<std::string> key)
     {
         uint32_t size;
         stream.read((char*) &size, sizeof(uint32_t));

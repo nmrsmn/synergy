@@ -8,14 +8,14 @@
 
 namespace Synergy
 {
-    Synergy::Ref<Synergy::Shader> Shader::Create(const std::string& name, const std::unordered_map<Synergy::Shader::Type, const std::string&> sources)
+    Synergy::Ref<Synergy::Shader> Shader::Create(const std::string& name, const std::unordered_map<Synergy::Shader::Type, std::string> sources)
     {
         switch (Synergy::Renderer::RendererAPI::Get())
         {
             case Synergy::Renderer::RendererAPI::API::OpenGL:
                 struct RefEnabler: public Synergy::Renderer::OpenGL::Shader
                 {
-                    explicit RefEnabler(const std::string& name, const std::unordered_map<Synergy::Shader::Type, const std::string&> sources): Synergy::Renderer::OpenGL::Shader(name, sources) { }
+                    explicit RefEnabler(const std::string& name, const std::unordered_map<Synergy::Shader::Type, std::string> sources): Synergy::Renderer::OpenGL::Shader(name, sources) { }
                 };
                 
                 return Synergy::CreateRef<RefEnabler>(name, sources);
@@ -62,7 +62,19 @@ namespace Synergy
         return 0;
     }
 
-    Shader::Shader(const std::string& name, const std::unordered_map<Synergy::Shader::Type, const std::string&> sources)
-        : name(name), sources(sources) { }
+    const char* Shader::ShaderTypeName(Synergy::Shader::Type type)
+    {
+        switch (type)
+        {
+            case Synergy::Shader::Type::VERTEX: return "vertex";
+            case Synergy::Shader::Type::GEOMETRY: return "geometry";
+            case Synergy::Shader::Type::FRAGMENT: return "fragment";
+        }
+        
+        SYNERGY_ASSERT(false, "Unsupported Shader::Type supplied.");
+        return "shader";
+    }
+
+    Shader::Shader(const std::string& name) : name(name) { }
 }
 

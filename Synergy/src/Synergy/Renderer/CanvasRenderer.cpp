@@ -53,20 +53,10 @@ namespace Synergy::Renderer
         data.whiteTexture = api->CreateTexture(1, 1);
         data.whiteTexture->SetData(&textureData, sizeof(textureData));
         
-        std::unordered_map<Synergy::Shader::Type, const std::string&> sources = {
-            { Synergy::Shader::Type::VERTEX, vertex_shader_source },
-            { Synergy::Shader::Type::FRAGMENT, fragment_shader_source }
-        };
-        
-        data.shader = Synergy::Shaders::Load("CanvasRenderer", sources);
+        data.shader = Synergy::Shaders::Load("assets/shaders/CanvasRenderer.shader");
         data.shader->Bind();
         
-        std::unordered_map<Synergy::Shader::Type, const std::string&> text_sources = {
-            { Synergy::Shader::Type::VERTEX, text_vertex_shader_source },
-            { Synergy::Shader::Type::FRAGMENT, text_fragment_shader_source }
-        };
-        
-        data.textShader = Synergy::Shaders::Load("CanvasRendererText", text_sources);
+        data.textShader = Synergy::Shaders::Load("assets/shaders/TextRenderer.shader");
         data.textShader->Bind();
         
         data.positions[0] = { -0.5f, -0.5f, -1.0f, 1.0f };
