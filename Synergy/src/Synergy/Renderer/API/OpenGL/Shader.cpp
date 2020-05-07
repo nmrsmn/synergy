@@ -21,7 +21,7 @@ namespace Synergy::Renderer::OpenGL
         return 0;
     }
 
-    Shader::Shader(const std::string& name, const std::unordered_map<Synergy::Shader::Type, std::string> sources) : Synergy::Shader(name)
+    Shader::Shader(const Synergy::Shader::SourceMap sources)
     {
         this->Compile(sources);
     }
@@ -71,7 +71,7 @@ namespace Synergy::Renderer::OpenGL
         glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, glm::value_ptr(value));
     }
 
-    void Shader::Compile(const std::unordered_map<Synergy::Shader::Type, std::string> sources)
+    void Shader::Compile(const Synergy::Shader::SourceMap sources)
     {
         GLuint program = glCreateProgram();
         

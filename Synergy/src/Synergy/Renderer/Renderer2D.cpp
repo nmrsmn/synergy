@@ -101,7 +101,7 @@ namespace Synergy::Renderer
         for (int32_t index = 0; index < Data::textures; index++)
             samplers[index] = index;
         
-        data.shader = Synergy::Shaders::Load("assets/shaders/BatchRenderer.shader");
+        data.shader = Synergy::Shaders::Load("BatchRenderer.shader");
         data.shader->Bind();
         data.shader->SetIntArray("u_textures", samplers, Data::textures);
         

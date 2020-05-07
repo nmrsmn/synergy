@@ -7,6 +7,7 @@
 #include <unordered_map>
 
 #include "Synergy/Core.h"
+#include "Synergy/ResourcePack.h"
 #include "Synergy/Renderer/Shader.h"
 
 namespace Synergy
@@ -14,27 +15,25 @@ namespace Synergy
     class SYNERGY_API Shaders
     {
     public:
-        static Synergy::Ref<Synergy::Shader> Load(const std::string& name);
-        static Synergy::Ref<Synergy::Shader> Load(const std::string& name, const std::string& file);
-        static Synergy::Ref<Synergy::Shader> Load(const std::string& name, const std::unordered_map<Synergy::Shader::Type, std::string> sources);
+        static Synergy::Ref<Synergy::Shader> Load(const char* name);
+        static Synergy::Ref<Synergy::Shader> Load(const char* name, Synergy::Shader::FileList files, bool overwrite = false);
+        static Synergy::Ref<Synergy::Shader> Load(const char* name, Synergy::Ref<Synergy::ResourcePack> pack, Synergy::Shader::FileList files, bool overwrite = false);
+        static Synergy::Ref<Synergy::Shader> Load(const char* name, Synergy::Shader::SourceMap sources, bool overwrite = false);
         
     private:
         static Shaders Instance();
         
     private:
-        static const char* SHADER_RESOURCE_PACK;
-        static const char* SHADER_RESOURCE_PACK_SHADERS[];
-        
-    private:
         Shaders();
         ~Shaders();
         
-        Synergy::Ref<Synergy::Shader> LoadShader(const std::string& name);
-        Synergy::Ref<Synergy::Shader> LoadShader(const std::string& name, const std::string& file);
-        Synergy::Ref<Synergy::Shader> LoadShader(const std::string& name, const std::unordered_map<Synergy::Shader::Type, std::string> sources);
+        Synergy::Ref<Synergy::Shader> LoadShader(const char* name);
+        Synergy::Ref<Synergy::Shader> LoadShader(const char* name, Synergy::Shader::FileList files, bool overwrite = false);
+        Synergy::Ref<Synergy::Shader> LoadShader(const char* name, Synergy::Ref<Synergy::ResourcePack> pack, Synergy::Shader::FileList files, bool overwrite = false);
+        Synergy::Ref<Synergy::Shader> LoadShader(const char* name, Synergy::Shader::SourceMap sources, bool overwrite = false);
         
     private:
-        std::unordered_map<std::string_view, Synergy::Ref<Synergy::Shader>> shaders;
+        std::unordered_map<const char*, Synergy::Ref<Synergy::Shader>> shaders;
     };
 }
 

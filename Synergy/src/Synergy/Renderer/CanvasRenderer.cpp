@@ -53,10 +53,10 @@ namespace Synergy::Renderer
         data.whiteTexture = api->CreateTexture(1, 1);
         data.whiteTexture->SetData(&textureData, sizeof(textureData));
         
-        data.shader = Synergy::Shaders::Load("assets/shaders/CanvasRenderer.shader");
+        data.shader = Synergy::Shaders::Load("CanvasRenderer.shader");
         data.shader->Bind();
         
-        data.textShader = Synergy::Shaders::Load("assets/shaders/TextRenderer.shader");
+        data.textShader = Synergy::Shaders::Load("TextRenderer.shader");
         data.textShader->Bind();
         
         data.positions[0] = { -0.5f, -0.5f, -1.0f, 1.0f };

@@ -1,34 +1,30 @@
 // Created by Niels Marsman on 04-05-2020.
 // Copyright © 2020 Niels Marsman. All rights reserved.
 
-#include <unordered_map>
-
 #include "Synergy/Renderer/Shaders.h"
 
 #include "Synergy/ResourcePack.h"
 
 namespace Synergy
 {
-    const char* Shaders::SHADER_RESOURCE_PACK = "assets/shaders/Synergy.shaders";
-    const char* Shaders::SHADER_RESOURCE_PACK_SHADERS[] = {
-        "assets/shaders/BatchRenderer.shader",
-        "assets/shaders/CanvasRenderer.shader",
-        "assets/shaders/TextRenderer.shader"
-    };
-    
-    Synergy::Ref<Synergy::Shader> Shaders::Load(const std::string& name)
+    Synergy::Ref<Synergy::Shader> Shaders::Load(const char* name)
     {
         return Instance().LoadShader(name);
     }
 
-    Synergy::Ref<Synergy::Shader> Shaders::Load(const std::string& name, const std::string& file)
+    Synergy::Ref<Synergy::Shader> Shaders::Load(const char* name, Synergy::Shader::FileList files, bool overwrite)
     {
-        return Instance().LoadShader(name, file);
+        return Instance().LoadShader(name, files, overwrite);
     }
 
-    Synergy::Ref<Synergy::Shader> Shaders::Load(const std::string& name, const std::unordered_map<Synergy::Shader::Type, std::string> sources)
+    Synergy::Ref<Synergy::Shader> Shaders::Load(const char* name, Synergy::Ref<Synergy::ResourcePack> pack, Synergy::Shader::FileList files, bool overwrite)
     {
-        return Instance().LoadShader(name, sources);
+        return Instance().LoadShader(name, pack, files, overwrite);
+    }
+
+    Synergy::Ref<Synergy::Shader> Shaders::Load(const char* name, Synergy::Shader::SourceMap sources, bool overwrite)
+    {
+        return Instance().LoadShader(name, sources, overwrite);
     }
     
     Shaders Shaders::Instance()
@@ -39,33 +35,29 @@ namespace Synergy
 
     Shaders::Shaders()
     {
-        const std::vector<Synergy::Shader::Type> types = {
-            Synergy::Shader::Type::VERTEX, Synergy::Shader::Type::GEOMETRY, Synergy::Shader::Type::FRAGMENT
-        };
-        
-        Synergy::Ref<Synergy::ResourcePack> pack = Synergy::ResourcePack::Load(Shaders::SHADER_RESOURCE_PACK);
-        
-        for (auto name : Shaders::SHADER_RESOURCE_PACK_SHADERS)
+        if (Synergy::Shaders::LoadShader("BatchRenderer.shader", {
+                { Synergy::Shader::Type::VERTEX, "./assets/shaders/BatchRenderer.vertex" },
+                { Synergy::Shader::Type::FRAGMENT, "./assets/shaders/BatchRenderer.fragment" }
+            }) == nullptr)
         {
-            Synergy::ResourcePack::Buffer buffer = pack->Read(name);
-            Synergy::Ref<Synergy::ResourcePack> shader = Synergy::ResourcePack::Load(&buffer);
-            
-            std::unordered_map<Synergy::Shader::Type, std::string> sources;
-            
-            for (auto type : types)
-            {
-                Synergy::ResourcePack::Buffer buffer = shader->Read(Synergy::Shader::ShaderTypeName(type));
-                if (buffer.memory.size() > 0)
-                {
-                    std::string source = std::string(buffer.memory.begin(), buffer.memory.end());
-                    sources.insert({ type, source });
-                }
-            }
-            
-            shaders.insert({ name, Synergy::Shader::Create(name, sources) });
+            SYNERGY_ASSERT(false, "Failed to load `BatchRenderer.shader`.");
         }
         
-        char a = 'a';
+        if (Synergy::Shaders::LoadShader("CanvasRenderer.shader", {
+                { Synergy::Shader::Type::VERTEX, "./assets/shaders/CanvasRenderer.vertex" },
+                { Synergy::Shader::Type::FRAGMENT, "./assets/shaders/CanvasRenderer.fragment" }
+            }) == nullptr)
+        {
+            SYNERGY_ASSERT(false, "Failed to load `CanvasRenderer.shader`.");
+        }
+        
+        if (Synergy::Shaders::LoadShader("TextRenderer.shader", {
+                { Synergy::Shader::Type::VERTEX, "./assets/shaders/TextRenderer.vertex" },
+                { Synergy::Shader::Type::FRAGMENT, "./assets/shaders/TextRenderer.fragment" }
+            }) == nullptr)
+        {
+            SYNERGY_ASSERT(false, "Failed to create `TextRenderer.shader`.");
+        }
     }
 
     Shaders::~Shaders()
@@ -73,7 +65,7 @@ namespace Synergy
         
     }
 
-    Synergy::Ref<Synergy::Shader> Shaders::LoadShader(const std::string& name)
+    Synergy::Ref<Synergy::Shader> Shaders::LoadShader(const char* name)
     {
         if (auto shader { shaders.find(name) }; shader != shaders.end())
         {
@@ -85,26 +77,82 @@ namespace Synergy
         return nullptr;
     }
 
-    Synergy::Ref<Synergy::Shader> Shaders::LoadShader(const std::string& name, const std::string& file)
+    Synergy::Ref<Synergy::Shader> Shaders::LoadShader(const char* name, Synergy::Shader::FileList files, bool overwrite)
     {
-        if (auto shader { shaders.find(name) }; shader != shaders.end())
+        if (overwrite == false)
         {
-            return shader->second;
+            if (auto shader { shaders.find(name) }; shader != shaders.end())
+            {
+                return shader->second;
+            }
         }
         
-        SYNERGY_ASSERT(false, "Loading shaders from file (using Synergy::ResourcePack) isn't supported yet.");
+        std::string sources[files.size()];
+        Synergy::Shader::SourceMap map;
         
-        return nullptr;
+        unsigned short index = 0;
+        for (auto entry : files)
+        {
+            std::ifstream stream(entry.second, std::ios::in | std::ios::binary);
+            if (stream)
+            {
+                stream.seekg(0, std::ios::end);
+                sources[index].resize(stream.tellg());
+                stream.seekg(0, std::ios::beg);
+                stream.read(&sources[index][0], sources[index].size());
+                stream.close();
+                
+                map.insert({ entry.first, sources[index++] });
+            }
+        }
+        
+        Synergy::Ref<Synergy::Shader> shader = Synergy::Shader::Create(map);
+        shaders.insert({ name, shader });
+        
+        return shader;
     }
 
-    Synergy::Ref<Synergy::Shader> Shaders::LoadShader(const std::string& name, const std::unordered_map<Synergy::Shader::Type, std::string> sources)
+    Synergy::Ref<Synergy::Shader> Shaders::LoadShader(const char* name, Synergy::Ref<Synergy::ResourcePack> pack, Synergy::Shader::FileList files, bool overwrite)
     {
-        if (auto shader { shaders.find(name) }; shader != shaders.end())
+        if (overwrite == false)
         {
-            return shader->second;
+            if (auto shader { shaders.find(name) }; shader != shaders.end())
+            {
+                return shader->second;
+            }
         }
         
-        Synergy::Ref<Synergy::Shader> shader = Synergy::Shader::Create(name, sources);
+        std::string sources[files.size()];
+        Synergy::Shader::SourceMap map;
+        
+        unsigned short index = 0;
+        for (auto entry : files)
+        {
+            Synergy::ResourcePack::Buffer buffer = pack->Read(entry.second);
+            if (buffer.memory.size() > 0)
+            {
+                sources[index] = std::string(buffer.memory.begin(), buffer.memory.end());
+                map.insert({ entry.first, sources[index++] });
+            }
+        }
+        
+        Synergy::Ref<Synergy::Shader> shader = Synergy::Shader::Create(map);
+        shaders.insert({ name, shader });
+        
+        return shader;
+    }
+
+    Synergy::Ref<Synergy::Shader> Shaders::LoadShader(const char* name, Synergy::Shader::SourceMap sources, bool overwrite)
+    {
+        if (overwrite == false)
+        {
+            if (auto shader { shaders.find(name) }; shader != shaders.end())
+            {
+                return shader->second;
+            }
+        }
+        
+        Synergy::Ref<Synergy::Shader> shader = Synergy::Shader::Create(sources);
         shaders.insert({ name, shader });
         
         return shader;
