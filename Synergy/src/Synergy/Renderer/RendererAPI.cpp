@@ -8,6 +8,11 @@
 
 namespace Synergy::Renderer
 {
+    Synergy::Renderer::RendererAPI::API RendererAPI::Get()
+    {
+        return api;
+    }
+
     void RendererAPI::InitializeRenderers(RendererAPI* api)
     {
         CanvasRenderer::Initialize(api);

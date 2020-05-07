@@ -8,6 +8,7 @@
 #include "Synergy/Renderer/Renderer2D.h"
 
 #include "Synergy/Renderer/Shader.h"
+#include "Synergy/Renderer/Shaders.h"
 #include "Synergy/Renderer/Texture.h"
 #include "Synergy/Renderer/VertexArray.h"
 #include "Synergy/Renderer/VertexBuffer.h"
@@ -100,12 +101,7 @@ namespace Synergy::Renderer
         for (int32_t index = 0; index < Data::textures; index++)
             samplers[index] = index;
         
-        std::map<Shader::Type, const std::string&> sources = {
-            { Shader::Type::VERTEX, vertex_shader_source },
-            { Shader::Type::FRAGMENT, fragment_shader_source }
-        };
-        
-        data.shader = api->CreateShader("BatchRenderer2D", sources);
+        data.shader = Synergy::Shaders::Load("BatchRenderer.shader");
         data.shader->Bind();
         data.shader->SetIntArray("u_textures", samplers, Data::textures);
         

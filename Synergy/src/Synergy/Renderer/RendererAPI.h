@@ -20,6 +20,16 @@ namespace Synergy::Renderer
     class SYNERGY_API RendererAPI
     {
     public:
+        enum class API
+        {
+            OpenGL = 1,
+            Vulkan = 2
+        };
+        
+    public:
+        static API Get();
+        
+    public:
         virtual void PrepareDevice() = 0;
         virtual bool CreateDevice() = 0;
         virtual bool DestroyDevice() = 0;
@@ -38,12 +48,13 @@ namespace Synergy::Renderer
         virtual Ref<VertexBuffer> CreateVertexBuffer(uint32_t size) = 0;
         virtual Ref<IndexBuffer> CreateIndexBuffer(uint32_t* indices, uint32_t count) = 0;
         
-        virtual Ref<Shader> CreateShader(const std::string& name, std::map<Shader::Type, const std::string&> sources) = 0;
-        
         virtual Ref<Texture> CreateTexture(uint32_t width, uint32_t height, Texture::Parameters parameters = Texture::Parameters()) = 0;
         
     protected:
         void InitializeRenderers(RendererAPI* api);
+        
+    protected:
+        static API api;
     };
 
     RendererAPI* CreateRendererAPI();

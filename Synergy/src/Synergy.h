@@ -16,6 +16,12 @@
 #include "Synergy/Renderer/Texture.h"
 #include "Synergy/Renderer/TextureAtlas.h"
 
+// REFACTORED:
+
+#include "Synergy/ResourcePack.h"
+
+#include "Synergy/Renderer/Shaders.h"
+
 #include "Synergy/Fonts.h"
 #include "Synergy/Font.h"
 

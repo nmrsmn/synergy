@@ -146,6 +146,7 @@ group "Examples"
         }
 
         postbuildcommands {
+        	"{COPY} %{wks.location}/Synergy/assets/ %{cfg.targetdir}/",
 			"{COPY} assets/ %{cfg.targetdir}/"
         }
 
