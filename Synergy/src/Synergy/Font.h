@@ -22,7 +22,7 @@ namespace Synergy
     public:
         struct SYNERGY_API Character
         {
-            Synergy::Ref<Synergy::Renderer::Texture> texture;
+            Synergy::Ref<Synergy::Texture> texture;
             glm::vec2 size;
             glm::vec2 bearing;
             uint32_t advance;

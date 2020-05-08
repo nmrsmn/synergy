@@ -6,57 +6,53 @@
 
 #include <vector>
 
+#include <glm/glm.hpp>
+
 #include "Synergy/Core.h"
 #include "Synergy/Renderer/Texture.h"
 
-namespace Synergy::Renderer
+namespace Synergy
 {
     class SYNERGY_API TextureAtlas
     {
     public:
-        class SYNERGY_API Texture: public Synergy::Renderer::Texture
+        class SYNERGY_API Texture: public Synergy::Texture
         {
         public:
-            explicit Texture(TextureAtlas* atlas, uint32_t row, uint32_t column);
+            static Synergy::Ref<Synergy::TextureAtlas::Texture> Load(Synergy::Ref<Synergy::TextureAtlas> atlas, const glm::uvec2& coordinates, const glm::uvec2& tiles = { 1, 1 });
             
+        public:
             virtual ~Texture() = default;
             
-            virtual const std::array<const glm::vec2, 4> GetUVs() const override;
-            
-            virtual void SetData(void* data, uint32_t size) override;
+            virtual const glm::vec2* GetUVs() const override;
             
             virtual void Activate(uint32_t slot) const override;
             virtual void Bind() const override;
             virtual void Unbind() const override;
             
-            virtual bool operator==(const Synergy::Renderer::Texture& other) const override;
+            virtual bool operator==(const Synergy::Texture& other) const override;
             
         private:
-            TextureAtlas* atlas;
-            
-            uint32_t column;
-            uint32_t row;
+            Texture(Synergy::Ref<Synergy::TextureAtlas> atlas, const glm::vec2& min, const glm::vec2& max);
+
+            virtual void SetData(void* data, uint32_t size) override;
+                
+        private:
+            Synergy::Ref<Synergy::TextureAtlas> atlas;
+            glm::vec2 uvs[4];
         };
         
     public:
-        static Synergy::Ref<TextureAtlas> Load(const char* path, uint32_t rows, uint32_t columns, Texture::Parameters parameters = Texture::Parameters());
-        
-    public:
-        const Synergy::Ref<TextureAtlas::Texture> GetTexture(uint32_t rows, uint32_t columns) const;
-        const Synergy::Ref<TextureAtlas::Texture> operator()(uint32_t rows, uint32_t columns) const;
+        static Synergy::Ref<TextureAtlas> Load(const char* path, const glm::uvec2& size, Synergy::Texture::Parameters parameters = {});
         
     private:
-        TextureAtlas(Synergy::Ref<Synergy::Renderer::Texture> texture, uint32_t rows, uint32_t columns);
+        TextureAtlas(Synergy::Ref<Synergy::Texture> texture, const glm::uvec2& size);
         
     private:
-        uint32_t columns;
-        uint32_t rows;
+        glm::uvec2 atlas;
+        glm::uvec2 tile;
         
-        uint32_t width;
-        uint32_t height;
-        
-        Synergy::Ref<Synergy::Renderer::Texture> texture;
-        std::vector<Synergy::Ref<TextureAtlas::Texture>> textures;
+        Synergy::Ref<Synergy::Texture> texture;
     };
 }
 

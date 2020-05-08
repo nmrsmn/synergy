@@ -9,15 +9,29 @@
 
 #include "Synergy/Renderer/RendererAPI.h"
 #include "Synergy/Renderer/API/OpenGL.h"
+#include "Synergy/Renderer/API/OpenGL/Texture.h"
 
-namespace Synergy::Renderer
+namespace Synergy
 {
-    Synergy::Ref<Texture> Texture::Create(uint32_t width, uint32_t height, Texture::Parameters parameters)
+    Synergy::Ref<Synergy::Texture> Texture::Create(uint32_t width, uint32_t height, Synergy::Texture::Parameters parameters)
     {
-        return Synergy::Application::current->CreateTexture(width, height, parameters);
+        switch (Synergy::Renderer::RendererAPI::Get())
+        {
+            case Synergy::Renderer::RendererAPI::API::OpenGL:
+                struct RefEnabler: public Synergy::Renderer::OpenGL::Texture
+                {
+                    explicit RefEnabler(uint32_t width, uint32_t height, Synergy::Texture::Parameters parameters): Synergy::Renderer::OpenGL::Texture(width, height, parameters) { }
+                };
+                
+                return Synergy::CreateRef<RefEnabler>(width, height, parameters);
+            default: break;
+        }
+        
+        SYNERGY_ASSERT(false, "Textures aren't supported in the currently selected RendererAPI.");
+        return nullptr;
     }
 
-    Synergy::Ref<Texture> Texture::Load(const char* path, Texture::Parameters parameters)
+    Synergy::Ref<Synergy::Texture> Texture::Load(const char* path, Synergy::Texture::Parameters parameters)
     {
         int width, height, channels;
         
@@ -25,9 +39,9 @@ namespace Synergy::Renderer
         stbi_uc* data = stbi_load(path, &width, &height, &channels, 0);
         SYNERGY_ASSERT(data, stbi_failure_reason());
         
-        parameters.format = channels == 4 ? Texture::Format::RGBA : Texture::Format::RGB;
+        parameters.format = channels == 4 ? Synergy::Texture::Format::RGBA : Synergy::Texture::Format::RGB;
         
-        Synergy::Ref<Texture> texture = Synergy::Application::current->CreateTexture(width, height, parameters);
+        Synergy::Ref<Texture> texture = Synergy::Texture::Create(width, height, parameters);
         texture->SetData(data, width * height * channels);
         
         stbi_image_free(data);
@@ -36,7 +50,7 @@ namespace Synergy::Renderer
     }
 
     Texture::Texture(uint32_t width, uint32_t height, Texture::Parameters parameters)
-        : width(width), height(height), parameters(parameters) {}
+        : width(width), height(height), parameters(parameters) { }
     
     uint32_t Texture::GetWidth() const
     {
@@ -47,9 +61,11 @@ namespace Synergy::Renderer
     {
         return height;
     }
-
-    const std::array<const glm::vec2, 4> Texture::GetUVs() const
+    
+    const glm::vec2* Texture::GetUVs() const
     {
-        return { glm::vec2 { 0.0f, 0.0f }, glm::vec2 { 1.0f, 0.0f }, glm::vec2 { 1.0f, 1.0f }, glm::vec2 { 0.0f, 1.0f } };
+        static constexpr glm::vec2 uvs[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
+        
+        return uvs;
     }
 }

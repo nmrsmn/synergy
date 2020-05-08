@@ -27,10 +27,10 @@ namespace Synergy::Renderer
 
     struct Data
     {
-        Ref<Shader> shader;
-        Ref<Shader> textShader;
+        Synergy::Ref<Synergy::Shader> shader;
+        Synergy::Ref<Synergy::Shader> textShader;
         
-        Ref<Texture> whiteTexture;
+        Synergy::Ref<Synergy::Texture> whiteTexture;
         
         uint32_t indices[6] = { 0, 1, 2, 2, 3, 0 };
         glm::vec4 positions[4];
@@ -50,7 +50,7 @@ namespace Synergy::Renderer
     void CanvasRenderer::Initialize()
     {
         uint32_t textureData = 0xffffffff;
-        data.whiteTexture = api->CreateTexture(1, 1);
+        data.whiteTexture = Synergy::Texture::Create(1, 1);
         data.whiteTexture->SetData(&textureData, sizeof(textureData));
         
         data.shader = Synergy::Shaders::Load("CanvasRenderer.shader");
@@ -93,12 +93,12 @@ namespace Synergy::Renderer
         vertexArray->AddVertexBuffer(vertexBuffer);
         vertexArray->SetIndexBuffer(indexBuffer);
         
-        Ref<Texture> texture = renderable.texture != nullptr ? renderable.texture : data.whiteTexture;
+        Synergy::Ref<Synergy::Texture> texture = renderable.texture != nullptr ? renderable.texture : data.whiteTexture;
         
         texture->Activate(0);
         texture->Bind();
         
-        std::array<const glm::vec2, 4> uvs = texture->GetUVs();
+        const glm::vec2* uvs = texture->GetUVs();
         
         Vertex buffer[4];
         
@@ -135,7 +135,7 @@ namespace Synergy::Renderer
         
         vertexArray->AddVertexBuffer(vertexBuffer);
         
-        Ref<Texture> texture = data.whiteTexture;
+        Synergy::Ref<Synergy::Texture> texture = data.whiteTexture;
         
         texture->Activate(0);
         texture->Bind();

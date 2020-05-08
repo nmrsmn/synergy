@@ -29,8 +29,6 @@ namespace Synergy::Renderer::API
         virtual Ref<VertexArray> CreateVertexArray() override;
         virtual Ref<VertexBuffer> CreateVertexBuffer(uint32_t size) override;
         virtual Ref<IndexBuffer> CreateIndexBuffer(uint32_t* indices, uint32_t count) override;
-        
-        virtual Ref<Texture> CreateTexture(uint32_t width, uint32_t height, Texture::Parameters parameters = Texture::Parameters()) override;
     };
 }
 

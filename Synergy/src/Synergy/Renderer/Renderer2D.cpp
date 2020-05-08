@@ -94,7 +94,7 @@ namespace Synergy::Renderer
         delete[] indices;
         
         uint32_t textureData = 0xffffffff;
-        data.whiteTexture = api->CreateTexture(1, 1);
+        data.whiteTexture = Synergy::Texture::Create(1, 1);
         data.whiteTexture->SetData(&textureData, sizeof(textureData));
         
         int32_t samplers[Data::textures];
@@ -186,7 +186,7 @@ namespace Synergy::Renderer
             }
         }
         
-        std::array<const glm::vec2, 4> uvs = renderable.texture != nullptr ? renderable.texture->GetUVs() : data.whiteTexture->GetUVs();
+        const glm::vec2* uvs = renderable.texture != nullptr ? renderable.texture->GetUVs() : data.whiteTexture->GetUVs();
         
         glm::mat4 transform = glm::translate(glm::mat4(1.0f), renderable.position) *
             glm::scale(glm::mat4(1.0f), { renderable.size.x, renderable.size.y, 1.0f });
