@@ -32,8 +32,27 @@ public:
     {
         float ratio = 45.f / 190.f;
         
+        Synergy::Ref<Synergy::UI::View> root = Synergy::CreateRef<Synergy::UI::View>();
+        Synergy::Ref<Synergy::UI::Container> container1 = Synergy::CreateRef<Synergy::UI::Container>();
+        Synergy::Ref<Synergy::UI::Container> container2 = Synergy::CreateRef<Synergy::UI::Container>();
+        Synergy::Ref<Synergy::UI::Button> button = Synergy::CreateRef<Synergy::UI::Button>();
+        Synergy::Ref<Synergy::UI::Label> label = Synergy::CreateRef<Synergy::UI::Label>();
+        
+        root->Add(container1);
+        root->Add(container2);
+        
+        container1->Add(button);
+        container1->Add(label);
+//
+//        Synergy::UI::Manager::Add(Synergy::UI::Button("New Game", {
+//            { Synergy::UI::Constraint::WIDTH, Synergy::UI::Constraint::Percentage(0.8f) },
+//            { Synergy::UI::Constraint::HEIGHT, Synergy::UI::Constraint::Ratio(0.8f) }
+//        }));
+//
+        Synergy::UI::Manager::Submit(root);
+        
         Synergy::Renderer::CanvasRenderer::Submit(Synergy::Quad { { 0.5, 0.5, 0.1 }, { 1.0, 1.0 }, { 1, 1, 1, .1 } });
-        Synergy::Renderer::CanvasRenderer::Submit(Synergy::Quad { { 0.5, 0.2, 0.5 }, { 0.5, 0.5 * ratio }, button });
+        Synergy::Renderer::CanvasRenderer::Submit(Synergy::Quad { { 0.5, 0.2, 0.5 }, { 0.5, 0.5 * ratio }, this->button });
         Synergy::Renderer::CanvasRenderer::Submit(Synergy::Quad { { 0.5, 0.6, 0.5 }, { .1, .2 }, tree });
         
         Synergy::Renderer::CanvasRenderer::Submit(Synergy::Text { "Hello world!", narrow, { 10.0, 560, 0.5 }, { 1, 1, 1, 1 } });
