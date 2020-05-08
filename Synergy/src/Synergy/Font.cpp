@@ -52,13 +52,13 @@ namespace Synergy
             SYNERGY_ASSERT(false, "Failed to load glyph.");
         }
         
-        Synergy::Renderer::Texture::Parameters parameters = Synergy::Renderer::Texture::Parameters(
-            Synergy::Renderer::Texture::Format::RED,
-            Synergy::Renderer::Texture::Filter::LINEAR,
-            Synergy::Renderer::Texture::Wrap::CLAMP_TO_EDGE
-        );
+        Synergy::Texture::Parameters parameters = {
+            Synergy::Texture::Filter::LINEAR,
+            Synergy::Texture::Wrap::CLAMP_TO_EDGE,
+            Synergy::Texture::Format::RED
+        };
         
-        Synergy::Ref<Synergy::Renderer::Texture> texture = Synergy::Renderer::Texture::Create(face->glyph->bitmap.width, face->glyph->bitmap.rows, parameters);
+        Synergy::Ref<Synergy::Texture> texture = Synergy::Texture::Create(face->glyph->bitmap.width, face->glyph->bitmap.rows, parameters);
         texture->SetData(face->glyph->bitmap.buffer, face->glyph->bitmap.width * face->glyph->bitmap.rows);
         
         Character instance = {

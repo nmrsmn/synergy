@@ -11,63 +11,78 @@
 #include "Synergy/Core.h"
 #include "Synergy/Renderer/Bindable.h"
 
-namespace Synergy::Renderer
+namespace Synergy
 {
-    class SYNERGY_API Texture: public Bindable
+    class SYNERGY_API Texture: public Synergy::Renderer::Bindable
     {
     public:
-        enum class Wrap
-        {
-            NONE = 0,
-            REPEAT,
-            MIRRORED_REPEAT,
-            CLAMP_TO_EDGE,
-            CLAMP_TO_BORDER
-        };
-        
         enum class Filter
         {
-            NONE = 0,
             LINEAR,
             NEAREST
         };
         
         enum class Format
         {
-            NONE = 0,
             RED,
             ALPHA,
             RGB,
             RGBA
         };
         
+        enum class Wrap
+        {
+            REPEAT,
+            MIRRORED_REPEAT,
+            MIRROR_ONCE,
+            CLAMP_TO_EDGE,
+            CLAMP_TO_BORDER
+        };
+        
         struct Parameters
         {
-            Texture::Filter filter = Texture::Filter::NEAREST;
-            Texture::Format format = Texture::Format::RGBA;
-            Texture::Wrap wrap = Texture::Wrap::CLAMP_TO_EDGE;
+            struct Filter
+            {
+                Synergy::Texture::Filter minify = Synergy::Texture::Filter::NEAREST;
+                Synergy::Texture::Filter magnify = Synergy::Texture::Filter::NEAREST;
+                
+                Filter() { }
+                Filter(Synergy::Texture::Filter filter) : minify(filter), magnify(filter) { }
+                Filter(Synergy::Texture::Filter minify, Synergy::Texture::Filter magnify) : minify(minify), magnify(magnify) { }
+            };
             
-            Parameters() {}
-            Parameters(Texture::Filter filter)
-                : filter(filter) {}
-            Parameters(Texture::Filter filter, Texture::Wrap wrap)
-                : filter(filter), wrap(wrap) {}
-            Parameters(Texture::Format format, Texture::Filter filter, Texture::Wrap wrap)
-                : format(format), filter(filter), wrap(wrap) {}
+            struct Wrap
+            {
+                union { Synergy::Texture::Wrap u, s; };
+                union { Synergy::Texture::Wrap v, t; };
+                
+                Wrap(): u(Synergy::Texture::Wrap::CLAMP_TO_EDGE), v(Synergy::Texture::Wrap::CLAMP_TO_EDGE) { }
+                Wrap(Synergy::Texture::Wrap wrap): u(wrap), v(wrap) { }
+                Wrap(Synergy::Texture::Wrap u, Synergy::Texture::Wrap v): u(u), v(v) { }
+            };
+            
+            Synergy::Texture::Parameters::Filter filter = {};
+            Synergy::Texture::Parameters::Wrap wrap = {};
+            Synergy::Texture::Format format = Synergy::Texture::Format::RGBA;
+            
+            Parameters() { }
+            Parameters(Synergy::Texture::Parameters::Filter filter) : filter(filter) { }
+            Parameters(Synergy::Texture::Parameters::Filter filter, Synergy::Texture::Parameters::Wrap wrap): filter(filter), wrap(wrap) { }
+            Parameters(Synergy::Texture::Parameters::Filter filter, Synergy::Texture::Parameters::Wrap wrap, Synergy::Texture::Format format): filter(filter), format(format), wrap(wrap) { }
         };
         
     public:
-        static Ref<Texture> Create(uint32_t width, uint32_t height, Texture::Parameters parameters = Texture::Parameters());
-        static Ref<Texture> Load(const char* path, Texture::Parameters parameters = Texture::Parameters());
-        
+        static Synergy::Ref<Synergy::Texture> Create(uint32_t width, uint32_t height, Synergy::Texture::Parameters parameters = {});
+        static Synergy::Ref<Synergy::Texture> Create(uint32_t width, uint32_t height, const void* data, Synergy::Texture::Parameters parameters = {});
+        static Synergy::Ref<Synergy::Texture> Load(const char* path, Synergy::Texture::Parameters parameters = {});
+    
     public:
-        Texture(uint32_t width, uint32_t height, Texture::Parameters parameters = Texture::Parameters());
         virtual ~Texture() = default;
         
         uint32_t GetWidth() const;
         uint32_t GetHeight() const;
         
-        virtual const std::array<const glm::vec2, 4> GetUVs() const;
+        virtual const glm::vec2* GetUVs() const;
         
         virtual void SetData(void* data, uint32_t size) = 0;
         
@@ -75,7 +90,10 @@ namespace Synergy::Renderer
         virtual void Bind() const = 0;
         virtual void Unbind() const = 0;
         
-        virtual bool operator==(const Texture& other) const = 0;
+        virtual bool operator==(const Synergy::Texture& other) const = 0;
+        
+    protected:
+        Texture(uint32_t width, uint32_t height, Synergy::Texture::Parameters parameters = {});
         
     protected:
         uint32_t width;

@@ -5,7 +5,7 @@
 
 namespace Synergy::Renderer::OpenGL
 {
-    Texture::Texture(uint32_t width, uint32_t height, Texture::Parameters parameters): Synergy::Renderer::Texture(width, height, parameters)
+    Texture::Texture(uint32_t width, uint32_t height, Synergy::Texture::Parameters parameters): Synergy::Texture(width, height, parameters)
     {
         internalFormat = Texture::GetInternalFormat(parameters.format);
         dataFormat = Texture::GetDataFormat(parameters.format);
@@ -13,11 +13,11 @@ namespace Synergy::Renderer::OpenGL
         glGenTextures(1, &id);
         glBindTexture(GL_TEXTURE_2D, id);
         
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, Texture::GetFilter(parameters.filter));
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, Texture::GetFilter(parameters.filter));
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, Texture::GetFilter(parameters.filter.minify));
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, Texture::GetFilter(parameters.filter.magnify));
         
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, Texture::GetWrap(parameters.wrap));
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, Texture::GetWrap(parameters.wrap));
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, Texture::GetWrap(parameters.wrap.u));
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, Texture::GetWrap(parameters.wrap.v));
     }
     
     void Texture::SetData(void* data, uint32_t size)
@@ -46,62 +46,62 @@ namespace Synergy::Renderer::OpenGL
         glBindTexture(GL_TEXTURE_2D, 0);
     }
     
-    bool Texture::operator==(const Synergy::Renderer::Texture& other) const
+    bool Texture::operator==(const Synergy::Texture& other) const
     {
         return id == ((Texture&) other).id;
     }
 
-    uint32_t Texture::GetBitsPerPixel(Texture::Format format)
+    uint32_t Texture::GetBitsPerPixel(Synergy::Texture::Format format)
     {
         switch (format)
         {
-            case Texture::Format::RED: return 1;
-            case Texture::Format::RGB: return 3;
-            case Texture::Format::RGBA: return 4;
+            case Synergy::Texture::Format::RED: return 1;
+            case Synergy::Texture::Format::RGB: return 3;
+            case Synergy::Texture::Format::RGBA: return 4;
             default: SYNERGY_ASSERT(false, "Unsupported texture format.");
         }
     }
 
-    GLenum Texture::GetInternalFormat(Texture::Format format)
+    GLenum Texture::GetInternalFormat(Synergy::Texture::Format format)
     {
         switch (format)
         {
-            case Texture::Format::RED: return GL_RED;
-            case Texture::Format::RGB: return GL_RGB8;
-            case Texture::Format::RGBA: return GL_RGBA8;
+            case Synergy::Texture::Format::RED: return GL_RED;
+            case Synergy::Texture::Format::RGB: return GL_RGB8;
+            case Synergy::Texture::Format::RGBA: return GL_RGBA8;
             default: SYNERGY_ASSERT(false, "Unsupported internal texture format.");
         }
     }
 
-    GLenum Texture::GetDataFormat(Texture::Format format)
+    GLenum Texture::GetDataFormat(Synergy::Texture::Format format)
     {
         switch (format)
         {
-            case Texture::Format::RED: return GL_RED;
-            case Texture::Format::RGB: return GL_RGB;
-            case Texture::Format::RGBA: return GL_RGBA;
+            case Synergy::Texture::Format::RED: return GL_RED;
+            case Synergy::Texture::Format::RGB: return GL_RGB;
+            case Synergy::Texture::Format::RGBA: return GL_RGBA;
             default: SYNERGY_ASSERT(false, "Unsupported data texture format.");
         }
     }
 
-    GLenum Texture::GetFilter(Texture::Filter filter)
+    GLenum Texture::GetFilter(Synergy::Texture::Filter filter)
     {
         switch (filter)
         {
-            case Texture::Filter::LINEAR: return GL_LINEAR;
-            case Texture::Filter::NEAREST: return GL_NEAREST;
+            case Synergy::Texture::Filter::LINEAR: return GL_LINEAR;
+            case Synergy::Texture::Filter::NEAREST: return GL_NEAREST;
             default: SYNERGY_ASSERT(false, "Unsupported texture filter.");
         }
     }
 
-    GLenum Texture::GetWrap(Texture::Wrap wrap)
+    GLenum Texture::GetWrap(Synergy::Texture::Wrap wrap)
     {
         switch (wrap)
         {
-            case Texture::Wrap::REPEAT: return GL_REPEAT;
-            case Texture::Wrap::MIRRORED_REPEAT: return GL_MIRRORED_REPEAT;
-            case Texture::Wrap::CLAMP_TO_EDGE: return GL_CLAMP_TO_EDGE;
-            case Texture::Wrap::CLAMP_TO_BORDER: return GL_CLAMP_TO_BORDER;
+            case Synergy::Texture::Wrap::REPEAT: return GL_REPEAT;
+            case Synergy::Texture::Wrap::MIRRORED_REPEAT: return GL_MIRRORED_REPEAT;
+            case Synergy::Texture::Wrap::CLAMP_TO_EDGE: return GL_CLAMP_TO_EDGE;
+            case Synergy::Texture::Wrap::CLAMP_TO_BORDER: return GL_CLAMP_TO_BORDER;
             default: SYNERGY_ASSERT(false, "Unsupported wrap mode.");
         }
     }

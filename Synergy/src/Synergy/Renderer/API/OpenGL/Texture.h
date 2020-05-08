@@ -11,10 +11,10 @@
 
 namespace Synergy::Renderer::OpenGL
 {
-    class SYNERGY_API Texture: public Synergy::Renderer::Texture
+    class SYNERGY_API Texture: public Synergy::Texture
     {
     public:
-        explicit Texture(uint32_t width, uint32_t height, Texture::Parameters parameters = Texture::Parameters());
+        explicit Texture(uint32_t width, uint32_t height, Synergy::Texture::Parameters parameters = {});
         
         virtual ~Texture() = default;
         
@@ -24,14 +24,14 @@ namespace Synergy::Renderer::OpenGL
         virtual void Bind() const override;
         virtual void Unbind() const override;
         
-        virtual bool operator==(const Synergy::Renderer::Texture& other) const override;
+        virtual bool operator==(const Synergy::Texture& other) const override;
         
     private:
-        static uint32_t GetBitsPerPixel(Texture::Format format);
-        static GLenum GetInternalFormat(Texture::Format format);
-        static GLenum GetDataFormat(Texture::Format format);
-        static GLenum GetFilter(Texture::Filter filter);
-        static GLenum GetWrap(Texture::Wrap wrap);
+        static uint32_t GetBitsPerPixel(Synergy::Texture::Format format);
+        static GLenum GetInternalFormat(Synergy::Texture::Format format);
+        static GLenum GetDataFormat(Synergy::Texture::Format format);
+        static GLenum GetFilter(Synergy::Texture::Filter filter);
+        static GLenum GetWrap(Synergy::Texture::Wrap wrap);
         
     private:
         uint32_t id;

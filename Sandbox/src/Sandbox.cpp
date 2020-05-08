@@ -12,12 +12,18 @@ public:
     
     virtual bool OnUserCreate() override
     {
-        atlas = Synergy::Renderer::TextureAtlas::Load("assets/textures/RPGpack_sheet.png", 13, 20);
-        
-        button = Synergy::Renderer::Texture::Load("assets/textures/red_button00.png");
+        button = Synergy::Texture::Load("assets/textures/red_button00.png");
         
         narrow = Synergy::Fonts::Load("assets/fonts/Kenney Future Narrow.ttf", 48);
         blocks = Synergy::Fonts::Load("assets/fonts/Kenney Blocks.ttf", 10);
+        
+        Synergy::Texture::Parameters parameters;
+        parameters.wrap = Synergy::Texture::Parameters::Wrap(Synergy::Texture::Wrap::REPEAT);
+        
+        atlas = Synergy::TextureAtlas::Load("assets/textures/RPGpack_sheet.png", { 20, 13 }, parameters);
+        //barrel = Synergy::TextureAtlas::Texture::Load(atlas, { 1, 1 });
+        //stairs = Synergy::TextureAtlas::Texture::Load(atlas, { 2, 2 });
+        tree = Synergy::TextureAtlas::Texture::Load(atlas, { 0, 11 }, { 1, 2 });
         
         return true;
     }
@@ -28,7 +34,7 @@ public:
         
         Synergy::Renderer::CanvasRenderer::Submit(Synergy::Quad { { 0.5, 0.5, 0.1 }, { 1.0, 1.0 }, { 1, 1, 1, .1 } });
         Synergy::Renderer::CanvasRenderer::Submit(Synergy::Quad { { 0.5, 0.2, 0.5 }, { 0.5, 0.5 * ratio }, button });
-        Synergy::Renderer::CanvasRenderer::Submit(Synergy::Quad { { 0.5, 0.6, 0.5 }, { 0.1, 0.1 }, atlas->GetTexture(11, 1) });
+        Synergy::Renderer::CanvasRenderer::Submit(Synergy::Quad { { 0.5, 0.6, 0.5 }, { .1, .2 }, tree });
         
         Synergy::Renderer::CanvasRenderer::Submit(Synergy::Text { "Hello world!", narrow, { 10.0, 560, 0.5 }, { 1, 1, 1, 1 } });
         Synergy::Renderer::CanvasRenderer::Submit(Synergy::Text { "Copyright (c) 2020, all rights reserved Niels Marsman.", blocks, { 10, 10, 0 }, { 1, 1, 1, 1 } });
@@ -39,12 +45,16 @@ public:
 	virtual ~Sandbox() = default;
     
 private:
-    Synergy::Ref<Synergy::Renderer::TextureAtlas> atlas;
+    Synergy::Ref<Synergy::TextureAtlas> atlas;
+    Synergy::Ref<Synergy::TextureAtlas::Texture> tree;
+    Synergy::Ref<Synergy::TextureAtlas::Texture> barrel;
+    Synergy::Ref<Synergy::TextureAtlas::Texture> stairs;
+    
+    Synergy::Ref<Synergy::Texture> button;
     
     Synergy::Ref<Synergy::Font> narrow;
     Synergy::Ref<Synergy::Font> blocks;
     
-    Synergy::Ref<Synergy::Renderer::Texture> button;
     Synergy::CameraController controller;
 };
 

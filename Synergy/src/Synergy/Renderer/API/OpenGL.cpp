@@ -82,9 +82,4 @@ namespace Synergy::Renderer::API
     {
         return Synergy::CreateRef<Synergy::Renderer::OpenGL::IndexBuffer>(indices, count);
     }
-
-    Ref<Texture> OpenGL::CreateTexture(uint32_t width, uint32_t height, Texture::Parameters parameters)
-    {
-        return Synergy::CreateRef<Synergy::Renderer::OpenGL::Texture>(width, height, parameters);
-    }
 }

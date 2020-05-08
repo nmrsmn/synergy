@@ -3,88 +3,86 @@
 
 #include "Synergy/Renderer/TextureAtlas.h"
 
-namespace Synergy::Renderer
+namespace Synergy
 {
-    TextureAtlas::Texture::Texture(TextureAtlas* atlas, uint32_t row, uint32_t column)
-        : atlas(atlas), row(row), column(column), Synergy::Renderer::Texture(atlas->width, atlas->height) {}
-
-    const std::array<const glm::vec2, 4> TextureAtlas::Texture::GetUVs() const
+    Synergy::Ref<Synergy::TextureAtlas::Texture> Synergy::TextureAtlas::Texture::Load(Synergy::Ref<Synergy::TextureAtlas> atlas, const glm::uvec2& coordinates, const glm::uvec2& tiles)
     {
-        glm::vec2 size { 1.0 / atlas->columns, 1.0 / atlas->rows };
-        glm::vec2 offset {
-            size.x * column,
-            ((atlas->rows - 1 - row) * size.y)
+        struct RefEnabler: public Synergy::TextureAtlas::Texture
+        {
+            explicit RefEnabler(Synergy::Ref<Synergy::TextureAtlas> atlas, const glm::vec2& min, const glm::vec2& max): Synergy::TextureAtlas::Texture(atlas, min, max) {}
         };
         
-        return {
-            glm::vec2 { offset.x, offset.y },
-            glm::vec2 { offset.x + size.x, offset.y },
-            glm::vec2 { offset.x + size.x, offset.y + size.y },
-            glm::vec2 { offset.x, offset.y + size.y }
+        glm::vec2 min = {
+            (coordinates.x * atlas->tile.x) / (float) atlas->texture->GetWidth(),
+            1 - (((coordinates.y + 1) * atlas->tile.y) / (float) atlas->texture->GetHeight())
         };
+        
+        glm::vec2 max = {
+            ((coordinates.x + tiles.x) * atlas->tile.x) / (float) atlas->texture->GetWidth(),
+            1 - (((coordinates.y + 1 - tiles.y) * atlas->tile.y) / (float) atlas->texture->GetHeight())
+        };
+        
+        return Synergy::CreateRef<RefEnabler>(atlas, min, max);
     }
 
-    void TextureAtlas::Texture::SetData(void* data, uint32_t size)
+    const glm::vec2* Synergy::TextureAtlas::Texture::GetUVs() const
     {
-        // ASSERT?
+        return uvs;
     }
 
-    void TextureAtlas::Texture::Activate(uint32_t slot) const
+    void Synergy::TextureAtlas::Texture::Activate(uint32_t slot) const
     {
         atlas->texture->Activate(slot);
     }
 
-    void TextureAtlas::Texture::Bind() const
+    void Synergy::TextureAtlas::Texture::Bind() const
     {
         atlas->texture->Bind();
     }
 
-    void TextureAtlas::Texture::Unbind() const
+    void Synergy::TextureAtlas::Texture::Unbind() const
     {
         atlas->texture->Unbind();
     }
 
-    bool TextureAtlas::Texture::operator==(const Synergy::Renderer::Texture& other) const
+    bool Synergy::TextureAtlas::Texture::operator==(const Synergy::Texture& other) const
     {
         return false;
     }
 
-    Synergy::Ref<TextureAtlas> TextureAtlas::Load(const char* path, uint32_t rows, uint32_t columns, Texture::Parameters parameters)
+    Synergy::TextureAtlas::Texture::Texture(Synergy::Ref<Synergy::TextureAtlas> atlas, const glm::vec2& min, const glm::vec2& max)
+        : atlas(atlas), Synergy::Texture(atlas->atlas.x, atlas->atlas.y)
+    {
+        uvs[0] = { min.x, min.y };
+        uvs[1] = { max.x, min.y };
+        uvs[2] = { max.x, max.y };
+        uvs[3] = { min.x, max.y };
+    }
+
+    void Synergy::TextureAtlas::Texture::SetData(void* data, uint32_t size)
+    {
+        SYNERGY_ASSERT(false, "Data can't be set on a TextureAtlas::Texture");
+    }
+    
+    Synergy::Ref<TextureAtlas> TextureAtlas::Load(const char* path, const glm::uvec2& size, Synergy::Texture::Parameters parameters)
     {
         struct RefEnabler: public TextureAtlas
         {
-            explicit RefEnabler(Synergy::Ref<Synergy::Renderer::Texture> texture, uint32_t rows, uint32_t columns): TextureAtlas(texture, rows, columns) {}
+            explicit RefEnabler(Synergy::Ref<Synergy::Texture> texture, const glm::uvec2& size): TextureAtlas(texture, size) {}
         };
         
-        Synergy::Ref<Synergy::Renderer::Texture> texture = Synergy::Renderer::Texture::Load(path, parameters);
-        return Synergy::CreateRef<RefEnabler>(texture, rows, columns);
-    }
-
-    const Synergy::Ref<TextureAtlas::Texture> TextureAtlas::GetTexture(uint32_t row, uint32_t column) const
-    {
-        return textures[(row * width) + column];
-    }
-
-    const Synergy::Ref<TextureAtlas::Texture> TextureAtlas::operator()(uint32_t row, uint32_t column) const
-    {
-        return this->GetTexture(row, column);
+        Synergy::Ref<Synergy::Texture> texture = Synergy::Texture::Load(path, parameters);
+        return Synergy::CreateRef<RefEnabler>(texture, size);
     }
     
-    TextureAtlas::TextureAtlas(Synergy::Ref<Synergy::Renderer::Texture> texture, uint32_t rows, uint32_t columns)
-        : texture(texture), rows(rows), columns(columns)
+    TextureAtlas::TextureAtlas(Synergy::Ref<Synergy::Texture> texture, const glm::uvec2& size)
+        : texture(texture), atlas(size)
     {
-        width = texture->GetWidth() / columns;
-        height = texture->GetHeight() / rows;
+        tile = glm::uvec2 {
+            texture->GetWidth() / atlas.x,
+            texture->GetHeight() / atlas.y
+        };
         
-        SYNERGY_ASSERT(width == height, "Only sqaure texture atlas cells are supported.");
-        
-        textures.resize(width * height);
-        for (int row = 0; row < rows; ++row)
-        {
-            for (int column = 0; column < columns; ++column)
-            {
-                textures[(row * width) + column] = Synergy::CreateRef<TextureAtlas::Texture>(this, row, column);
-            }
-        }
+        SYNERGY_ASSERT(tile.x == tile.y, "Only sqaure texture atlas cells are supported.");
     }
 }

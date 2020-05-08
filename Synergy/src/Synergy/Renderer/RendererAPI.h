@@ -48,8 +48,6 @@ namespace Synergy::Renderer
         virtual Ref<VertexBuffer> CreateVertexBuffer(uint32_t size) = 0;
         virtual Ref<IndexBuffer> CreateIndexBuffer(uint32_t* indices, uint32_t count) = 0;
         
-        virtual Ref<Texture> CreateTexture(uint32_t width, uint32_t height, Texture::Parameters parameters = Texture::Parameters()) = 0;
-        
     protected:
         void InitializeRenderers(RendererAPI* api);
         
