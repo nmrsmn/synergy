@@ -11,20 +11,30 @@
 
 namespace Synergy::UI
 {
+    class Anchors;
+    class Element;
+    class Container;
     class Manager;
 
     class SYNERGY_API View
     {
     public:
-        void Add(Synergy::Ref<Synergy::UI::Element> element);
+        static Synergy::Ref<Synergy::UI::View> Create(glm::vec2 size);
+        
+    public:
+        const Synergy::UI::Constraint::Anchors Anchors() const;
         
     private:
+        View(glm::vec2 size);
+        
         void Submit();
-        void Update(glm::uvec2 parent);
+        void Update(glm::vec2 size);
         
     private:
-        std::vector<Synergy::Ref<Synergy::UI::Element>> childs;
+        Synergy::Ref<Synergy::UI::Container> container;
         
+        friend class Synergy::UI::Container;
+        friend class Synergy::UI::Element;
         friend class Synergy::UI::Manager;
     };
 }

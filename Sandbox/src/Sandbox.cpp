@@ -1,14 +1,14 @@
 // Created by Niels Marsman on 05-04-2020.
 // Copyright © 2019 Niels Marsman. All rights reserved.
 
-#include <iostream>
-
 #include "Synergy.h"
 
 class Sandbox: public Synergy::Application
 {
 public:
 	explicit Sandbox(): controller(800.0f / 600.0f), Synergy::Application() {}
+    
+    static constexpr float ratio = 45.f / 190.f;
     
     virtual bool OnUserCreate() override
     {
@@ -25,38 +25,46 @@ public:
         //stairs = Synergy::TextureAtlas::Texture::Load(atlas, { 2, 2 });
         tree = Synergy::TextureAtlas::Texture::Load(atlas, { 0, 11 }, { 1, 2 });
         
+        root = Synergy::UI::View::Create({ 800, 600 });
+        
+        container1 = Synergy::UI::Container::Create(root);
+        container2 = Synergy::UI::Container::Create(root, [&root = this->root](Synergy::UI::Constraint::Anchors& anchors)
+        {
+            anchors.top.equals(root->Anchors().top);
+            anchors.left.equals(root->Anchors().left);
+            anchors.width.equals(root->Anchors().width);
+            anchors.height.equals(root->Anchors().height, 0.5f);
+        });
+        
+        button1 = Synergy::UI::Button::Create(container1, [=, &container = this->container1](Synergy::UI::Constraint::Anchors& anchors)
+        {
+            anchors.top.equals(container->Anchors().top, 50);
+            anchors.horizontal.equals(container->Anchors().horizontal);
+            anchors.width.equals(container->Anchors().width, 0.25f);
+            anchors.height.equals(anchors.width, ratio);
+        });
+        
+        button2 = Synergy::UI::Button::Create(container1, [=, &button = this->button1](Synergy::UI::Constraint::Anchors& anchors)
+        {
+            anchors.top.equals(button->Anchors().bottom, button->Anchors().height.Value() / 2);
+            anchors.horizontal.equals(button1->Anchors().horizontal);
+            anchors.width.equals(button1->Anchors().width);
+            anchors.height.equals(anchors.width, ratio);
+        });
+        
         return true;
     }
     
     virtual bool OnUserUpdate(float deltatime) override
     {
-        float ratio = 45.f / 190.f;
-        
-        Synergy::Ref<Synergy::UI::View> root = Synergy::CreateRef<Synergy::UI::View>();
-        Synergy::Ref<Synergy::UI::Container> container1 = Synergy::CreateRef<Synergy::UI::Container>();
-        Synergy::Ref<Synergy::UI::Container> container2 = Synergy::CreateRef<Synergy::UI::Container>();
-        Synergy::Ref<Synergy::UI::Button> button = Synergy::CreateRef<Synergy::UI::Button>();
-        Synergy::Ref<Synergy::UI::Label> label = Synergy::CreateRef<Synergy::UI::Label>();
-        
-        root->Add(container1);
-        root->Add(container2);
-        
-        container1->Add(button);
-        container1->Add(label);
-//
-//        Synergy::UI::Manager::Add(Synergy::UI::Button("New Game", {
-//            { Synergy::UI::Constraint::WIDTH, Synergy::UI::Constraint::Percentage(0.8f) },
-//            { Synergy::UI::Constraint::HEIGHT, Synergy::UI::Constraint::Ratio(0.8f) }
-//        }));
-//
-        Synergy::UI::Manager::Submit(root);
-        
         Synergy::Renderer::CanvasRenderer::Submit(Synergy::Quad { { 0.5, 0.5, 0.1 }, { 1.0, 1.0 }, { 1, 1, 1, .1 } });
         Synergy::Renderer::CanvasRenderer::Submit(Synergy::Quad { { 0.5, 0.2, 0.5 }, { 0.5, 0.5 * ratio }, this->button });
         Synergy::Renderer::CanvasRenderer::Submit(Synergy::Quad { { 0.5, 0.6, 0.5 }, { .1, .2 }, tree });
         
         Synergy::Renderer::CanvasRenderer::Submit(Synergy::Text { "Hello world!", narrow, { 10.0, 560, 0.5 }, { 1, 1, 1, 1 } });
         Synergy::Renderer::CanvasRenderer::Submit(Synergy::Text { "Copyright (c) 2020, all rights reserved Niels Marsman.", blocks, { 10, 10, 0 }, { 1, 1, 1, 1 } });
+        
+        Synergy::UI::Manager::Submit(root);
         
         return true;
     }
@@ -73,6 +81,12 @@ private:
     
     Synergy::Ref<Synergy::Font> narrow;
     Synergy::Ref<Synergy::Font> blocks;
+    
+    Synergy::Ref<Synergy::UI::View> root;
+    Synergy::Ref<Synergy::UI::Container> container1;
+    Synergy::Ref<Synergy::UI::Container> container2;
+    Synergy::Ref<Synergy::UI::Button> button1;
+    Synergy::Ref<Synergy::UI::Button> button2;
     
     Synergy::CameraController controller;
 };
