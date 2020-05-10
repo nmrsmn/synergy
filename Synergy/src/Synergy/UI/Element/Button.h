@@ -11,6 +11,14 @@ namespace Synergy::UI
 {
     class SYNERGY_API Button : public Synergy::UI::Element
     {
+    public:
+        static Synergy::Ref<Synergy::UI::Button> Create(Synergy::Ref<Synergy::UI::View> root, std::function<void (Synergy::UI::Constraint::Anchors&)> constraints = nullptr);
+        static Synergy::Ref<Synergy::UI::Button> Create(Synergy::Ref<Synergy::UI::Container> container, std::function<void (Synergy::UI::Constraint::Anchors&)> constraints = nullptr);
+        
+    protected:
+        Button(Synergy::Ref<Synergy::UI::View> root, std::function<void (Synergy::UI::Constraint::Anchors&)> constraints = nullptr);
+        Button(Synergy::Ref<Synergy::UI::Container> container, std::function<void (Synergy::UI::Constraint::Anchors&)> constraints = nullptr);
+        
     protected:
         virtual void Submit() override;
     };

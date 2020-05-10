@@ -25,11 +25,14 @@
 #include "Synergy/Fonts.h"
 #include "Synergy/Font.h"
 
+#include "Synergy/UI/Anchors.h"
+#include "Synergy/UI/Constraints.h"
 #include "Synergy/UI/Element.h"
 #include "Synergy/UI/Element/Button.h"
 #include "Synergy/UI/Element/Container.h"
 #include "Synergy/UI/Element/Label.h"
 #include "Synergy/UI/Manager.h"
+#include "Synergy/UI/Renderer.h"
 #include "Synergy/UI/View.h"
 
 #include "Synergy/EntryPoint.h"

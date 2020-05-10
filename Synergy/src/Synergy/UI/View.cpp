@@ -3,26 +3,47 @@
 
 #include "Synergy/UI/View.h"
 
+#include "Synergy/UI/Anchors.h"
+#include "Synergy/UI/Element/Container.h"
+
 namespace Synergy::UI
 {
-    void View::Add(Synergy::Ref<Synergy::UI::Element> element)
+    Synergy::Ref<Synergy::UI::View> View::Create(glm::vec2 size)
     {
-        childs.push_back(element);
+        struct RefEnabler : public Synergy::UI::View
+        {
+            explicit RefEnabler(glm::vec2 size) : Synergy::UI::View(size) { }
+        };
+        
+        return Synergy::CreateRef<RefEnabler>(size);
+    }
+
+    const Synergy::UI::Constraint::Anchors View::Anchors() const
+    {
+        return container->anchors;
+    }
+
+    View::View(glm::vec2 size)
+    {
+        struct RefEnabler : public Synergy::UI::Container
+        {
+            explicit RefEnabler() : Synergy::UI::Container() { }
+        };
+        
+        this->container = Synergy::CreateRef<RefEnabler>();
+        this->container->anchors = Synergy::UI::Constraint::Anchors(size);
     }
 
     void View::Submit()
     {
-        for (auto child : childs)
-        {
-            child->Submit();
-        }
+        container->Submit();
     }
 
-    void View::Update(glm::uvec2 parent)
+    void View::Update(glm::vec2 size)
     {
-        // Update
+        container->anchors = Synergy::UI::Constraint::Anchors(size);
         
-        for (auto child : childs)
+        for (auto child : container->childs)
         {
             // Update the childs with the updated size.
         }

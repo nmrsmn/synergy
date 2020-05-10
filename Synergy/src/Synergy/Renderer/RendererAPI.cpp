@@ -5,18 +5,21 @@
 
 #include "Synergy/Renderer/CanvasRenderer.h"
 #include "Synergy/Renderer/Renderer2D.h"
+#include "Synergy/UI/Renderer.h"
 
 namespace Synergy::Renderer
 {
-    Synergy::Renderer::RendererAPI::API RendererAPI::Get()
+    Synergy::Renderer::RendererAPI::API Synergy::Renderer::RendererAPI::Get()
     {
         return api;
     }
 
-    void RendererAPI::InitializeRenderers(RendererAPI* api)
+    void Synergy::Renderer::RendererAPI::InitializeRenderers(Synergy::Renderer::RendererAPI* api)
     {
-        CanvasRenderer::Initialize(api);
-        Renderer2D::Initialize(api);
+        Synergy::Renderer::CanvasRenderer::Initialize(api);
+        Synergy::Renderer::Renderer2D::Initialize(api);
+        
+        Synergy::UI::Renderer::Initialize(api);
     }
 }
 
