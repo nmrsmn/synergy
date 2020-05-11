@@ -14,6 +14,12 @@ namespace Synergy::UI
 
     class SYNERGY_API Element
     {
+    public:
+        struct Style
+        {
+            
+        };
+        
     protected:
         static void Emplace(Synergy::Ref<Synergy::UI::Element> element, Synergy::Ref<Synergy::UI::Container> parent);
         

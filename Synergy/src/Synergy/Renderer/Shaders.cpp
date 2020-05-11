@@ -36,27 +36,37 @@ namespace Synergy
     Shaders::Shaders()
     {
         if (Synergy::Shaders::LoadShader("BatchRenderer.shader", {
-                { Synergy::Shader::Type::VERTEX, "./assets/shaders/BatchRenderer.vertex" },
-                { Synergy::Shader::Type::FRAGMENT, "./assets/shaders/BatchRenderer.fragment" }
-            }) == nullptr)
+            { Synergy::Shader::Type::VERTEX, "./assets/shaders/BatchRenderer.vertex" },
+            { Synergy::Shader::Type::FRAGMENT, "./assets/shaders/BatchRenderer.fragment" }
+        }) == nullptr)
         {
             SYNERGY_ASSERT(false, "Failed to load `BatchRenderer.shader`.");
         }
         
         if (Synergy::Shaders::LoadShader("CanvasRenderer.shader", {
-                { Synergy::Shader::Type::VERTEX, "./assets/shaders/CanvasRenderer.vertex" },
-                { Synergy::Shader::Type::FRAGMENT, "./assets/shaders/CanvasRenderer.fragment" }
-            }) == nullptr)
+            { Synergy::Shader::Type::VERTEX, "./assets/shaders/CanvasRenderer.vertex" },
+            { Synergy::Shader::Type::FRAGMENT, "./assets/shaders/CanvasRenderer.fragment" }
+        }) == nullptr)
         {
             SYNERGY_ASSERT(false, "Failed to load `CanvasRenderer.shader`.");
         }
         
         if (Synergy::Shaders::LoadShader("TextRenderer.shader", {
-                { Synergy::Shader::Type::VERTEX, "./assets/shaders/TextRenderer.vertex" },
-                { Synergy::Shader::Type::FRAGMENT, "./assets/shaders/TextRenderer.fragment" }
-            }) == nullptr)
+            { Synergy::Shader::Type::VERTEX, "./assets/shaders/TextRenderer.vertex" },
+            { Synergy::Shader::Type::FRAGMENT, "./assets/shaders/TextRenderer.fragment" }
+        }) == nullptr)
         {
             SYNERGY_ASSERT(false, "Failed to create `TextRenderer.shader`.");
+        }
+        
+        
+        
+        if (Synergy::Shaders::LoadShader("UIRenderer.shader", {
+            { Synergy::Shader::Type::VERTEX, "./assets/shaders/UIRenderer.vertex" },
+            { Synergy::Shader::Type::FRAGMENT, "./assets/shaders/UIRenderer.fragment" }
+        }) == nullptr)
+        {
+            SYNERGY_ASSERT(false, "Failed to create `UIRenderer.shader`.");
         }
     }
 
