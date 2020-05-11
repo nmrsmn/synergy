@@ -64,7 +64,7 @@ namespace Synergy::UI
         vertexArray->AddVertexBuffer(vertexBuffer);
         vertexArray->SetIndexBuffer(indexBuffer);
         
-        Synergy::Ref<Synergy::Texture> texture = /*renderable.texture != nullptr ? renderable.texture : */data.whiteTexture;
+        Synergy::Ref<Synergy::Texture> texture = quad.texture != nullptr ? quad.texture : data.whiteTexture;
         
         texture->Activate(0);
         texture->Bind();

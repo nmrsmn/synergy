@@ -28,7 +28,7 @@ public:
         root = Synergy::UI::View::Create({ 800, 600 });
         
         container1 = Synergy::UI::Container::Create(root);
-        container2 = Synergy::UI::Container::Create(container1, { glm::vec4 { 1, 1, 1, 0.4 } }, [&container = this->container1](Synergy::UI::Constraint::Anchors& anchors)
+        container2 = Synergy::UI::Container::Create(container1, { button }, [&container = this->container1](Synergy::UI::Constraint::Anchors& anchors)
         {
             anchors.vertical.equals(container->Anchors().vertical);
             anchors.horizontal.equals(container->Anchors().horizontal);

@@ -11,6 +11,7 @@
 #include "Synergy/Core.h"
 #include "Synergy/UI/Anchors.h"
 #include "Synergy/UI/Element.h"
+#include "Synergy/UI/Style.h"
 #include "Synergy/UI/View.h"
 
 namespace Synergy::UI
@@ -20,7 +21,7 @@ namespace Synergy::UI
     public:
         struct Style
         {
-            glm::vec4 background { 1, 1, 1, 0 };
+            Synergy::UI::Style::Background background { glm::vec4 { 0, 0, 0, 0 } };
             float radius { 0 };
         };
         

@@ -21,6 +21,7 @@ namespace Synergy::UI
 
     struct SYNERGY_API Quad: public Synergy::UI::Renderable
     {
+        Synergy::Ref<Synergy::Texture> texture;
         float radius;
     };
 

@@ -50,9 +50,9 @@ namespace Synergy::UI
 
     void Container::Submit()
     {
-        if (style.background.a > 0)
+        if (style.background.texture || style.background.color.a > 0)
         {
-            Synergy::UI::Renderer::Submit(Synergy::UI::Quad { position, size, style.background, 10.0f });
+            Synergy::UI::Renderer::Submit(Synergy::UI::Quad { position, size, style.background.color, style.background.texture, style.radius });
         }
         
         for (auto child : childs)
