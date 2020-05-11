@@ -28,12 +28,12 @@ public:
         root = Synergy::UI::View::Create({ 800, 600 });
         
         container1 = Synergy::UI::Container::Create(root);
-        container2 = Synergy::UI::Container::Create(root, [&root = this->root](Synergy::UI::Constraint::Anchors& anchors)
+        container2 = Synergy::UI::Container::Create(container1, { button }, [&container = this->container1](Synergy::UI::Constraint::Anchors& anchors)
         {
-            anchors.top.equals(root->Anchors().top);
-            anchors.left.equals(root->Anchors().left);
-            anchors.width.equals(root->Anchors().width);
-            anchors.height.equals(root->Anchors().height, 0.5f);
+            anchors.vertical.equals(container->Anchors().vertical);
+            anchors.horizontal.equals(container->Anchors().horizontal);
+            anchors.width.equals(container->Anchors().width, 0.7f);
+            anchors.height.equals(container->Anchors().height, 0.8f);
         });
         
         button1 = Synergy::UI::Button::Create(container1, [=, &container = this->container1](Synergy::UI::Constraint::Anchors& anchors)

@@ -6,21 +6,24 @@
 
 #include "Synergy/Core.h"
 #include "Synergy/Camera.h"
-#include "Synergy/Renderer/Renderable.h"
 #include "Synergy/Renderer/RendererAPI.h"
 #include "Synergy/Renderer/Renderer.h"
 
+#include "Synergy/UI/Element.h"
+#include "Synergy/UI/Renderable.h"
+
 namespace Synergy::UI
 {
-    class SYNERGY_API Renderer: public Synergy::Renderer::Renderer<Synergy::UI::Renderer, Synergy::Renderer::Renderable2D>
+    class SYNERGY_API Renderer
     {
+    public:
+        static void Submit(Synergy::UI::Quad quad);
+        static void Submit(Synergy::UI::Text text);
+        
     private:
         static Synergy::UI::Renderer& Instance();
         
         static void Initialize(Synergy::Renderer::RendererAPI* api);
-        
-        static void SubmitRenderable(Synergy::Renderer::Renderable2D renderable);
-        static void SubmitText(Synergy::Text text);
         
     public:
         Renderer(const Synergy::UI::Renderer&) = delete;
@@ -34,7 +37,6 @@ namespace Synergy::UI
     private:
         Synergy::Renderer::RendererAPI* api;
         
-        friend class Synergy::Renderer::Renderer<Synergy::UI::Renderer, Synergy::Renderer::Renderable2D>;
         friend class Synergy::Renderer::RendererAPI;
     };
 }

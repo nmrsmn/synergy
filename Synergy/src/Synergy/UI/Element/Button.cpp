@@ -40,6 +40,6 @@ namespace Synergy::UI
     
     void Button::Submit()
     {
-        Synergy::UI::Renderer::Submit(Synergy::Quad { position, size, { 1, 0, 0, 1 } });
+        //Synergy::UI::Renderer::Submit(Synergy::Quad { position, size, { 1, 0, 0, 1 } });
     };
 }

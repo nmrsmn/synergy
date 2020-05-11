@@ -33,6 +33,7 @@
 #include "Synergy/UI/Element/Label.h"
 #include "Synergy/UI/Manager.h"
 #include "Synergy/UI/Renderer.h"
+#include "Synergy/UI/Style.h"
 #include "Synergy/UI/View.h"
 
 #include "Synergy/EntryPoint.h"
