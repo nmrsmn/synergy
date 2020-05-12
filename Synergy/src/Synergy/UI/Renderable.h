@@ -27,7 +27,8 @@ namespace Synergy::UI
 
     struct SYNERGY_API Text: public Synergy::UI::Renderable
     {
-        
+        const std::string& text;
+        Synergy::Ref<Synergy::Font> font;
     };
 }
 

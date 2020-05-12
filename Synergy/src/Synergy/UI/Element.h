@@ -31,9 +31,8 @@ namespace Synergy::UI
         Element(Synergy::Ref<Synergy::UI::View> root, std::function<void (Synergy::UI::Constraint::Anchors&)> constraints = nullptr);
         Element(Synergy::Ref<Synergy::UI::Container> parent, std::function<void (Synergy::UI::Constraint::Anchors&)> constraints = nullptr);
         
-        virtual void Submit() = 0;
-        
         virtual void ApplyDefaults();
+        virtual void Submit() = 0;
         
     private:
         void Initialize(std::function<void (Synergy::UI::Constraint::Anchors&)> constraints);

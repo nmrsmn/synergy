@@ -21,6 +21,22 @@ namespace Synergy::UI
             Background(glm::vec4 color) : color(color) { }
             Background(Synergy::Ref<Synergy::Texture> texture, glm::vec4 color = { 1, 1, 1, 1 }) : texture(texture), color(color) { }
         };
+        
+        enum class TextAlignment
+        {
+            NONE = 0,
+            LEFT,
+            CENTER,
+            RIGHT
+        };
+        
+        enum class Gravity
+        {
+            NONE = 0,
+            TOP,
+            CENTER,
+            BOTTOM
+        };
     };
 }
 

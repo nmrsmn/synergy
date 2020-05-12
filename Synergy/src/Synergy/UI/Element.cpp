@@ -48,7 +48,6 @@ namespace Synergy::UI
     {
         if (parent)
         {
-            
             if (constraints)
             {
                 constraints(anchors);
@@ -103,7 +102,7 @@ namespace Synergy::UI
             SYNERGY_ASSERT(false, "Both the width and height constraints should be set.");
         }
         
-        size = glm::vec2 { anchors.width.value / 800.0f, anchors.height.value / 600.0f };
+        size = glm::vec2 { anchors.width.value, anchors.height.value };
         
         if (anchors.left.activated == false && anchors.right.activated == false && anchors.horizontal.activated == false)
         {
@@ -117,9 +116,9 @@ namespace Synergy::UI
         
         this->CalculateInactiveAnchors();
         
-        float x = anchors.left.value / 800.0f;
-        float y = anchors.bottom.value / 600.0f;
+        float x = anchors.left.value;
+        float y = anchors.bottom.value;
         
-        position = glm::vec3 { x, 1 - y, 1 };
+        position = glm::vec3 { x, 600 - y, 0.9 };
     }
 }
