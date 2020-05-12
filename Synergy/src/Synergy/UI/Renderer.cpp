@@ -96,18 +96,18 @@ namespace Synergy::UI
     {
         Synergy::Renderer::RendererAPI* api = Instance().api;
         
-//        struct Vertex
-//        {
-//            float x, y;
-//            float u, v;
-//        } vertices[6 * renderable.text.size()];
+        struct Vertex
+        {
+            float x, y;
+            float u, v;
+        } vertices[6 * renderable.text.size()];
         
         data.textShader->Bind();
         data.textShader->SetMat4("u_projection_view", data.ortho);
         data.textShader->SetFloat4("u_text_color", renderable.color);
         
         Synergy::Ref<Synergy::Renderer::VertexArray> vertexArray = api->CreateVertexArray();
-        Synergy::Ref<Synergy::Renderer::VertexBuffer> vertexBuffer = api->CreateVertexBuffer(6 * 4 * sizeof(float));
+        Synergy::Ref<Synergy::Renderer::VertexBuffer> vertexBuffer = api->CreateVertexBuffer(sizeof(vertices));
         vertexBuffer->SetLayout({
             { Shader::DataType::VEC4, "a_vertex" }
         });
@@ -147,30 +147,24 @@ namespace Synergy::UI
             if (!glyph.size.width || !glyph.size.height)
                 continue;
             
-//            vertices[index++] = { xpos          , -ypos         , 0.0f, 0.0f };
-//            vertices[index++] = { xpos + width  , -ypos         , 1.0f, 0.0f };
-//            vertices[index++] = { xpos          , -ypos - height, 0.0f, 1.0f };
-//
-//            vertices[index++] = { xpos + width  , -ypos         , 1.0f, 0.0f };
-//            vertices[index++] = { xpos          , -ypos - height, 0.0f, 1.0f };
-//            vertices[index++] = { xpos + width  , -ypos - height, 1.0f, 1.0f };
+/*
+ data.positions[0] = { 0.0f, 0.0f, -1.0f, 1.0f };
+ data.positions[1] = { 1.0f, 0.0f, -1.0f, 1.0f };
+ data.positions[2] = { 1.0f, 1.0f, -1.0f, 1.0f };
+ data.positions[3] = { 0.0f, 1.0f, -1.0f, 1.0f };
+ */
             
-            float vertices[6][4] = {
-                { xpos          , ypos + height , glyph.texture.x                                  , glyph.texture.y },
-                { xpos          , ypos          , glyph.texture.x                                  , glyph.texture.y + (glyph.size.height / size.height) },
-                { xpos + width  , ypos          , glyph.texture.x + (glyph.size.width / size.width), glyph.texture.y + (glyph.size.height / size.height) },
-                
-                { xpos          , ypos + height , glyph.texture.x                                  , glyph.texture.y },
-                { xpos + width  , ypos          , glyph.texture.x + (glyph.size.width / size.width), glyph.texture.y + (glyph.size.height / size.height) },
-                { xpos + width  , ypos + height , glyph.texture.x + (glyph.size.width / size.width), glyph.texture.y }
-            };
-            
-            vertexBuffer->SetData(vertices, sizeof(vertices));
-            api->DrawArrays(6);
+            vertices[index++] = { xpos          , ypos + height , glyph.texture.x                                  , glyph.texture.y };
+            vertices[index++] = { xpos          , ypos          , glyph.texture.x                                  , glyph.texture.y + (glyph.size.height / size.height) };
+            vertices[index++] = { xpos + width  , ypos          , glyph.texture.x + (glyph.size.width / size.width), glyph.texture.y + (glyph.size.height / size.height) };
+
+            vertices[index++] = { xpos + width  , ypos          , glyph.texture.x + (glyph.size.width / size.width), glyph.texture.y + (glyph.size.height / size.height) };
+            vertices[index++] = { xpos + width  , ypos + height , glyph.texture.x + (glyph.size.width / size.width), glyph.texture.y };
+            vertices[index++] = { xpos          , ypos + height , glyph.texture.x                                  , glyph.texture.y };
         }
 
-//        vertexBuffer->SetData(vertices, sizeof(vertices));
-//        api->DrawArrays(index);
+        vertexBuffer->SetData(vertices, sizeof(vertices));
+        api->DrawArrays(index);
     }
 
     Synergy::UI::Renderer& Synergy::UI::Renderer::Instance()
