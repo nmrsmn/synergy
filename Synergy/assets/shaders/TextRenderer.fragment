@@ -10,5 +10,5 @@ uniform vec4 u_text_color;
 void main()
 {
     vec4 sampled = vec4(1.0, 1.0, 1.0, texture(u_texture, v_uv).r);
-    color = vec4(u_text_color.rgb, 1.0) * sampled * vec4(1, 1, 1, u_text_color.a);
+    color = u_text_color * sampled;
 }

@@ -25,7 +25,12 @@ namespace Synergy
         SYNERGY_ASSERT(false, "Failed to get character data.");
     }
 
-    Font::Font(const std::string& path, uint32_t size)
+    const uint32_t Font::Size() const
+    {
+        return size;
+    }
+
+    Font::Font(const std::string& path, uint32_t size) : size(size)
     {
         if (FT_New_Face(Synergy::Fonts::Instance().library, path.c_str(), 0, &face) != 0)
         {

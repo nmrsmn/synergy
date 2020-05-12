@@ -20,6 +20,7 @@ namespace Synergy::UI
         {
             Synergy::Ref<Synergy::Font> font;
             glm::vec4 color = { 1, 1, 1, 1 };
+            float size = 1.0f;
             Synergy::UI::Style::TextAlignment align = Synergy::UI::Style::TextAlignment::LEFT;
             Synergy::UI::Style::Gravity gravity = Synergy::UI::Style::Gravity::TOP;
         };
@@ -29,6 +30,9 @@ namespace Synergy::UI
         static Synergy::Ref<Synergy::UI::Label> Create(Synergy::Ref<Synergy::UI::View> root, const std::string& text, Synergy::UI::Label::Style style, std::function<void (Synergy::UI::Constraint::Anchors&)> constraints = nullptr);
         static Synergy::Ref<Synergy::UI::Label> Create(Synergy::Ref<Synergy::UI::Container> container, const std::string& text, std::function<void (Synergy::UI::Constraint::Anchors&)> constraints = nullptr);
         static Synergy::Ref<Synergy::UI::Label> Create(Synergy::Ref<Synergy::UI::Container> container, const std::string& text, Synergy::UI::Label::Style style, std::function<void (Synergy::UI::Constraint::Anchors&)> constraints = nullptr);
+        
+    public:
+        void Update(const std::string& text);
         
     protected:
         Label(Synergy::Ref<Synergy::UI::View> root, const std::string& text, Synergy::UI::Label::Style style, std::function<void (Synergy::UI::Constraint::Anchors&)> constraints = nullptr);
@@ -40,7 +44,7 @@ namespace Synergy::UI
         Synergy::UI::Label::Style style;
         
     private:
-        const std::string text;
+        std::string text;
     };
 }
 

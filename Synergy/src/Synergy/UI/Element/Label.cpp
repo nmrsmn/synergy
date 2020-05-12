@@ -54,6 +54,11 @@ namespace Synergy::UI
     Label::Label(Synergy::Ref<Synergy::UI::Container> container, const std::string& text, Synergy::UI::Label::Style style, std::function<void (Synergy::UI::Constraint::Anchors&)> constraints)
         : style(style), text(text), Synergy::UI::Element(container, constraints) { }
 
+    void Label::Update(const std::string& text)
+    {
+        this->text = text;
+    }
+
     void Label::Submit()
     {
         if (style.font)
@@ -67,6 +72,8 @@ namespace Synergy::UI
                 size.x += current.advance >> 6;
                 size.y = std::max(size.y, current.size.y);
             }
+            
+            size *= style.size;
             
             if (style.align == Synergy::UI::Style::TextAlignment::RIGHT)
             {
@@ -86,7 +93,7 @@ namespace Synergy::UI
                 offset.y = (this->size.y - size.y) / 2;
             }
             
-            Synergy::UI::Renderer::Submit(Synergy::UI::Text { position + offset, { }, style.color, text, style.font });
+            Synergy::UI::Renderer::Submit(Synergy::UI::Text { position + offset, { }, style.color, text, style.font, style.size });
         }
     };
 }

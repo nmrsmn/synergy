@@ -113,7 +113,7 @@ namespace Synergy::UI
         texture->Activate(0);
         texture->Bind();
         
-        float scale = 1.0;
+        float scale = renderable.scale;
         
         float x = renderable.position.x;
         float y = renderable.position.y;

@@ -32,7 +32,8 @@ namespace Synergy
         static Synergy::Ref<Synergy::Font> Load(const std::string& path, uint32_t size);
         
     public:
-         const Synergy::Font::Character GetCharacter(unsigned char character);
+        const Synergy::Font::Character GetCharacter(unsigned char character);
+        const uint32_t Size() const;
         
     private:
         Font(const std::string& path, uint32_t size);
@@ -41,6 +42,7 @@ namespace Synergy
         
     private:
         FT_Face face;
+        uint32_t size;
         
         std::unordered_map<unsigned char, Synergy::Font::Character> characters;
         

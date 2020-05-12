@@ -25,8 +25,12 @@ public:
         
         root = Synergy::UI::View::Create({ 800, 600 });
         
+        Synergy::UI::Container::Style containerStyle = {};
+        containerStyle.background.color = glm::vec4 { 1, 1, 1, .3 };
+        
         Synergy::UI::Label::Style titleStyle = {};
         titleStyle.font = narrow;
+        titleStyle.size = 2;
         titleStyle.color = glm::vec4 { 1, 1, 1, 1 };
         titleStyle.align = Synergy::UI::Style::TextAlignment::CENTER;
         
@@ -35,7 +39,7 @@ public:
         copyrightStyle.color = glm::vec4 { 1, 1, 1, 1 };
         copyrightStyle.gravity = Synergy::UI::Style::Gravity::BOTTOM;
         
-        container = Synergy::UI::Container::Create(root);
+        container = Synergy::UI::Container::Create(root, containerStyle);
         title = Synergy::UI::Label::Create(container, "Synergy", titleStyle, [=, &container = this->container](Synergy::UI::Constraint::Anchors& anchors)
         {
             anchors.top.equals(container->Anchors().top, 50);
@@ -73,8 +77,9 @@ public:
         });
         
         Synergy::UI::Label::Style fpsStyle = {};
-        fpsStyle.font = blocks;
-        fpsStyle.color = glm::vec4 { 1, 1, 1, 0.3 };
+        fpsStyle.font = narrow;
+        fpsStyle.size = .3f;
+        fpsStyle.color = glm::vec4 { 1, 0, 0, 0.6 };
         
         fps = Synergy::UI::Label::Create(root, "FPS: 100", fpsStyle, [=, &root = this->root](Synergy::UI::Constraint::Anchors& anchors)
         {
@@ -97,12 +102,25 @@ public:
         
         Synergy::UI::Manager::Submit(root);
         
+        frameTimer += deltatime;
+        frameCount++;
+        
+        if (frameTimer >= 1.0f)
+        {
+            frameTimer -= 1.0f;
+            fps->Update("FPS: " + std::to_string(frameCount));
+            frameCount = 0;
+        }
+        
         return true;
     }
     
 	virtual ~Sandbox() = default;
     
 private:
+    uint32_t frameCount = 0;
+    float frameTimer = 0;
+    
     Synergy::Ref<Synergy::TextureAtlas> atlas;
     Synergy::Ref<Synergy::TextureAtlas::Texture> tree;
     Synergy::Ref<Synergy::TextureAtlas::Texture> barrel;

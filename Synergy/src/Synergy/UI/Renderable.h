@@ -29,6 +29,7 @@ namespace Synergy::UI
     {
         const std::string& text;
         Synergy::Ref<Synergy::Font> font;
+        float scale;
     };
 }
 
