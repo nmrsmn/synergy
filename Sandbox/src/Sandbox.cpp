@@ -27,12 +27,12 @@ public:
         
         Synergy::UI::Label::Style titleStyle = {};
         titleStyle.font = narrow;
-        titleStyle.color = glm::vec3 { 1, 1, 1 };
+        titleStyle.color = glm::vec4 { 1, 1, 1, 1 };
         titleStyle.align = Synergy::UI::Style::TextAlignment::CENTER;
         
         Synergy::UI::Label::Style copyrightStyle = {};
         copyrightStyle.font = blocks;
-        copyrightStyle.color = glm::vec3 { 1, 1, 1 };
+        copyrightStyle.color = glm::vec4 { 1, 1, 1, 1 };
         copyrightStyle.gravity = Synergy::UI::Style::Gravity::BOTTOM;
         
         container = Synergy::UI::Container::Create(root);
@@ -72,6 +72,20 @@ public:
             anchors.height.equals(anchors.width, 0.05f);
         });
         
+        Synergy::UI::Label::Style fpsStyle = {};
+        fpsStyle.font = blocks;
+        fpsStyle.color = glm::vec4 { 1, 1, 1, 0.3 };
+        
+        fps = Synergy::UI::Label::Create(root, "FPS: 100", fpsStyle, [=, &root = this->root](Synergy::UI::Constraint::Anchors& anchors)
+        {
+            anchors.top.equals(root->Anchors().top, 10);
+            anchors.left.equals(root->Anchors().left, 10);
+            
+            // TODO: Width and height should be optional.
+            anchors.width.equals(container->Anchors().width, 0.1f);
+            anchors.height.equals(anchors.width, 1.0f);
+        });
+        
         return true;
     }
     
@@ -105,6 +119,7 @@ private:
     Synergy::Ref<Synergy::UI::Button> button2;
     Synergy::Ref<Synergy::UI::Label> title;
     Synergy::Ref<Synergy::UI::Label> label;
+    Synergy::Ref<Synergy::UI::Label> fps;
     
     Synergy::CameraController controller;
 };

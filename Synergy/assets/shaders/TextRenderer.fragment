@@ -5,10 +5,10 @@ layout(location = 0) out vec4 color;
 in vec2 v_uv;
 
 uniform sampler2D u_texture;
-uniform vec3 u_text_color;
+uniform vec4 u_text_color;
 
 void main()
 {
     vec4 sampled = vec4(1.0, 1.0, 1.0, texture(u_texture, v_uv).r);
-    color = vec4(u_text_color, 1.0) * sampled;
+    color = vec4(u_text_color.rgb, 1.0) * sampled * vec4(1, 1, 1, u_text_color.a);
 }

@@ -86,7 +86,7 @@ namespace Synergy::UI
                 offset.y = (this->size.y - size.y) / 2;
             }
             
-            Synergy::UI::Renderer::Submit(Synergy::UI::Text { position + offset, { }, { 1, 1, 1, 1 }, text, style.font });
+            Synergy::UI::Renderer::Submit(Synergy::UI::Text { position + offset, { }, style.color, text, style.font });
         }
     };
 }

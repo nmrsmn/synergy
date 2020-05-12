@@ -19,7 +19,7 @@ namespace Synergy::UI
         struct Style
         {
             Synergy::Ref<Synergy::Font> font;
-            glm::vec3 color = { 1, 1, 1 };
+            glm::vec4 color = { 1, 1, 1, 1 };
             Synergy::UI::Style::TextAlignment align = Synergy::UI::Style::TextAlignment::LEFT;
             Synergy::UI::Style::Gravity gravity = Synergy::UI::Style::Gravity::TOP;
         };

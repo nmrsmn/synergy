@@ -98,7 +98,7 @@ namespace Synergy::UI
         
         data.textShader->Bind();
         data.textShader->SetMat4("u_projection_view", data.ortho);
-        data.textShader->SetFloat3("u_text_color", renderable.color);
+        data.textShader->SetFloat4("u_text_color", renderable.color);
         
         Synergy::Ref<Synergy::Renderer::VertexArray> vertexArray = api->CreateVertexArray();
         Synergy::Ref<Synergy::Renderer::VertexBuffer> vertexBuffer = api->CreateVertexBuffer(6 * 4 * sizeof(float));
