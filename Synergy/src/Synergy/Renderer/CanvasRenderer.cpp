@@ -135,8 +135,7 @@ namespace Synergy::Renderer
         
         vertexArray->AddVertexBuffer(vertexBuffer);
         
-        Synergy::Ref<Synergy::Texture> texture = data.whiteTexture;
-        
+        Synergy::Ref<Synergy::Texture> texture = text.font->Texture();
         texture->Activate(0);
         texture->Bind();
         
@@ -148,13 +147,13 @@ namespace Synergy::Renderer
         std::string::const_iterator character;
         for (character = text.text.begin(); character != text.text.end(); character++)
         {
-            Synergy::Font::Character current = text.font->GetCharacter(*character);
+            Synergy::Font::Glyph glyph = text.font->GetCharacter(*character);
             
-            float xpos = x + current.bearing.x * scale;
-            float ypos = y - (current.size.y - current.bearing.y) * scale;
+            float xpos = x + glyph.bearing.left * scale;
+            float ypos = y - (glyph.size.height - glyph.bearing.top) * scale;
             
-            float width = current.size.x * scale;
-            float height = current.size.y * scale;
+            float width = glyph.size.width * scale;
+            float height = glyph.size.height * scale;
             
             float vertices[6][4] = {
                 { xpos          , ypos + height , 0.0f, 0.0f },
@@ -166,12 +165,10 @@ namespace Synergy::Renderer
                 { xpos + width  , ypos + height , 1.0f, 0.0f }
             };
             
-            current.texture->Bind();
-            
             vertexBuffer->SetData(vertices, sizeof(vertices));
             api->DrawArrays(6);
             
-            x += (current.advance >> 6) * scale;
+            x += (glyph.advance.x >> 6) * scale;
         }
     }
 }

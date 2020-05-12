@@ -63,6 +63,11 @@ namespace Synergy
     {
         SYNERGY_ASSERT(false, "Data can't be set on a TextureAtlas::Texture");
     }
+
+    void Synergy::TextureAtlas::Texture::SetSubData(void* data, glm::uvec2 offset, glm::uvec2 size)
+    {
+        SYNERGY_ASSERT(false, "SubData can't be set on a TextureAtlas::Texture");
+    }
     
     Synergy::Ref<TextureAtlas> TextureAtlas::Load(const char* path, const glm::uvec2& size, Synergy::Texture::Parameters parameters)
     {

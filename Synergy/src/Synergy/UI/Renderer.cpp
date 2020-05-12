@@ -96,6 +96,12 @@ namespace Synergy::UI
     {
         Synergy::Renderer::RendererAPI* api = Instance().api;
         
+//        struct Vertex
+//        {
+//            float x, y;
+//            float u, v;
+//        } vertices[6 * renderable.text.size()];
+        
         data.textShader->Bind();
         data.textShader->SetMat4("u_projection_view", data.ortho);
         data.textShader->SetFloat4("u_text_color", renderable.color);
@@ -108,44 +114,63 @@ namespace Synergy::UI
         
         vertexArray->AddVertexBuffer(vertexBuffer);
         
-        Synergy::Ref<Synergy::Texture> texture = data.whiteTexture;
-        
+        Synergy::Ref<Synergy::Texture> texture = renderable.font->Texture();
         texture->Activate(0);
         texture->Bind();
         
         float scale = renderable.scale;
         
+        const struct {
+            float width;
+            float height;
+        } size = { (float) texture->GetWidth(), (float) texture->GetHeight() };
+        
         float x = renderable.position.x;
         float y = renderable.position.y;
+        
+        uint32_t index = 0;
         
         std::string::const_iterator character;
         for (character = renderable.text.begin(); character != renderable.text.end(); character++)
         {
-            Synergy::Font::Character current = renderable.font->GetCharacter(*character);
+            Synergy::Font::Glyph glyph = renderable.font->GetCharacter(*character);
             
-            float xpos = x + current.bearing.x * scale;
-            float ypos = y - (current.size.y - current.bearing.y) * scale;
+            float xpos = x + glyph.bearing.left * scale;
+            float ypos = y - (glyph.size.height - glyph.bearing.top) * scale;
             
-            float width = current.size.x * scale;
-            float height = current.size.y * scale;
+            float width = glyph.size.width * scale;
+            float height = glyph.size.height * scale;
+            
+            x += (glyph.advance.x >> 6) * scale;
+            y += (glyph.advance.y >> 6) * scale;
+            
+            if (!glyph.size.width || !glyph.size.height)
+                continue;
+            
+//            vertices[index++] = { xpos          , -ypos         , 0.0f, 0.0f };
+//            vertices[index++] = { xpos + width  , -ypos         , 1.0f, 0.0f };
+//            vertices[index++] = { xpos          , -ypos - height, 0.0f, 1.0f };
+//
+//            vertices[index++] = { xpos + width  , -ypos         , 1.0f, 0.0f };
+//            vertices[index++] = { xpos          , -ypos - height, 0.0f, 1.0f };
+//            vertices[index++] = { xpos + width  , -ypos - height, 1.0f, 1.0f };
             
             float vertices[6][4] = {
-                { xpos          , ypos + height , 0.0f, 0.0f },
-                { xpos          , ypos          , 0.0f, 1.0f },
-                { xpos + width  , ypos          , 1.0f, 1.0f },
+                { xpos          , ypos + height , glyph.texture.x                                  , glyph.texture.y },
+                { xpos          , ypos          , glyph.texture.x                                  , glyph.texture.y + (glyph.size.height / size.height) },
+                { xpos + width  , ypos          , glyph.texture.x + (glyph.size.width / size.width), glyph.texture.y + (glyph.size.height / size.height) },
                 
-                { xpos          , ypos + height , 0.0f, 0.0f },
-                { xpos + width  , ypos          , 1.0f, 1.0f },
-                { xpos + width  , ypos + height , 1.0f, 0.0f }
+                { xpos          , ypos + height , glyph.texture.x                                  , glyph.texture.y },
+                { xpos + width  , ypos          , glyph.texture.x + (glyph.size.width / size.width), glyph.texture.y + (glyph.size.height / size.height) },
+                { xpos + width  , ypos + height , glyph.texture.x + (glyph.size.width / size.width), glyph.texture.y }
             };
-            
-            current.texture->Bind();
             
             vertexBuffer->SetData(vertices, sizeof(vertices));
             api->DrawArrays(6);
-            
-            x += (current.advance >> 6) * scale;
         }
+
+//        vertexBuffer->SetData(vertices, sizeof(vertices));
+//        api->DrawArrays(index);
     }
 
     Synergy::UI::Renderer& Synergy::UI::Renderer::Instance()

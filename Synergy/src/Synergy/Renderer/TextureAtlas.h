@@ -36,6 +36,7 @@ namespace Synergy
             Texture(Synergy::Ref<Synergy::TextureAtlas> atlas, const glm::vec2& min, const glm::vec2& max);
 
             virtual void SetData(void* data, uint32_t size) override;
+            virtual void SetSubData(void* data, glm::uvec2 offset, glm::uvec2 size) override;
                 
         private:
             Synergy::Ref<Synergy::TextureAtlas> atlas;

@@ -39,6 +39,12 @@ namespace Synergy
             CLAMP_TO_BORDER
         };
         
+        enum class UnpackAlignment
+        {
+            NONE = 0,
+            ONE,
+        };
+        
         struct Parameters
         {
             struct Filter
@@ -64,11 +70,13 @@ namespace Synergy
             Synergy::Texture::Parameters::Filter filter = {};
             Synergy::Texture::Parameters::Wrap wrap = {};
             Synergy::Texture::Format format = Synergy::Texture::Format::RGBA;
+            Synergy::Texture::UnpackAlignment alignment = Synergy::Texture::UnpackAlignment::NONE;
             
             Parameters() { }
             Parameters(Synergy::Texture::Parameters::Filter filter) : filter(filter) { }
             Parameters(Synergy::Texture::Parameters::Filter filter, Synergy::Texture::Parameters::Wrap wrap): filter(filter), wrap(wrap) { }
             Parameters(Synergy::Texture::Parameters::Filter filter, Synergy::Texture::Parameters::Wrap wrap, Synergy::Texture::Format format): filter(filter), format(format), wrap(wrap) { }
+            Parameters(Synergy::Texture::Parameters::Filter filter, Synergy::Texture::Parameters::Wrap wrap, Synergy::Texture::Format format, Synergy::Texture::UnpackAlignment alignment): filter(filter), format(format), wrap(wrap), alignment(alignment) { }
         };
         
     public:
@@ -85,6 +93,7 @@ namespace Synergy
         virtual const glm::vec2* GetUVs() const;
         
         virtual void SetData(void* data, uint32_t size) = 0;
+        virtual void SetSubData(void* data, glm::uvec2 offset, glm::uvec2 size) = 0;
         
         virtual void Activate(uint32_t slot) const = 0;
         virtual void Bind() const = 0;

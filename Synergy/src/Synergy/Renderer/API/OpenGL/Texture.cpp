@@ -18,6 +18,13 @@ namespace Synergy::Renderer::OpenGL
         
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, Texture::GetWrap(parameters.wrap.u));
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, Texture::GetWrap(parameters.wrap.v));
+        
+        if (parameters.alignment == Synergy::Texture::UnpackAlignment::ONE)
+        {
+            glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        }
+        
+        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, dataFormat, GL_UNSIGNED_BYTE, 0);
     }
     
     void Texture::SetData(void* data, uint32_t size)
@@ -28,6 +35,12 @@ namespace Synergy::Renderer::OpenGL
         glBindTexture(GL_TEXTURE_2D, id);
         glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, dataFormat, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
+    }
+
+    void Texture::SetSubData(void* data, glm::uvec2 offset, glm::uvec2 size)
+    {
+        glBindTexture(GL_TEXTURE_2D, id);
+        glTexSubImage2D(GL_TEXTURE_2D, 0, offset.x, offset.y, size.x, size.y, dataFormat, GL_UNSIGNED_BYTE, data);
     }
 
     void Texture::Activate(uint32_t slot) const

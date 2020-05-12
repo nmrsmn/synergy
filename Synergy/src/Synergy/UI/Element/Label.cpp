@@ -61,18 +61,23 @@ namespace Synergy::UI
 
     void Label::Submit()
     {
+        Synergy::UI::Renderer::Submit(Synergy::UI::Quad { position, size, { 1, 0, 0, .2 } });
+        
         if (style.font)
         {
             glm::vec2 size { 0, 0 };
             glm::vec3 offset { 0, 0, 0.05 };
             
+            float last = 0;
             for (const char character : text)
             {
-                Synergy::Font::Character current = style.font->GetCharacter(character);
-                size.x += current.advance >> 6;
-                size.y = std::max(size.y, current.size.y);
+                Synergy::Font::Glyph glyph = style.font->GetCharacter(character);
+                last = (glyph.advance.x >> 6) - glyph.size.width;
+                size.x += glyph.advance.x >> 6;
+                size.y = std::max(size.y, (float) glyph.size.height);
             }
             
+            size.x -= last;
             size *= style.size;
             
             if (style.align == Synergy::UI::Style::TextAlignment::RIGHT)
@@ -93,6 +98,7 @@ namespace Synergy::UI
                 offset.y = (this->size.y - size.y) / 2;
             }
             
+            Synergy::UI::Renderer::Submit(Synergy::UI::Quad { position + offset, size, { 1, 1, 0, .2 } });
             Synergy::UI::Renderer::Submit(Synergy::UI::Text { position + offset, { }, style.color, text, style.font, style.size });
         }
     };

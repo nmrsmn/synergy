@@ -19,6 +19,7 @@ namespace Synergy::Renderer::OpenGL
         virtual ~Texture() = default;
         
         virtual void SetData(void* data, uint32_t size) override;
+        virtual void SetSubData(void* data, glm::uvec2 offset, glm::uvec2 size) override;
         
         virtual void Activate(uint32_t slot) const override;
         virtual void Bind() const override;

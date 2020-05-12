@@ -20,31 +20,51 @@ namespace Synergy
     class SYNERGY_API Font
     {
     public:
-        struct SYNERGY_API Character
+        struct SYNERGY_API Glyph
         {
-            Synergy::Ref<Synergy::Texture> texture;
-            glm::vec2 size;
-            glm::vec2 bearing;
-            uint32_t advance;
+            struct {
+                uint16_t width = 0;
+                uint16_t height = 0;
+            } size;
+            
+            struct {
+                uint16_t x = 0;
+                uint16_t y = 0;
+            } advance;
+            
+            struct {
+                float top = 0;
+                float left = 0;
+            } bearing;
+            
+            struct {
+                float x = 0;
+                float y = 0;
+            } texture;
         };
         
     private:
         static Synergy::Ref<Synergy::Font> Load(const std::string& path, uint32_t size);
         
     public:
-        const Synergy::Font::Character GetCharacter(unsigned char character);
+        const Synergy::Font::Glyph GetCharacter(uint16_t character);
+        const Synergy::Ref<Synergy::Texture> Texture() const;
+        
         const uint32_t Size() const;
         
     private:
         Font(const std::string& path, uint32_t size);
         
-        Synergy::Font::Character Cache(const char character);
-        
     private:
+        Synergy::Ref<Synergy::Texture> texture;
+        
         FT_Face face;
         uint32_t size;
         
-        std::unordered_map<unsigned char, Synergy::Font::Character> characters;
+        uint32_t width = 0;
+        uint32_t height = 0;
+        
+        std::unordered_map<uint16_t, Synergy::Font::Glyph> glyphs;
         
         friend class Fonts;
     };
