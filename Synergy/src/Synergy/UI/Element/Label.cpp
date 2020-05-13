@@ -51,20 +51,21 @@ namespace Synergy::UI
 
     void Label::Update(const std::string& text)
     {
-        this->text = text;
         this->Convert(text);
     }
 
     Label::Label(Synergy::Ref<Synergy::UI::View> root, const std::string& text, Synergy::UI::Label::Style style, std::function<void (Synergy::UI::Constraint::Anchors&)> constraints)
-        : style(style), text(text), Synergy::UI::Element(root, constraints)
+        : style(style), Synergy::UI::Element(root)
     {
-        this->Convert(text);
+        this->type = Synergy::UI::Element::Type::INLINE;
+        this->Initialize(constraints, [&]() { this->Convert(text); });
     }
 
     Label::Label(Synergy::Ref<Synergy::UI::Container> container, const std::string& text, Synergy::UI::Label::Style style, std::function<void (Synergy::UI::Constraint::Anchors&)> constraints)
-        : style(style), text(text), Synergy::UI::Element(container, constraints)
+        : style(style), Synergy::UI::Element(container)
     {
-        this->Convert(text);
+        this->type = Synergy::UI::Element::Type::INLINE;
+        this->Initialize(constraints, [&]() { this->Convert(text); });
     }
 
     void Label::Convert(const std::string& text)
@@ -74,7 +75,14 @@ namespace Synergy::UI
         Synergy::UI::Label::Word word;
         
         Synergy::Font::Glyph space = style.font->GetCharacter(32);
-        glm::vec2 max { Anchors().width.Value(), Anchors().height.Value() };
+        
+        glm::uvec2 max { -1, -1 };
+        
+        if (Anchors().width.Activated())
+            max.x = Anchors().width.Value();
+        
+        if (Anchors().height.Activated())
+            max.y = Anchors().height.Value();
         
         uint32_t lastCharacterSpacing = 0;
         
@@ -134,6 +142,12 @@ namespace Synergy::UI
             }
         }
         
+        if (!Anchors().width.Activated())
+            this->size.x = maxLineWidth;
+        
+        if (!Anchors().height.Activated())
+            this->size.y = lineHeight * structure.lines.size() * style.lineHeight;
+        
         this->structure = structure;
     }
 
@@ -176,5 +190,5 @@ namespace Synergy::UI
                 offset.y += lineHeight * style.lineHeight;
             }
         }
-    };
+    }
 }

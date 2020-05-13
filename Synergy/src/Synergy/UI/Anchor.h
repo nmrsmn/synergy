@@ -21,6 +21,7 @@ namespace Synergy::UI::Constraint
         virtual void equals(AnchorType other, int constant) = 0;
         
         float Value() const;
+        bool Activated() const;
         
     protected:
         Anchor();

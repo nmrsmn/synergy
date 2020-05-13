@@ -15,9 +15,10 @@ namespace Synergy::UI
     class SYNERGY_API Element
     {
     public:
-        struct Style
+        enum class Type
         {
-            
+            BLOCK,
+            INLINE
         };
         
     protected:
@@ -28,20 +29,23 @@ namespace Synergy::UI
         
     protected:
         Element();
-        Element(Synergy::Ref<Synergy::UI::View> root, std::function<void (Synergy::UI::Constraint::Anchors&)> constraints = nullptr);
-        Element(Synergy::Ref<Synergy::UI::Container> parent, std::function<void (Synergy::UI::Constraint::Anchors&)> constraints = nullptr);
+        Element(Synergy::Ref<Synergy::UI::View> root);
+        Element(Synergy::Ref<Synergy::UI::Container> parent);
+        
+        void Initialize(std::function<void (Synergy::UI::Constraint::Anchors&)> constraints, std::function<void ()> onInit = nullptr);
         
         virtual void ApplyDefaults();
         virtual void Submit() = 0;
         
     private:
-        void Initialize(std::function<void (Synergy::UI::Constraint::Anchors&)> constraints);
         void CalculateInactiveAnchors();
         void CalculateTransform();
         
     protected:
         Synergy::Ref<Synergy::UI::Container> parent;
+        
         Synergy::UI::Constraint::Anchors anchors;
+        Synergy::UI::Element::Type type = Synergy::UI::Element::Type::BLOCK;
 
         bool dirty = true;
         bool initialized = false;

@@ -35,8 +35,15 @@ namespace Synergy::UI
         return button;
     }
 
-    Button::Button(Synergy::Ref<Synergy::UI::View> root, std::function<void (Synergy::UI::Constraint::Anchors&)> constraints) : Synergy::UI::Element(root, constraints) { }
-    Button::Button(Synergy::Ref<Synergy::UI::Container> container, std::function<void (Synergy::UI::Constraint::Anchors&)> constraints) : Synergy::UI::Element(container, constraints) { }
+    Button::Button(Synergy::Ref<Synergy::UI::View> root, std::function<void (Synergy::UI::Constraint::Anchors&)> constraints) : Synergy::UI::Element(root)
+    {
+        this->Initialize(constraints);
+    }
+
+    Button::Button(Synergy::Ref<Synergy::UI::Container> container, std::function<void (Synergy::UI::Constraint::Anchors&)> constraints) : Synergy::UI::Element(container)
+    {
+        this->Initialize(constraints);
+    }
     
     void Button::Submit()
     {

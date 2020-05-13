@@ -20,15 +20,8 @@ namespace Synergy::UI
     }
 
     Element::Element() { }
-    Element::Element(Synergy::Ref<Synergy::UI::View> root, std::function<void (Synergy::UI::Constraint::Anchors&)> constraints) : parent(root->container)
-    {
-        this->Initialize(constraints);
-    }
-
-    Element::Element(Synergy::Ref<Synergy::UI::Container> parent, std::function<void (Synergy::UI::Constraint::Anchors&)> constraints) : parent(parent)
-    {
-        this->Initialize(constraints);
-    }
+    Element::Element(Synergy::Ref<Synergy::UI::View> root) : parent(root->container) { }
+    Element::Element(Synergy::Ref<Synergy::UI::Container> parent) : parent(parent) { }
 
     void Element::ApplyDefaults()
     {
@@ -44,7 +37,7 @@ namespace Synergy::UI
         anchors.vertical.value = 0;
     }
 
-    void Element::Initialize(std::function<void (Synergy::UI::Constraint::Anchors&)> constraints)
+    void Element::Initialize(std::function<void (Synergy::UI::Constraint::Anchors&)> constraints, std::function<void ()> onInit)
     {
         if (parent)
         {
@@ -56,6 +49,10 @@ namespace Synergy::UI
             {
                 this->ApplyDefaults();
             }
+            
+            if (onInit)
+                onInit();
+            
             this->CalculateTransform();
         }
     }
@@ -97,12 +94,27 @@ namespace Synergy::UI
 
     void Element::CalculateTransform()
     {
-        if (anchors.width.activated == false || anchors.height.activated == false)
+        if (this->type == Synergy::UI::Element::Type::BLOCK)
         {
-            SYNERGY_ASSERT(false, "Both the width and height constraints should be set.");
+            if (anchors.width.activated == false || anchors.height.activated == false)
+            {
+                SYNERGY_ASSERT(false, "Both the width and height constraints should be set.");
+            }
+            
+            size = glm::vec2 { anchors.width.value, anchors.height.value };
         }
-        
-        size = glm::vec2 { anchors.width.value, anchors.height.value };
+        else
+        {
+            if (!anchors.width.activated)
+                anchors.width.value = size.x;
+            else
+                size.x = anchors.width.value;
+            
+            if (!anchors.height.activated)
+                anchors.height.value = size.y;
+            else
+                size.y = anchors.height.value;
+        }
         
         if (anchors.left.activated == false && anchors.right.activated == false && anchors.horizontal.activated == false)
         {

@@ -44,8 +44,16 @@ namespace Synergy::UI
         return item;
     }
 
-    Container::Container(Synergy::Ref<Synergy::UI::View> root, Synergy::UI::Container::Style style, std::function<void (Synergy::UI::Constraint::Anchors&)> constraints) : style(style), Synergy::UI::Element(root, constraints) { }
-    Container::Container(Synergy::Ref<Synergy::UI::Container> container, Synergy::UI::Container::Style style, std::function<void (Synergy::UI::Constraint::Anchors&)> constraints) : style(style), Synergy::UI::Element(container, constraints) { }
+    Container::Container(Synergy::Ref<Synergy::UI::View> root, Synergy::UI::Container::Style style, std::function<void (Synergy::UI::Constraint::Anchors&)> constraints) : style(style), Synergy::UI::Element(root)
+    {
+        this->Initialize(constraints);
+    }
+
+    Container::Container(Synergy::Ref<Synergy::UI::Container> container, Synergy::UI::Container::Style style, std::function<void (Synergy::UI::Constraint::Anchors&)> constraints) : style(style), Synergy::UI::Element(container)
+    {
+        this->Initialize(constraints);
+    }
+
     Container::Container() : Synergy::UI::Element() { }
 
     void Container::Submit()

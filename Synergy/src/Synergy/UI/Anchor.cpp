@@ -28,6 +28,24 @@ namespace Synergy::UI::Constraint
     }
 
     template<>
+    bool Anchor<Synergy::UI::Constraint::DimensionAnchor>::Activated() const
+    {
+        return activated;
+    }
+
+    template<>
+    bool Anchor<Synergy::UI::Constraint::XAxisAnchor>::Activated() const
+    {
+        return activated;
+    }
+
+    template<>
+    bool Anchor<Synergy::UI::Constraint::YAxisAnchor>::Activated() const
+    {
+        return activated;
+    }
+
+    template<>
     Anchor<Synergy::UI::Constraint::DimensionAnchor>::Anchor(float value) : value(value) { }
 
     template<>

@@ -69,8 +69,6 @@ namespace Synergy::UI
         
         uint32_t maxLineWidth = 0;
         uint32_t lineHeight = 0;
-        
-        std::string text;
     };
 }
 

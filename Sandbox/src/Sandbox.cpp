@@ -39,7 +39,6 @@ public:
         Synergy::UI::Label::Style copyrightStyle = {};
         copyrightStyle.font = blocks;
         copyrightStyle.color = glm::vec4 { 1, 1, 1, 1 };
-        copyrightStyle.align = Synergy::UI::Style::TextAlignment::CENTER;
         copyrightStyle.gravity = Synergy::UI::Style::Gravity::BOTTOM;
         
         container = Synergy::UI::Container::Create(root, containerStyle);
@@ -50,7 +49,6 @@ public:
             
             // TODO: Width and height should be optional.
             anchors.width.equals(container->Anchors().width, 0.5f);
-            anchors.height.equals(anchors.width, ratio);
         });
         
         button1 = Synergy::UI::Button::Create(container, [=, &container = this->container, &title = this->title](Synergy::UI::Constraint::Anchors& anchors)
@@ -73,10 +71,7 @@ public:
         {
             anchors.bottom.equals(container->Anchors().bottom, -10);
             anchors.left.equals(container->Anchors().left, 10);
-
-            // TODO: Width and height should be optional.
-            anchors.width.equals(container->Anchors().width, 0.2f);
-            anchors.height.equals(container->Anchors().height, 0.3f);
+            anchors.width.equals(container->Anchors().width, 0.8f);
         });
         
         Synergy::UI::Label::Style fpsStyle = {};
@@ -88,10 +83,6 @@ public:
         {
             anchors.top.equals(root->Anchors().top, 10);
             anchors.left.equals(root->Anchors().left, 10);
-            
-            // TODO: Width and height should be optional.
-            anchors.width.equals(container->Anchors().width, 0.2f);
-            anchors.height.equals(anchors.width, 1.0f);
         });
         
         return true;
