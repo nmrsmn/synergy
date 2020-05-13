@@ -147,20 +147,13 @@ namespace Synergy::UI
             if (!glyph.size.width || !glyph.size.height)
                 continue;
             
-/*
- data.positions[0] = { 0.0f, 0.0f, -1.0f, 1.0f };
- data.positions[1] = { 1.0f, 0.0f, -1.0f, 1.0f };
- data.positions[2] = { 1.0f, 1.0f, -1.0f, 1.0f };
- data.positions[3] = { 0.0f, 1.0f, -1.0f, 1.0f };
- */
+            vertices[index++] = { xpos          , ypos         , glyph.texture.x                                  , glyph.texture.y + (glyph.size.height / size.height) };
+            vertices[index++] = { xpos + width  , ypos         , glyph.texture.x + (glyph.size.width / size.width), glyph.texture.y + (glyph.size.height / size.height) };
+            vertices[index++] = { xpos + width  , ypos + height, glyph.texture.x + (glyph.size.width / size.width), glyph.texture.y };
             
-            vertices[index++] = { xpos          , ypos + height , glyph.texture.x                                  , glyph.texture.y };
-            vertices[index++] = { xpos          , ypos          , glyph.texture.x                                  , glyph.texture.y + (glyph.size.height / size.height) };
-            vertices[index++] = { xpos + width  , ypos          , glyph.texture.x + (glyph.size.width / size.width), glyph.texture.y + (glyph.size.height / size.height) };
-
-            vertices[index++] = { xpos + width  , ypos          , glyph.texture.x + (glyph.size.width / size.width), glyph.texture.y + (glyph.size.height / size.height) };
-            vertices[index++] = { xpos + width  , ypos + height , glyph.texture.x + (glyph.size.width / size.width), glyph.texture.y };
-            vertices[index++] = { xpos          , ypos + height , glyph.texture.x                                  , glyph.texture.y };
+            vertices[index++] = { xpos + width  , ypos + height, glyph.texture.x + (glyph.size.width / size.width), glyph.texture.y };
+            vertices[index++] = { xpos          , ypos + height, glyph.texture.x                                  , glyph.texture.y };
+            vertices[index++] = { xpos          , ypos         , glyph.texture.x                                  , glyph.texture.y + (glyph.size.height / size.height) };
         }
 
         vertexBuffer->SetData(vertices, sizeof(vertices));
@@ -202,4 +195,3 @@ namespace Synergy::UI
         data.ortho = glm::ortho(0.0f, data.screen.x, 0.0f, data.screen.y, 0.0f, data.screen.z);
     }
 }
-

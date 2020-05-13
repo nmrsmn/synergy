@@ -119,6 +119,6 @@ namespace Synergy::UI
         float x = anchors.left.value;
         float y = anchors.bottom.value;
         
-        position = glm::vec3 { x, 600 - y, 0.9 };
+        position = glm::vec3 { x, 600 - y, 0.7 };
     }
 }

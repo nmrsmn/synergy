@@ -37,6 +37,12 @@ namespace Synergy::UI
             CENTER,
             BOTTOM
         };
+        
+        enum class Overflow
+        {
+            HIDDEN = 0,
+            VISIBLE
+        };
     };
 }
 

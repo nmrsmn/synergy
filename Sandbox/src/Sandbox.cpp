@@ -33,10 +33,13 @@ public:
         titleStyle.size = 2;
         titleStyle.color = glm::vec4 { 1, 1, 1, 1 };
         titleStyle.align = Synergy::UI::Style::TextAlignment::CENTER;
+        titleStyle.gravity = Synergy::UI::Style::Gravity::CENTER;
+        titleStyle.overflow = Synergy::UI::Style::Overflow::VISIBLE;
         
         Synergy::UI::Label::Style copyrightStyle = {};
         copyrightStyle.font = blocks;
         copyrightStyle.color = glm::vec4 { 1, 1, 1, 1 };
+        copyrightStyle.align = Synergy::UI::Style::TextAlignment::CENTER;
         copyrightStyle.gravity = Synergy::UI::Style::Gravity::BOTTOM;
         
         container = Synergy::UI::Container::Create(root, containerStyle);
@@ -72,8 +75,8 @@ public:
             anchors.left.equals(container->Anchors().left, 10);
 
             // TODO: Width and height should be optional.
-            anchors.width.equals(container->Anchors().width, 0.8f);
-            anchors.height.equals(anchors.width, 0.05f);
+            anchors.width.equals(container->Anchors().width, 0.2f);
+            anchors.height.equals(container->Anchors().height, 0.3f);
         });
         
         Synergy::UI::Label::Style fpsStyle = {};
@@ -87,7 +90,7 @@ public:
             anchors.left.equals(root->Anchors().left, 10);
             
             // TODO: Width and height should be optional.
-            anchors.width.equals(container->Anchors().width, 0.1f);
+            anchors.width.equals(container->Anchors().width, 0.2f);
             anchors.height.equals(anchors.width, 1.0f);
         });
         

@@ -16,13 +16,32 @@ namespace Synergy::UI
     class SYNERGY_API Label : public Synergy::UI::Element
     {
     public:
+        struct Word
+        {
+            std::string characters = "";
+            uint16_t width = 0;
+        };
+        
+        struct Line
+        {
+            std::string words = "";
+            uint16_t width = 0;
+        };
+        
+        struct Text
+        {
+            std::vector<Synergy::UI::Label::Line> lines;
+        };
+        
         struct Style
         {
             Synergy::Ref<Synergy::Font> font;
             glm::vec4 color = { 1, 1, 1, 1 };
             float size = 1.0f;
+            float lineHeight = 1.8f;
             Synergy::UI::Style::TextAlignment align = Synergy::UI::Style::TextAlignment::LEFT;
             Synergy::UI::Style::Gravity gravity = Synergy::UI::Style::Gravity::TOP;
+            Synergy::UI::Style::Overflow overflow = Synergy::UI::Style::Overflow::HIDDEN;
         };
 
     public:
@@ -38,12 +57,19 @@ namespace Synergy::UI
         Label(Synergy::Ref<Synergy::UI::View> root, const std::string& text, Synergy::UI::Label::Style style, std::function<void (Synergy::UI::Constraint::Anchors&)> constraints = nullptr);
         Label(Synergy::Ref<Synergy::UI::Container> container, const std::string& text, Synergy::UI::Label::Style style, std::function<void (Synergy::UI::Constraint::Anchors&)> constraints = nullptr);
         
+        void Convert(const std::string& text);
+        
         virtual void Submit() override;
 
     public:
         Synergy::UI::Label::Style style;
         
     private:
+        Synergy::UI::Label::Text structure;
+        
+        uint32_t maxLineWidth = 0;
+        uint32_t lineHeight = 0;
+        
         std::string text;
     };
 }
