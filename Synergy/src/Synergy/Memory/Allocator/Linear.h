@@ -9,7 +9,7 @@
 
 namespace Synergy::Memory::Allocator
 {
-    class Linear : public Synergy::Memory::Allocator::Allocator
+    class SYNERGY_API Linear : public Synergy::Memory::Allocator::Allocator
     {
     public:
         Linear(const size_t size, const void* memory);

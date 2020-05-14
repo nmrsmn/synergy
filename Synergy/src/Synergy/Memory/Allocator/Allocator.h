@@ -8,7 +8,7 @@
 
 namespace Synergy::Memory::Allocator
 {
-    class Allocator
+    class SYNERGY_API Allocator
     {
     public:
         static inline uint8_t GetAdjustment(const void* address, uint8_t alignment)

@@ -9,7 +9,7 @@
 
 namespace Synergy::Memory::Allocator
 {
-    class Pool : public Synergy::Memory::Allocator::Allocator
+    class SYNERGY_API Pool : public Synergy::Memory::Allocator::Allocator
     {
     private:
         const size_t m_ObjectSize;

@@ -9,7 +9,7 @@
 
 namespace Synergy::Memory::Allocator
 {
-    class Stack : public Synergy::Memory::Allocator::Allocator
+    class SYNERGY_API Stack : public Synergy::Memory::Allocator::Allocator
     {
     private:
         struct AllocMetaInfo
