@@ -44,6 +44,7 @@ project "Synergy"
 	{
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/src/**.inl",
 		"%{prj.name}/libs/glm/glm/**.hpp",
 		"%{prj.name}/libs/glm/glm/**.inl",
 		"%{prj.name}/libs/stb/**.cpp",

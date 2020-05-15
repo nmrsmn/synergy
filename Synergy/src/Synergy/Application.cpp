@@ -10,6 +10,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "Synergy/Application.h"
+#include "Synergy/ECS/Scene.h"
 
 #include "Synergy/Fonts.h"
 #include "Synergy/Renderer/Renderer.h"
@@ -37,6 +38,23 @@ namespace Synergy
         
         if (!platform->Shutdown()) return false;
         return true;
+    }
+
+    Synergy::Scene& Application::CreateScene(const std::string& name)
+    {
+        auto result { m_Scenes.emplace(name, name) };
+        return result.first->second;
+    }
+
+    Synergy::Scene& Application::GetScene(const std::string& name)
+    {
+        auto result { m_Scenes.find(name) };
+        
+        if (result != m_Scenes.end())
+            return result->second;
+        
+        SYNERGY_LOG_ERROR("Scene '{}' doesn't exists. Creating instead.", name);
+        return this->CreateScene(name);
     }
 
     void Application::PushLayer(Layer* layer)

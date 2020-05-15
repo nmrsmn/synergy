@@ -4,6 +4,7 @@
 #ifndef SYNERGY_APPLICATION_H
 #define SYNERGY_APPLICATION_H
 
+#include <unordered_map>
 #include <vector>
 
 #include "Synergy/Core.h"
@@ -14,12 +15,17 @@
 
 namespace Synergy
 {
+    class Scene;
+
     class SYNERGY_API Application
     {
     public:
         virtual ~Application() = default;
         
         bool Start();
+        
+        Synergy::Scene& CreateScene(const std::string& name);
+        Synergy::Scene& GetScene(const std::string& name);
         
     protected:
         Application();
@@ -51,6 +57,8 @@ namespace Synergy
         
         Platform* platform;
         Renderer::RendererAPI* api;
+        
+        std::unordered_map<std::string, Synergy::Scene> m_Scenes;
         
         friend class Platform;
         

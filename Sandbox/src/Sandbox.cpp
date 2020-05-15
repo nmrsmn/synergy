@@ -3,15 +3,25 @@
 
 #include "Synergy.h"
 
+struct Transform
+{
+    glm::vec3 position { 0.f, 0.f, 0.f };
+    glm::vec3 rotation { 0.f, 0.f, 0.f };
+    glm::vec3 scale { 1.f, 1.f, 1.f };
+};
+
 class Sandbox: public Synergy::Application
 {
 public:
-	explicit Sandbox(): controller(800.0f / 600.0f), Synergy::Application() {}
+	explicit Sandbox() : m_SandboxScene(this->CreateScene("Sandbox Scene")), controller(800.0f / 600.0f), Synergy::Application() {}
     
     static constexpr float ratio = 45.f / 190.f;
     
     virtual bool OnUserCreate() override
     {
+        Synergy::EntityRef entity = m_SandboxScene.CreateEntity("Button");
+        entity.Add<Transform>();
+        
         button = Synergy::Texture::Load("assets/textures/red_button00.png");
         
         narrow = Synergy::Fonts::Load("assets/fonts/Kenney Future Narrow.ttf", 48);
@@ -89,6 +99,8 @@ private:
     Synergy::Ref<Synergy::UI::Button> button2;
     
     Synergy::CameraController controller;
+    
+    Synergy::Scene m_SandboxScene;
 };
 
 Synergy::Application* Synergy::CreateApplication()
