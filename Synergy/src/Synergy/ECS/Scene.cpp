@@ -5,17 +5,14 @@
 
 #include "Synergy/ECS/ComponentPoolBase.h"
 #include "Synergy/ECS/ComponentPool.h"
-#include "Synergy/ECS/Scene.h"
 #include "Synergy/ECS/Entity.h"
 #include "Synergy/ECS/EntityRef.h"
-
+#include "Synergy/ECS/Scene.h"
+#include "Synergy/ECS/SystemBase.h"
+#include "Synergy/Event/Events.h"
 
 namespace Synergy
 {
-    Scene::Scene() = default;
-    Scene::Scene(const Synergy::Scene&) {}
-    Scene::Scene(Synergy::Scene&&) = default;
-
     Scene::Scene(std::string name) :
         m_Name(std::move(name))
     {}
@@ -44,6 +41,13 @@ namespace Synergy
         reference.m_Scene->m_Entities[reference.m_Id].Clone(*this, m_Entities[entity.m_Id]);
         
         return entity;
+    }
+    
+    void Scene::Update(float dt)
+    {
+        this->Emit(Synergy::FrameStartEvent {});
+        this->Emit(Synergy::UpdateEvent { dt });
+        this->Emit(Synergy::FrameEndEvent {});
     }
 
     Synergy::EntityRef Scene::CreateEntity(const std::string& name)

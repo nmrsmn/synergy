@@ -6,6 +6,9 @@
 
 #include "Synergy/ECS/ComponentPoolBase.h"
 #include "Synergy/ECS/ComponentPool.h"
+#include "Synergy/ECS/Scene.h"
+#include "Synergy/ECS/System.h"
+#include "Synergy/ECS/SystemBase.h"
 
 template <typename T>
 T& Synergy::Scene::GetComponent(Synergy::EntityId entity)
@@ -17,6 +20,12 @@ template <typename T>
 const T& Synergy::Scene::GetComponent(Synergy::EntityId entity) const
 {
     return this->GetComponentPool<std::decay_t<T>>().m_Components[entity];
+}
+
+template <typename T, typename... Args>
+void Synergy::Scene::Add(const std::string& name, Args&&... args)
+{
+    m_Systems.push_back(std::move(Synergy::Scope<Synergy::SystemBase>(new Synergy::System<T>(*this, name, std::forward<Args>(args)...))));
 }
 
 template <typename T>

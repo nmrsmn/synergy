@@ -41,6 +41,10 @@
 #include "Synergy/ECS/EntityId.h"
 #include "Synergy/ECS/EntityRef.h"
 #include "Synergy/ECS/Scene.h"
+#include "Synergy/ECS/System.h"
+
+#include "Synergy/Event/EventDispatcher.h"
+#include "Synergy/Event/EventHandler.h"
 
 #include "Synergy/Util/SlotMap.h"
 

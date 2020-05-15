@@ -7,6 +7,7 @@
 #include <tuple>
 #include <typeindex>
 
+#include "Synergy/Core.h"
 #include "Synergy/ECS/EntityId.h"
 
 namespace Synergy
@@ -14,7 +15,7 @@ namespace Synergy
     class Entity;
     class Scene;
 
-    class ComponentPoolBase
+    class SYNERGY_API ComponentPoolBase
     {
         friend class Entity;
         

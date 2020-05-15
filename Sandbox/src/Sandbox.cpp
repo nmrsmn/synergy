@@ -100,7 +100,7 @@ private:
     
     Synergy::CameraController controller;
     
-    Synergy::Scene m_SandboxScene;
+    Synergy::Scene& m_SandboxScene;
 };
 
 Synergy::Application* Synergy::CreateApplication()

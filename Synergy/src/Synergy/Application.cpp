@@ -104,6 +104,9 @@ namespace Synergy
             for (Layer* layer : layers)
                 layer->OnUpdate(deltaTime);
             
+            for (auto& scene : m_Scenes)
+                scene.second.Update(deltaTime);
+            
             api->DisplayFrame();
             platform->UpdateWindow();
             

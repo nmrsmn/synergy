@@ -7,21 +7,24 @@
 #include <tuple>
 #include <typeindex>
 #include <unordered_map>
+#include <vector>
 
 #include "Synergy/Core.h"
 #include "Synergy/ECS/EntityId.h"
+#include "Synergy/Event/EventHandler.h"
 #include "Synergy/Util/SlotMap.h"
 
 namespace Synergy
 {
     class Application;
-    class Entity;
-    class EntityRef;
     template <typename T>
     class ComponentPool;
     class ComponentPoolBase;
+    class Entity;
+    class EntityRef;
+    class SystemBase;
 
-    class SYNERGY_API Scene
+    class SYNERGY_API Scene : public Synergy::EventHandler
     {   
         friend class Application;
         template <typename T>
@@ -30,10 +33,6 @@ namespace Synergy
         friend class EntityRef;
         
     public:
-        Scene();
-        Scene(const Synergy::Scene&);
-        Scene(Synergy::Scene&&);
-        
         Scene(std::string name = "Unnamed Scene");
         
         template <typename T>
@@ -48,6 +47,11 @@ namespace Synergy
         const Synergy::Entity* GetEntity(Synergy::EntityId id) const;
         
         Synergy::EntityRef Spawn(Synergy::EntityRef reference);
+        
+        template <typename T, typename... Args>
+        void Add(const std::string& name = "Unnamed System", Args&&... args);
+        
+        void Update(float dt);
         
         Synergy::EntityRef CreateEntity(const std::string& name);
 
@@ -65,6 +69,7 @@ namespace Synergy
         
         stdext::slot_map<Synergy::Entity> m_Entities;
         std::unordered_map<std::type_index, Synergy::Scope<Synergy::ComponentPoolBase>> m_Components;
+        std::vector<Synergy::Scope<Synergy::SystemBase>> m_Systems;
     };
 }
 
