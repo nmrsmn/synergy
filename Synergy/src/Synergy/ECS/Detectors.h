@@ -29,77 +29,112 @@ template <typename T>
 using supports_position_field = std::experimental::is_detected<position_field_t, T>;
 
 /*
- * Detect
+ * Detect (system) members
  */
 
+// Initialize
 template <typename T>
 using initialize_member_t = decltype(std::declval<T&>().Initialize());
 
 template <typename T>
 using has_initialize_member = std::experimental::is_detected<initialize_member_t, T>;
 
-/*
-    Initialize
-    Enable
- 
-    Start
- 
-    FrameStart
- 
-    FixedUpdate
- 
-    Update
-    PostUpdate
- 
-    FrameEnd
-    Disable
- 
-    Destroy
- */
+// Destroy
+template <typename T>
+using destroy_member_t = decltype(std::declval<T&>().Destroy());
 
+template <typename T>
+using has_destroy_member = std::experimental::is_detected<destroy_member_t, T>;
 
-/*
- template <typename T>                                                        \
- using FIELD##_field                                                          \
-   = decltype(std::declval<T &>().FIELD.x + std::declval<T &>().FIELD.y);     \
-                                                                              \
- template <typename T>                                                        \
- using has_##FIELD##_field = is_detected<FIELD##_field, T>;                   \
-                                                                              \
- template <typename T>                                                        \
- constexpr bool has_##FIELD##_field_v = has_##FIELD##_field<T>::value;        \
-                                                                              \
- template <typename T>                                                        \
- constexpr size_t FIELD##_field_size = sizeof(                                \
-   std::conditional_t<has_##FIELD##_field_v<T>,                               \
-                      decltype(std::declval<T &>().FIELD), void_t<T>>);
- 
- 
- #define GENERATE_DETECT_HAS_VOID_MEMFN(FN)                                     \
-                                                                              \
- template <typename T>                                                        \
- using UpdateMemFn = decltype(std::declval<T &>().Update());                        \
-                                                                              \
- template <typename T>                                                        \
- using HasUpdateMemFn = is_detected<UpdateMemFn, T>;                            \
-                                                                              \
- template <typename T>                                                        \
- constexpr bool HasUpdateMemFn_v = HasUpdateMemFn<T>::value;
- 
- 
+// Enable
+template <typename T>
+using enable_member_t = decltype(std::declval<T&>().Enable());
 
- template <typename T>
- using DetectDtMember = decltype(std::declval<T &>().Dt = 1.f);
- template <typename T>
- using HasDtMember = is_detected<DetectDtMember, T>;
- template <typename T>
- constexpr bool HasDtMember_v = HasDtMember<T>::value;
+template <typename T>
+using has_enable_member = std::experimental::is_detected<enable_member_t, T>;
 
- // composition of all minimum requirements for a component
- template <typename T>
- constexpr bool IsComponent_v = std::is_copy_constructible_v<T>;
+// Disable
+template <typename T>
+using disable_member_t = decltype(std::declval<T&>().Disable());
 
- 
- */
+template <typename T>
+using has_disable_member = std::experimental::is_detected<disable_member_t, T>;
+
+// Load
+template <typename T>
+using load_member_t = decltype(std::declval<T&>().Load());
+
+template <typename T>
+using has_load_member = std::experimental::is_detected<load_member_t, T>;
+
+// Unload
+template <typename T>
+using unload_member_t = decltype(std::declval<T&>().Unload());
+
+template <typename T>
+using has_unload_member = std::experimental::is_detected<unload_member_t, T>;
+
+// Reload
+template <typename T>
+using reload_member_t = decltype(std::declval<T&>().Reload());
+
+template <typename T>
+using has_reload_member = std::experimental::is_detected<reload_member_t, T>;
+
+// Frame Start
+template <typename T>
+using frame_start_member_t = decltype(std::declval<T&>().FrameStart());
+
+template <typename T>
+using has_frame_start_member = std::experimental::is_detected<frame_start_member_t, T>;
+
+// Frame End
+template <typename T>
+using frame_end_member_t = decltype(std::declval<T&>().FrameEnd());
+
+template <typename T>
+using has_frame_end_member = std::experimental::is_detected<frame_end_member_t, T>;
+
+// Fixed Update
+template <typename T>
+using fixed_update_member_t = decltype(std::declval<T&>().FixedUpdate());
+
+template <typename T>
+using has_fixed_update_member = std::experimental::is_detected<fixed_update_member_t, T>;
+
+// Pre Process
+template <typename T>
+using pre_process_member_t = decltype(std::declval<T&>().PreProcess());
+
+template <typename T>
+using has_pre_process_member = std::experimental::is_detected<pre_process_member_t, T>;
+
+// Process
+template <typename T, typename = void>
+struct has_process_member : std::false_type {};
+
+template <typename T>
+struct has_process_member<T, std::enable_if_t<Synergy::is_member_function_v<decltype(&T::Process)>>> : std::true_type {};
+
+// Post Process
+template <typename T>
+using post_process_member_t = decltype(std::declval<T&>().PostProcess());
+
+template <typename T>
+using has_post_process_member = std::experimental::is_detected<post_process_member_t, T>;
+
+// Update
+template <typename T>
+using update_member_t = decltype(std::declval<T&>().Update());
+
+template <typename T>
+using has_update_member = std::experimental::is_detected<update_member_t, T>;
+
+// Post Update
+template <typename T>
+using post_update_member_t = decltype(std::declval<T&>().PostUpdate());
+
+template <typename T>
+using has_post_update_member = std::experimental::is_detected<post_update_member_t, T>;
 
 #endif

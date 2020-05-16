@@ -37,6 +37,7 @@
 // REFACTORED:
 #include "Synergy/ECS/ComponentPoolBase.h"
 #include "Synergy/ECS/ComponentPool.h"
+#include "Synergy/ECS/EntitiesWith.h"
 #include "Synergy/ECS/Entity.h"
 #include "Synergy/ECS/EntityId.h"
 #include "Synergy/ECS/EntityRef.h"

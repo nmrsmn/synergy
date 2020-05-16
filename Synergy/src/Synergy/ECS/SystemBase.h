@@ -15,6 +15,20 @@ namespace Synergy
         virtual ~SystemBase() {}
         
         virtual bool HasInitialize() const = 0;
+        virtual bool HasDestroy() const = 0;
+        virtual bool HasEnable() const = 0;
+        virtual bool HasDisable() const = 0;
+        virtual bool HasLoad() const = 0;
+        virtual bool HasUnload() const = 0;
+        virtual bool HasReload() const = 0;
+        virtual bool HasFrameStart() const = 0;
+        virtual bool HasFrameEnd() const = 0;
+        virtual bool HasFixedUpdate() const = 0;
+        virtual bool HasPreProcess() const = 0;
+        virtual bool HasProcess() const = 0;
+        virtual bool HasPostProcess() const = 0;
+        virtual bool HasUpdate() const = 0;
+        virtual bool HasPostUpdate() const = 0;
         
         virtual void OnFrameStart() = 0;
         virtual void OnFrameEnd() = 0;
