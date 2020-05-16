@@ -1,12 +1,12 @@
 // Created by Niels Marsman on 14-05-2020.
 // Copyright © 2020 Niels Marsman. All rights reserved.
 
-#ifndef SYNERGY_ECS_ENTITY_REF_INLINE
-#define SYNERGY_ECS_ENTITY_REF_INLINE
+#ifndef SYNERGY_ENTITY_ENTITY_REF_INLINE
+#define SYNERGY_ENTITY_ENTITY_REF_INLINE
 
-#include "Synergy/ECS/Entity.h"
-#include "Synergy/ECS/Scene.h"
-#include "Synergy/ECS/SceneEvents.h"
+#include "Synergy/Entity/Entity.h"
+#include "Synergy/Scene.h"
+#include "Synergy/SceneEvents.h"
 
 template <typename Component>
 bool Synergy::EntityRef::Has() const

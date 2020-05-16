@@ -1,11 +1,11 @@
 // Created by Niels Marsman on 16-05-2020.
 // Copyright © 2020 Niels Marsman. All rights reserved.
 
-#ifndef SYNERGY_ECS_CONSTRAINED_ENTITY_REF_H
-#define SYNERGY_ECS_CONSTRAINED_ENTITY_REF_H
+#ifndef SYNERGY_ENTITY_CONSTRAINED_ENTITY_REF_H
+#define SYNERGY_ENTITY_CONSTRAINED_ENTITY_REF_H
 
 #include "Synergy/Core.h"
-#include "Synergy/ECS/EntityRef.h"
+#include "Synergy/Entity/EntityRef.h"
 
 namespace Synergy
 {
@@ -47,6 +47,6 @@ namespace Synergy
     };
 }
 
-#include "Synergy/ECS/ConstrainedEntityRef.inl"
+#include "Synergy/Entity/ConstrainedEntityRef.inl"
 
 #endif

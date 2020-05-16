@@ -1,11 +1,11 @@
 // Created by Niels Marsman on 15-05-2020.
 // Copyright © 2020 Niels Marsman. All rights reserved.
 
-#ifndef SYNERGY_ECS_SYSTEM_BASE_H
-#define SYNERGY_ECS_SYSTEM_BASE_H
+#ifndef SYNERGY_SYSTEM_SYSTEM_BASE_H
+#define SYNERGY_SYSTEM_SYSTEM_BASE_H
 
 #include "Synergy/Core.h"
-#include "Synergy/ECS/SystemTraits.h"
+#include "Synergy/System/SystemTraits.h"
 
 namespace Synergy
 {

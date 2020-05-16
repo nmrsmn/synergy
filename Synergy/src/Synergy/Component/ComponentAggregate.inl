@@ -1,11 +1,11 @@
 // Created by Niels Marsman on 16-05-2020.
 // Copyright © 2020 Niels Marsman. All rights reserved.
 
-#ifndef SYNERGY_ECS_COMPONENT_AGGREGATE_INLINE
-#define SYNERGY_ECS_COMPONENT_AGGREGATE_INLINE
+#ifndef SYNERGY_COMPONENT_COMPONENT_AGGREGATE_INLINE
+#define SYNERGY_COMPONENT_COMPONENT_AGGREGATE_INLINE
 
-#include "Synergy/ECS/EntitiesWith.h"
-#include "Synergy/ECS/EntitiesWithBase.h"
+#include "Synergy/Entity/EntitiesWith.h"
+#include "Synergy/Entity/EntitiesWithBase.h"
 
 template <typename... Args>
 inline Synergy::ComponentAggregate::ComponentAggregate(stdext::type_list<Args...>)

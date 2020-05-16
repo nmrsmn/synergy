@@ -1,8 +1,8 @@
 // Created by Niels Marsman on 15-05-2020.
 // Copyright © 2020 Niels Marsman. All rights reserved.
 
-#ifndef SYNERGY_ECS_DETECTORS_H
-#define SYNERGY_ECS_DETECTORS_H
+#ifndef SYNERGY_UTIL_DETECTORS_H
+#define SYNERGY_UTIL_DETECTORS_H
 
 #include <experimental/type_traits>
 

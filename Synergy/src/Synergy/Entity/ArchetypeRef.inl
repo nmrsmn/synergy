@@ -4,7 +4,7 @@
 #ifndef SYNERGY_ENTITY_ARCHETYPE_REF_INLINE
 #define SYNERGY_ENTITY_ARCHETYPE_REF_INLINE
 
-#include "Synergy/ECS/Scene.h"
+#include "Synergy/Scene.h"
 
 template <typename Component, typename... Args>
 inline Component& Synergy::ArchetypeRef::Add(Args&&... args)

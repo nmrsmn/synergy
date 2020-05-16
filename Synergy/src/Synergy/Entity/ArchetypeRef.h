@@ -5,7 +5,7 @@
 #define SYNERGY_ENTITY_ARCHETYPE_REF_H
 
 #include "Synergy/Core.h"
-#include "Synergy/ECS/EntityRef.h"
+#include "Synergy/Entity/EntityRef.h"
 
 namespace Synergy
 {

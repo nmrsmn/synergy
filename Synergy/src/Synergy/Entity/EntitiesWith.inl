@@ -1,10 +1,10 @@
 // Created by Niels Marsman on 16-05-2020.
 // Copyright © 2020 Niels Marsman. All rights reserved.
 
-#ifndef SYNERGY_ECS_ENTITIES_WITH_INLINE
-#define SYNERGY_ECS_ENTITIES_WITH_INLINE
+#ifndef SYNERGY_ENTITY_ENTITIES_WITH_INLINE
+#define SYNERGY_ENTITY_ENTITIES_WITH_INLINE
 
-#include "Synergy/ECS/ConstrainedEntityRef.h"
+#include "Synergy/Entity/ConstrainedEntityRef.h"
 
 template <typename... Args>
 typename Synergy::EntitiesWith<Args...>::iterator Synergy::EntitiesWith<Args...>::begin()

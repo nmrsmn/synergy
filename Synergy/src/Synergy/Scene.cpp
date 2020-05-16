@@ -3,14 +3,14 @@
 
 #include <utility>
 
+#include "Synergy/Component/ComponentPoolBase.h"
+#include "Synergy/Component/ComponentPool.h"
 #include "Synergy/Entity/ArchetypeRef.h"
-#include "Synergy/ECS/ComponentPoolBase.h"
-#include "Synergy/ECS/ComponentPool.h"
-#include "Synergy/ECS/Entity.h"
-#include "Synergy/ECS/EntityRef.h"
-#include "Synergy/ECS/Scene.h"
-#include "Synergy/ECS/SceneEvents.h"
-#include "Synergy/ECS/SystemBase.h"
+#include "Synergy/Entity/Entity.h"
+#include "Synergy/Entity/EntityRef.h"
+#include "Synergy/Scene.h"
+#include "Synergy/SceneEvents.h"
+#include "Synergy/System/SystemBase.h"
 
 namespace Synergy
 {

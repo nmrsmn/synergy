@@ -1,8 +1,8 @@
 // Created by Niels Marsman on 14-05-2020.
 // Copyright © 2020 Niels Marsman. All rights reserved.
 
-#ifndef SYNERGY_ECS_SCENE_H
-#define SYNERGY_ECS_SCENE_H
+#ifndef SYNERGY_SCENE_H
+#define SYNERGY_SCENE_H
 
 #include <tuple>
 #include <typeindex>
@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "Synergy/Core.h"
-#include "Synergy/ECS/EntityId.h"
+#include "Synergy/Entity/EntityId.h"
 #include "Synergy/Event/EventHandler.h"
 #include "Synergy/Util/SlotMap.h"
 
@@ -90,6 +90,6 @@ namespace Synergy
     };
 }
 
-#include "Synergy/ECS/Scene.inl"
+#include "Synergy/Scene.inl"
 
 #endif

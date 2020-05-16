@@ -10,11 +10,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "Synergy/Application.h"
-
 #include "Synergy/Entity/ArchetypeRef.h"
-#include "Synergy/ECS/Scene.h"
-
 #include "Synergy/Fonts.h"
+#include "Synergy/Scene.h"
 #include "Synergy/Renderer/Renderer.h"
 
 namespace Synergy

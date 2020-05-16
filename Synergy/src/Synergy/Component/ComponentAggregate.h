@@ -1,8 +1,8 @@
 // Created by Niels Marsman on 16-05-2020.
 // Copyright © 2020 Niels Marsman. All rights reserved.
 
-#ifndef SYNERGY_ECS_COMPONENT_AGGREGATE_H
-#define SYNERGY_ECS_COMPONENT_AGGREGATE_H
+#ifndef SYNERGY_COMPONENT_COMPONENT_AGGREGATE_H
+#define SYNERGY_COMPONENT_COMPONENT_AGGREGATE_H
 
 #include <typeindex>
 #include <vector>
@@ -51,6 +51,6 @@ namespace Synergy
     };
 }
 
-#include "Synergy/ECS/ComponentAggregate.inl"
+#include "Synergy/Component/ComponentAggregate.inl"
 
 #endif

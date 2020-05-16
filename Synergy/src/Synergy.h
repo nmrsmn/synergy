@@ -35,19 +35,16 @@
 #include "Synergy/UI/View.h"
 
 // REFACTORED:
+#include "Synergy/Component/ComponentPool.h"
 #include "Synergy/Entity/ArchetypeRef.h"
-#include "Synergy/ECS/ComponentPoolBase.h"
-#include "Synergy/ECS/ComponentPool.h"
-#include "Synergy/ECS/EntitiesWith.h"
-#include "Synergy/ECS/Entity.h"
-#include "Synergy/ECS/EntityId.h"
-#include "Synergy/ECS/EntityRef.h"
-#include "Synergy/ECS/Scene.h"
-#include "Synergy/ECS/System.h"
-
+#include "Synergy/Entity/EntitiesWith.h"
+#include "Synergy/Entity/Entity.h"
+#include "Synergy/Entity/EntityId.h"
+#include "Synergy/Entity/EntityRef.h"
 #include "Synergy/Event/EventDispatcher.h"
 #include "Synergy/Event/EventHandler.h"
-
+#include "Synergy/Scene.h"
+#include "Synergy/System/System.h"
 #include "Synergy/Util/SlotMap.h"
 
 // Entry point

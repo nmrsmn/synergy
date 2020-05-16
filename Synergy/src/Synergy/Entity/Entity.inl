@@ -1,10 +1,10 @@
 // Created by Niels Marsman on 14-05-2020.
 // Copyright © 2020 Niels Marsman. All rights reserved.
 
-#ifndef SYNERGY_ECS_ENTITY_INLINE
-#define SYNERGY_ECS_ENTITY_INLINE
+#ifndef SYNERGY_ENTITY_ENTITY_INLINE
+#define SYNERGY_ENTITY_ENTITY_INLINE
 
-#include "Synergy/ECS/Scene.h"
+#include "Synergy/Scene.h"
 
 template <typename Component>
 bool Synergy::Entity::Has() const

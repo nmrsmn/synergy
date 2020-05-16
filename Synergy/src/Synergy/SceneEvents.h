@@ -1,8 +1,8 @@
 // Created by Niels Marsman on 16-05-2020.
 // Copyright © 2020 Niels Marsman. All rights reserved.
 
-#ifndef SYNERGY_ECS_SCENE_EVENTS_H
-#define SYNERGY_ECS_SCENE_EVENTS_H
+#ifndef SYNERGY_SCENE_EVENTS_H
+#define SYNERGY_SCENE_EVENTS_H
 
 namespace Synergy
 {

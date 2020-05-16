@@ -1,17 +1,16 @@
 // Created by Niels Marsman on 14-05-2020.
 // Copyright © 2020 Niels Marsman. All rights reserved.
 
-#ifndef SYNERGY_ECS_SCENE_INLINE
-#define SYNERGY_ECS_SCENE_INLINE
+#ifndef SYNERGY_SCENE_INLINE
+#define SYNERGY_SCENE_INLINE
 
-#include "Synergy/ECS/ComponentAggregate.h"
-#include "Synergy/ECS/ComponentPoolBase.h"
-#include "Synergy/ECS/ComponentPool.h"
-#include "Synergy/ECS/EntitiesWith.h"
-#include "Synergy/ECS/Scene.h"
-#include "Synergy/ECS/System.h"
-#include "Synergy/ECS/SystemBase.h"
-
+#include "Synergy/Component/ComponentAggregate.h"
+#include "Synergy/Component/ComponentPoolBase.h"
+#include "Synergy/Component/ComponentPool.h"
+#include "Synergy/Entity/EntitiesWith.h"
+#include "Synergy/Scene.h"
+#include "Synergy/System/System.h"
+#include "Synergy/System/SystemBase.h"
 #include "Synergy/Util/TypeList.h"
 
 template <typename T>

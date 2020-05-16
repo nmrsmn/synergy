@@ -4,10 +4,9 @@
 #include <algorithm>
 #include <functional>
 
-#include "Synergy/ECS/ComponentAggregate.h"
-
-#include "Synergy/ECS/EntitiesWithBase.h"
-#include "Synergy/ECS/EntityRef.h"
+#include "Synergy/Component/ComponentAggregate.h"
+#include "Synergy/Entity/EntitiesWithBase.h"
+#include "Synergy/Entity/EntityRef.h"
 
 namespace Synergy
 {

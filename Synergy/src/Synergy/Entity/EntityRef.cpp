@@ -1,11 +1,10 @@
 // Created by Niels Marsman on 14-05-2020.
 // Copyright © 2020 Niels Marsman. All rights reserved.
 
-#include "Synergy/ECS/EntityRef.h"
-
-#include "Synergy/ECS/Entity.h"
-#include "Synergy/ECS/Scene.h"
-#include "Synergy/ECS/SceneEvents.h"
+#include "Synergy/Entity/Entity.h"
+#include "Synergy/Entity/EntityRef.h"
+#include "Synergy/Scene.h"
+#include "Synergy/SceneEvents.h"
 
 namespace Synergy
 {

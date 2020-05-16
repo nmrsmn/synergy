@@ -6,11 +6,11 @@
 #include <utility>
 #include <vector>
 
-#include "Synergy/ECS/ComponentPool.h"
-#include "Synergy/ECS/ComponentPoolBase.h"
-#include "Synergy/ECS/Entity.h"
-#include "Synergy/ECS/Scene.h"
-#include "Synergy/ECS/SceneEvents.h"
+#include "Synergy/Component/ComponentPool.h"
+#include "Synergy/Component/ComponentPoolBase.h"
+#include "Synergy/Entity/Entity.h"
+#include "Synergy/Scene.h"
+#include "Synergy/SceneEvents.h"
 
 namespace Synergy
 {

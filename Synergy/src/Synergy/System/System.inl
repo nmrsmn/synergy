@@ -1,8 +1,8 @@
 // Created by Niels Marsman on 15-05-2020.
 // Copyright © 2020 Niels Marsman. All rights reserved.
 
-#ifndef SYNERGY_ECS_SYSTEM_INLINE
-#define SYNERGY_ECS_SYSTEM_INLINE
+#ifndef SYNERGY_SYSTEM_SYSTEM_INLINE
+#define SYNERGY_SYSTEM_SYSTEM_INLINE
 
 template <typename T>
 template <typename... Args>

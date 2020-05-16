@@ -1,8 +1,8 @@
 // Created by Niels Marsman on 16-05-2020.
 // Copyright © 2020 Niels Marsman. All rights reserved.
 
-#ifndef SYNERGY_ECS_CONSTRAINED_ENTITY_REF_INLINE
-#define SYNERGY_ECS_CONSTRAINED_ENTITY_REF_INLINE
+#ifndef SYNERGY_ENTITY_CONSTRAINED_ENTITY_REF_INLINE
+#define SYNERGY_ENTITY_CONSTRAINED_ENTITY_REF_INLINE
 
 template <typename... Args>
 Synergy::ConstrainedEntityRef<Args...>::ConstrainedEntityRef(const Synergy::EntityRef& entity) :

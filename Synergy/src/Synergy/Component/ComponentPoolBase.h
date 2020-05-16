@@ -1,14 +1,14 @@
 // Created by Niels Marsman on 14-05-2020.
 // Copyright © 2020 Niels Marsman. All rights reserved.
 
-#ifndef SYNERGY_ECS_COMPONENT_POOL_BASE_H
-#define SYNERGY_ECS_COMPONENT_POOL_BASE_H
+#ifndef SYNERGY_COMPONENT_COMPONENT_POOL_BASE_H
+#define SYNERGY_COMPONENT_COMPONENT_POOL_BASE_H
 
 #include <tuple>
 #include <typeindex>
 
 #include "Synergy/Core.h"
-#include "Synergy/ECS/EntityId.h"
+#include "Synergy/Entity/EntityId.h"
 
 namespace Synergy
 {

@@ -1,33 +1,33 @@
 // Created by Niels Marsman on 14-05-2020.
 // Copyright © 2020 Niels Marsman. All rights reserved.
 
-#ifndef SYNERGY_ECS_ENTITY_H
-#define SYNERGY_ECS_ENTITY_H
+#ifndef SYNERGY_ENTITY_ENTITY_REF_H
+#define SYNERGY_ENTITY_ENTITY_REF_H
 
-#include <string>
 #include <typeindex>
-#include <unordered_map>
+#include <vector>
 
 #include "Synergy/Core.h"
-#include "Synergy/ECS/EntityId.h"
+#include "Synergy/Entity/EntityId.h"
 
 namespace Synergy
 {
     class Scene;
+    class Entity;
 
-    class SYNERGY_API Entity
+    class SYNERGY_API EntityRef
     {
         friend class Scene;
         
     public:
-        Entity(Synergy::Scene& scene, Synergy::EntityId id = { 0, 0 });
-        Entity(const Synergy::Entity&) = default;
-        Entity(Synergy::Entity&&);
+        EntityRef(Synergy::EntityId id, Synergy::Scene* scene);
+        EntityRef(const EntityRef&) = default;
+        EntityRef(EntityRef&&) = default;
         
-        Synergy::Entity& operator=(Synergy::Entity&&);
+        ~EntityRef() = default;
         
-        ~Entity();
-        
+        Synergy::EntityRef& operator=(const Synergy::EntityRef&) = default;
+
         template <typename Component>
         bool Has() const;
         
@@ -35,6 +35,7 @@ namespace Synergy
         bool Has() const;
         
         bool Has(std::type_index component) const;
+        bool Has(std::vector<std::type_index>& components) const;
         
         template <typename Component>
         Component& Get();
@@ -47,25 +48,20 @@ namespace Synergy
         
         template <typename Component>
         void Remove();
-        
-        Synergy::EntityId Id() const;
+
+        void Destroy();
         
         const std::string& Name() const;
-        Synergy::Entity& Name(const std::string& name);
+        Synergy::EntityId Id() const;
         
-    private:
-        Synergy::EntityId Clone(Synergy::Scene& scene, Synergy::Entity& entity) const;
+        bool operator==(const Synergy::EntityRef& other) const;
         
-    private:
-        std::string m_Name { "Unnamed Entity" };
+    protected:
         Synergy::EntityId m_Id { 0, 0 };
-        Synergy::Scene& m_Scene;
-        
-        std::unordered_map<std::type_index, Synergy::EntityId> m_Components;
+        Synergy::Scene* m_Scene;
     };
-
 }
 
-#include "Synergy/ECS/Entity.inl"
+#include "Synergy/Entity/EntityRef.inl"
 
 #endif

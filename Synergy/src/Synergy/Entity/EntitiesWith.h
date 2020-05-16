@@ -1,11 +1,11 @@
 // Created by Niels Marsman on 16-05-2020.
 // Copyright © 2020 Niels Marsman. All rights reserved.
 
-#ifndef SYNERGY_ECS_ENTITIES_WITH_H
-#define SYNERGY_ECS_ENTITIES_WITH_H
+#ifndef SYNERGY_ENTITY_ENTITIES_WITH_H
+#define SYNERGY_ENTITY_ENTITIES_WITH_H
 
 #include "Synergy/Core.h"
-#include "Synergy/ECS/EntitiesWithBase.h"
+#include "Synergy/Entity/EntitiesWithBase.h"
 
 namespace Synergy
 {
@@ -39,6 +39,6 @@ namespace Synergy
     };
 }
 
-#include "Synergy/ECS/EntitiesWith.inl"
+#include "Synergy/Entity/EntitiesWith.inl"
 
 #endif
