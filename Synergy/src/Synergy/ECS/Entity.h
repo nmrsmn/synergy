@@ -45,6 +45,9 @@ namespace Synergy
         template <typename Component, typename... Args>
         Component& Add(Args&&... args);
         
+        template <typename Component>
+        void Remove();
+        
         Synergy::EntityId Id() const;
         
         const std::string& Name() const;

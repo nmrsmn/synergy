@@ -30,7 +30,10 @@ public:
 class Sandbox: public Synergy::Application
 {
 public:
-	explicit Sandbox() : m_SandboxScene(this->CreateScene("Sandbox Scene")), Synergy::Application() {}
+	explicit Sandbox() : Synergy::Application(),
+        m_SandboxScene { this->CreateScene("Sandbox Scene") },
+        m_Quad { this->CreateArchetype("Quad") }
+    {}
     
     static constexpr float ratio = 45.f / 190.f;
     
@@ -41,28 +44,33 @@ public:
         m_Atlas = Synergy::TextureAtlas::Load("assets/textures/RPGpack_sheet.png", { 20, 13 });
         m_GrassTile = Synergy::TextureAtlas::Texture::Load(m_Atlas, { 1, 1 }, { 1, 1 });
         
-        Synergy::EntityRef quad = m_SandboxScene.CreateEntity("Quad");
-        Transform& transform = quad.Add<Transform>();
+        Transform& transform = m_Quad.Add<Transform>();
         transform.scale = glm::vec3 { 64.f / 800.f, 64.f / 600.f, 1 };
         
-        SpriteRenderer& renderer = quad.Add<SpriteRenderer>();
+        SpriteRenderer& renderer = m_Quad.Add<SpriteRenderer>();
         renderer.texture = m_GrassTile;
+        
+        auto test = m_SandboxScene.Spawn(m_Quad);
         
         return true;
     }
     
     virtual bool OnUserUpdate(float deltatime) override
     {
+        
+        
         return true;
     }
     
 	virtual ~Sandbox() = default;
     
 private:
+    Synergy::Scene& m_SandboxScene;
+    
+    Synergy::ArchetypeRef m_Quad;
+    
     Synergy::Ref<Synergy::TextureAtlas> m_Atlas;
     Synergy::Ref<Synergy::TextureAtlas::Texture> m_GrassTile;
-    
-    Synergy::Scene& m_SandboxScene;
 };
 
 Synergy::Application* Synergy::CreateApplication()

@@ -46,4 +46,17 @@ Component& Synergy::EntityRef::Add(Args&&... args)
     return component;
 }
 
+template <typename Component>
+void Synergy::EntityRef::Remove()
+{
+    if (!this->Has<Component>())
+        return;
+    
+    m_Scene->Emit(Synergy::ComponentRemovedEvent { *this, std::type_index(typeid(Component)) });
+    m_Scene->OnNextEvent([=] (const Synergy::FrameEndEvent& event)
+    {
+        auto a = m_Scene->GetEntity(m_Id)->Remove<Component>();
+    });
+}
+
 #endif

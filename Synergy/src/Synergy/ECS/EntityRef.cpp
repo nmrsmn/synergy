@@ -5,6 +5,7 @@
 
 #include "Synergy/ECS/Entity.h"
 #include "Synergy/ECS/Scene.h"
+#include "Synergy/ECS/SceneEvents.h"
 
 namespace Synergy
 {
@@ -34,9 +35,23 @@ namespace Synergy
         return true;
     }
 
+    void EntityRef::Destroy()
+    {
+        m_Scene->Emit(Synergy::EntityDestroyedEvent { *this });
+        m_Scene->OnNextEvent([scene = m_Scene, entity = *this] (const Synergy::FrameEndEvent& event)
+        {
+            scene->Destroy(entity);
+        });
+    }
+
     const std::string& EntityRef::Name() const
     {
         return m_Scene->GetEntity(m_Id)->Name();
+    }
+
+    Synergy::EntityId EntityRef::Id() const
+    {
+        return m_Id;
     }
 
     bool EntityRef::operator==(const Synergy::EntityRef& other) const

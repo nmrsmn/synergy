@@ -17,6 +17,7 @@
 namespace Synergy
 {
     class Application;
+    class ArchetypeRef;
     class ComponentAggregate;
     template <typename T>
     class ComponentPool;
@@ -49,7 +50,8 @@ namespace Synergy
         Synergy::Entity* GetEntity(Synergy::EntityId id);
         const Synergy::Entity* GetEntity(Synergy::EntityId id) const;
         
-        Synergy::EntityRef Spawn(Synergy::EntityRef reference);
+        Synergy::EntityRef Spawn(Synergy::ArchetypeRef archetype);
+        Synergy::EntityRef Spawn(Synergy::EntityRef archetype);
         
         template <typename T, typename... Args>
         void Add(const std::string& name = "Unnamed System", Args&&... args);
@@ -63,10 +65,10 @@ namespace Synergy
         void RegisterEntitiesWith(Synergy::EntitiesWith<Args...>& entities);
         
         void Update(float dt);
-        
-        Synergy::EntityRef CreateEntity(const std::string& name);
 
     protected:
+        Synergy::EntityRef CreateEntity(const std::string& name);
+
         template <typename T>
         Synergy::ComponentPool<T>& GetComponentPool();
         
@@ -74,6 +76,9 @@ namespace Synergy
         const Synergy::ComponentPool<T>& GetComponentPool() const;
         
         Synergy::ComponentPoolBase* GetComponentPool(std::type_index component);
+        
+    private:
+        void Destroy(Synergy::EntityRef entity);
         
     private:
         std::string m_Name { "Unnamed Scene" };

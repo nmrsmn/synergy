@@ -61,4 +61,14 @@ Component& Synergy::Entity::Add(Args&&... args)
     return this->Get<Component>();
 }
 
+template <typename Component>
+void Synergy::Entity::Remove()
+{
+    if (auto component { m_Components.find(std::type_index(typeid(Component))) }; component != m_Components.end())
+    {
+        m_Scene.GetComponentPool<Component>().m_Components.erase(component->second);
+        m_Components.erase(component);
+    }
+}
+
 #endif

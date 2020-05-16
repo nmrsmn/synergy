@@ -10,6 +10,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "Synergy/Application.h"
+
+#include "Synergy/Entity/ArchetypeRef.h"
 #include "Synergy/ECS/Scene.h"
 
 #include "Synergy/Fonts.h"
@@ -38,6 +40,11 @@ namespace Synergy
         
         if (!platform->Shutdown()) return false;
         return true;
+    }
+
+    Synergy::ArchetypeRef Application::CreateArchetype(const std::string& name)
+    {
+        return this->GetScene("Archetypes").CreateEntity(name);
     }
 
     Synergy::Scene& Application::CreateScene(const std::string& name)

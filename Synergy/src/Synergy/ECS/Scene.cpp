@@ -3,6 +3,7 @@
 
 #include <utility>
 
+#include "Synergy/Entity/ArchetypeRef.h"
 #include "Synergy/ECS/ComponentPoolBase.h"
 #include "Synergy/ECS/ComponentPool.h"
 #include "Synergy/ECS/Entity.h"
@@ -65,6 +66,11 @@ namespace Synergy
         return nullptr;
     }
 
+    Synergy::EntityRef Scene::Spawn(Synergy::ArchetypeRef archetype)
+    {
+        return Spawn(Synergy::EntityRef { archetype.Id(), archetype.GetScene() });
+    }
+
     Synergy::EntityRef Scene::Spawn(Synergy::EntityRef reference)
     {
         std::string name { reference.Name() };
@@ -100,5 +106,10 @@ namespace Synergy
             return pool->second.get();
         
         return nullptr;
+    }
+
+    void Scene::Destroy(Synergy::EntityRef entity)
+    {
+        m_Entities.erase(entity.Id());
     }
 }

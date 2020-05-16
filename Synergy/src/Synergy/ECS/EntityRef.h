@@ -46,7 +46,13 @@ namespace Synergy
         template <typename Component, typename... Args>
         Component& Add(Args&&... args);
         
+        template <typename Component>
+        void Remove();
+
+        void Destroy();
+        
         const std::string& Name() const;
+        Synergy::EntityId Id() const;
         
         bool operator==(const Synergy::EntityRef& other) const;
         

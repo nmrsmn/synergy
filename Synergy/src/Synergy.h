@@ -35,6 +35,7 @@
 #include "Synergy/UI/View.h"
 
 // REFACTORED:
+#include "Synergy/Entity/ArchetypeRef.h"
 #include "Synergy/ECS/ComponentPoolBase.h"
 #include "Synergy/ECS/ComponentPool.h"
 #include "Synergy/ECS/EntitiesWith.h"

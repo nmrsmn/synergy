@@ -15,6 +15,7 @@
 
 namespace Synergy
 {
+    class ArchetypeRef;
     class Scene;
 
     class SYNERGY_API Application
@@ -23,6 +24,8 @@ namespace Synergy
         virtual ~Application() = default;
         
         bool Start();
+        
+        Synergy::ArchetypeRef CreateArchetype(const std::string& name = "Unnamed Entity");
         
         Synergy::Scene& CreateScene(const std::string& name);
         Synergy::Scene& GetScene(const std::string& name);

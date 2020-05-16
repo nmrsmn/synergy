@@ -63,7 +63,7 @@ namespace Synergy
     {
         for (const auto& component : m_Components)
         {
-            entity.m_Components.emplace(scene.GetComponentPool(component.first)->Clone(component.second, scene));
+            entity.m_Components.emplace(m_Scene.GetComponentPool(component.first)->Clone(component.second, scene));
         }
         
         scene.Emit(Synergy::EntitySpawnedEvent(Synergy::EntityRef(entity.Id(), &scene)));
