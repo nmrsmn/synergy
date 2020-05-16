@@ -12,6 +12,7 @@ namespace Synergy
     template <typename System>
     struct SystemTraits
     {
+        static constexpr bool HasEntities = has_entities<System>::value;
         static constexpr bool HasInitialize = has_initialize_member<System>::value;
         static constexpr bool HasDestroy = has_destroy_member<System>::value;
         static constexpr bool HasEnable = has_enable_member<System>::value;

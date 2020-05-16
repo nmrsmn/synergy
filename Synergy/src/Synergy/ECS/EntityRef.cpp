@@ -38,4 +38,9 @@ namespace Synergy
     {
         return m_Scene->GetEntity(m_Id)->Name();
     }
+
+    bool EntityRef::operator==(const Synergy::EntityRef& other) const
+    {
+        return (m_Id == other.m_Id) && (m_Scene == other.m_Scene);
+    }
 }

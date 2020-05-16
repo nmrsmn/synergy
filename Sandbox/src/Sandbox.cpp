@@ -16,19 +16,15 @@ struct SpriteRenderer
     glm::vec4 color { 1, 1, 1, 1 };
 };
 
-struct RenderSystem
+class RenderSystem
 {
-    void PreProcess()
+public:
+    void Process(const SpriteRenderer& renderable, const Transform& transform) const
     {
-        SYNERGY_LOG_ERROR("Dit is een test");
+        Synergy::Renderer::CanvasRenderer::Submit(Synergy::Quad { transform.position, transform.scale, renderable.texture, renderable.color });
     }
     
-    void PostProcess()
-    {
-        SYNERGY_LOG_ERROR("Render");
-    }
-    
-    Synergy::EntitiesWith<const SpriteRenderer> m_Sprites;
+    Synergy::EntitiesWith<const SpriteRenderer, const Transform> m_Entities;
 };
 
 class Sandbox: public Synergy::Application
@@ -40,15 +36,17 @@ public:
     
     virtual bool OnUserCreate() override
     {
+        m_SandboxScene.Add<RenderSystem>();
+        
         m_Atlas = Synergy::TextureAtlas::Load("assets/textures/RPGpack_sheet.png", { 20, 13 });
         m_GrassTile = Synergy::TextureAtlas::Texture::Load(m_Atlas, { 1, 1 }, { 1, 1 });
         
         Synergy::EntityRef quad = m_SandboxScene.CreateEntity("Quad");
-        Transform transform = quad.Add<Transform>();
-        SpriteRenderer renderer = quad.Add<SpriteRenderer>();
-        renderer.texture = m_GrassTile;
+        Transform& transform = quad.Add<Transform>();
+        transform.scale = glm::vec3 { 64.f / 800.f, 64.f / 600.f, 1 };
         
-        m_SandboxScene.Add<RenderSystem>();
+        SpriteRenderer& renderer = quad.Add<SpriteRenderer>();
+        renderer.texture = m_GrassTile;
         
         return true;
     }

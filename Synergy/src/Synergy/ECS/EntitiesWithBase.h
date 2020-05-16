@@ -8,13 +8,17 @@
 
 namespace Synergy
 {
+    class ComponentAggregate;
     class EntityRef;
 
     class EntitiesWithBase
     {
+        friend class ComponentAggregate;
+        
     protected:
         virtual void Set(const std::vector<Synergy::EntityRef>&) = 0;
         virtual void Push(const Synergy::EntityRef&) = 0;
+        virtual void Pop(size_t) = 0;
     };
 }
 

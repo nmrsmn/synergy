@@ -6,10 +6,11 @@
 #include <utility>
 #include <vector>
 
-#include "Synergy/ECS/Entity.h"
 #include "Synergy/ECS/ComponentPool.h"
 #include "Synergy/ECS/ComponentPoolBase.h"
+#include "Synergy/ECS/Entity.h"
 #include "Synergy/ECS/Scene.h"
+#include "Synergy/ECS/SceneEvents.h"
 
 namespace Synergy
 {
@@ -64,7 +65,9 @@ namespace Synergy
         {
             entity.m_Components.emplace(scene.GetComponentPool(component.first)->Clone(component.second, scene));
         }
-        // Emit entity spawned event.
+        
+        scene.Emit(Synergy::EntitySpawnedEvent(Synergy::EntityRef(entity.Id(), &scene)));
+        
         return entity.Id();
     }
 

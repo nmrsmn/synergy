@@ -48,6 +48,8 @@ namespace Synergy
         
         const std::string& Name() const;
         
+        bool operator==(const Synergy::EntityRef& other) const;
+        
     protected:
         Synergy::EntityId m_Id { 0, 0 };
         Synergy::Scene* m_Scene;

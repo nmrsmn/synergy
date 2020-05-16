@@ -4,8 +4,9 @@
 #ifndef SYNERGY_ECS_ENTITY_REF_INLINE
 #define SYNERGY_ECS_ENTITY_REF_INLINE
 
-#include "Synergy/ECS/Scene.h"
 #include "Synergy/ECS/Entity.h"
+#include "Synergy/ECS/Scene.h"
+#include "Synergy/ECS/SceneEvents.h"
 
 template <typename Component>
 bool Synergy::EntityRef::Has() const
@@ -39,7 +40,9 @@ Component& Synergy::EntityRef::Add(Args&&... args)
         return this->Get<Component>();
 
     Component& component { m_Scene->GetEntity(m_Id)->Add<Component>(std::forward<Args>(args)...) };
-    // ComponentAdded Event should be emitted.
+    
+    m_Scene->Emit(Synergy::ComponentAddedEvent { *this, std::type_index(typeid(Component)) });
+    
     return component;
 }
 

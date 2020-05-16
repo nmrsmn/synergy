@@ -17,11 +17,14 @@
 namespace Synergy
 {
     class Application;
+    class ComponentAggregate;
     template <typename T>
     class ComponentPool;
     class ComponentPoolBase;
     class Entity;
     class EntityRef;
+    template <typename... Args>
+    class EntitiesWith;
     class SystemBase;
 
     class SYNERGY_API Scene : public Synergy::EventHandler
@@ -51,6 +54,14 @@ namespace Synergy
         template <typename T, typename... Args>
         void Add(const std::string& name = "Unnamed System", Args&&... args);
         
+        template <typename... Args>
+        ComponentAggregate& GetAggregate();
+        template <typename... Args>
+        const ComponentAggregate& GetAggregate() const;
+        
+        template <typename... Args>
+        void RegisterEntitiesWith(Synergy::EntitiesWith<Args...>& entities);
+        
         void Update(float dt);
         
         Synergy::EntityRef CreateEntity(const std::string& name);
@@ -69,6 +80,7 @@ namespace Synergy
         
         stdext::slot_map<Synergy::Entity> m_Entities;
         std::unordered_map<std::type_index, Synergy::Scope<Synergy::ComponentPoolBase>> m_Components;
+        std::vector<Synergy::ComponentAggregate> m_Aggregates;
         std::vector<Synergy::Scope<Synergy::SystemBase>> m_Systems;
     };
 }

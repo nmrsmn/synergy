@@ -10,6 +10,9 @@ inline Synergy::System<T>::System(Synergy::Scene& scene, const std::string& name
     m_Instance(std::forward<Args>(args)...),
     m_Name(name)
 {
+    if constexpr(Synergy::SystemTraits<T>::HasEntities)
+        this->RegisterEntities(scene);
+    
     scene.OnEvent([&] (const Synergy::UpdateEvent& event)
     {
         this->OnUpdate(event.dt);
@@ -26,6 +29,15 @@ inline Synergy::System<T>::System(Synergy::Scene& scene, const std::string& name
         {
             this->OnEndFrame();
         });
+    
+    if constexpr(Synergy::SystemTraits<T>::HasInitialize)
+        this->Initialize();
+}
+
+template <typename T>
+bool Synergy::System<T>::HasEntities() const
+{
+    return SystemTraits<T>::HasEntities;
 }
 
 template <typename T>
@@ -278,7 +290,13 @@ template <typename T>
 template <typename U>
 typename std::enable_if_t<Synergy::SystemTraits<U>::HasProcess> Synergy::System<T>::Process()
 {
-    
+    for (auto entity : m_Instance.m_Entities)
+    {
+        entity.Invoke([&] (auto&&... args)
+        {
+            m_Instance.Process(std::forward<decltype(args)>(args)...);
+        });
+    }
 }
 
 template <typename T>
@@ -321,5 +339,11 @@ template <typename T>
 template <typename U>
 typename std::enable_if_t<!Synergy::SystemTraits<U>::HasPostUpdate> Synergy::System<T>::PostUpdate()
 {}
+
+template <typename T>
+void Synergy::System<T>::RegisterEntities(Synergy::Scene& scene)
+{
+    scene.RegisterEntitiesWith(m_Instance.m_Entities);
+}
 
 #endif

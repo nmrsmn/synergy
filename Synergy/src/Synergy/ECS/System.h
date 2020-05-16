@@ -5,8 +5,8 @@
 #define SYNERGY_ECS_SYSTEM_H
 
 #include "Synergy/Core.h"
+#include "Synergy/ECS/SceneEvents.h"
 #include "Synergy/ECS/SystemBase.h"
-#include "Synergy/Event/Events.h"
 
 namespace Synergy
 {
@@ -18,6 +18,8 @@ namespace Synergy
     public:
         template <typename... Args>
         System(Synergy::Scene& scene, const std::string& name, Args&&... args);
+        
+        virtual bool HasEntities() const final;
         
         virtual bool HasInitialize() const final;
         virtual bool HasDestroy() const final;
@@ -115,6 +117,8 @@ namespace Synergy
         typename std::enable_if_t<Synergy::SystemTraits<U>::HasPostUpdate> PostUpdate();
         template <typename U = T>
         typename std::enable_if_t<!Synergy::SystemTraits<U>::HasPostUpdate> PostUpdate();
+        
+        void RegisterEntities(Synergy::Scene& scene);
         
     private:
         std::string m_Name;

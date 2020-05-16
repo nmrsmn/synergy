@@ -4,11 +4,15 @@
 #ifndef SYNERGY_ECS_SCENE_INLINE
 #define SYNERGY_ECS_SCENE_INLINE
 
+#include "Synergy/ECS/ComponentAggregate.h"
 #include "Synergy/ECS/ComponentPoolBase.h"
 #include "Synergy/ECS/ComponentPool.h"
+#include "Synergy/ECS/EntitiesWith.h"
 #include "Synergy/ECS/Scene.h"
 #include "Synergy/ECS/System.h"
 #include "Synergy/ECS/SystemBase.h"
+
+#include "Synergy/Util/TypeList.h"
 
 template <typename T>
 T& Synergy::Scene::GetComponent(Synergy::EntityId entity)
@@ -26,6 +30,40 @@ template <typename T, typename... Args>
 void Synergy::Scene::Add(const std::string& name, Args&&... args)
 {
     m_Systems.push_back(std::move(Synergy::Scope<Synergy::SystemBase>(new Synergy::System<T>(*this, name, std::forward<Args>(args)...))));
+}
+
+template <typename... Args>
+Synergy::ComponentAggregate& Synergy::Scene::GetAggregate()
+{
+    std::vector<std::type_index> hashes { std::type_index(typeid(Args))... };
+    std::sort(std::begin(hashes), std::end(hashes));
+    
+    for (auto& aggregate : m_Aggregates)
+    {
+        // Check for match
+        // and early return if matched
+    }
+    
+    m_Aggregates.emplace_back(stdext::type_list<Args...> {});
+    
+    for (const auto& entity : m_Entities)
+    {
+        m_Aggregates.back().OnEntityCreated(Synergy::EntityRef(entity.Id(), this));
+    }
+    
+    return m_Aggregates.back();
+}
+
+template <typename... Args>
+const Synergy::ComponentAggregate& Synergy::Scene::GetAggregate() const
+{
+    return const_cast<Scene*>(this)->GetAggregate<Args...>();
+}
+
+template <typename... Args>
+void Synergy::Scene::RegisterEntitiesWith(Synergy::EntitiesWith<Args...>& entities)
+{
+    this->GetAggregate<Args...>().AddEntityList(entities);
 }
 
 template <typename T>

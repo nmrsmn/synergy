@@ -8,14 +8,46 @@
 #include "Synergy/ECS/Entity.h"
 #include "Synergy/ECS/EntityRef.h"
 #include "Synergy/ECS/Scene.h"
+#include "Synergy/ECS/SceneEvents.h"
 #include "Synergy/ECS/SystemBase.h"
-#include "Synergy/Event/Events.h"
 
 namespace Synergy
 {
     Scene::Scene(std::string name) :
         m_Name(std::move(name))
-    {}
+    {
+        this->OnEvent([&] (const Synergy::EntitySpawnedEvent& event)
+        {
+            for (auto& aggregate : m_Aggregates)
+            {
+                aggregate.OnEntityCreated(event.entity);
+            }
+        });
+        
+        this->OnEvent([&] (const Synergy::EntityDestroyedEvent& event)
+        {
+            for (auto& aggregate : m_Aggregates)
+            {
+                aggregate.OnEntityDestroyed(event.entity);
+            }
+        });
+        
+        this->OnEvent([&] (const Synergy::ComponentAddedEvent& event)
+        {
+            for (auto& aggregate : m_Aggregates)
+            {
+                aggregate.OnEntityCreated(event.entity);
+            }
+        });
+        
+        this->OnEvent([&] (const Synergy::ComponentRemovedEvent& event)
+        {
+            for (auto& aggregate : m_Aggregates)
+            {
+                aggregate.OnEntityDestroyed(event.entity);
+            }
+        });
+    }
 
     Synergy::Entity* Scene::GetEntity(Synergy::EntityId id)
     {

@@ -64,8 +64,8 @@ namespace Synergy::Renderer
         data.positions[2] = {  0.5f,  0.5f, -1.0f, 1.0f };
         data.positions[3] = { -0.5f,  0.5f, -1.0f, 1.0f };
         
-        data.screen = glm::vec3 { 800, 600, 1 };
-        data.ortho = glm::ortho(0.0f, data.screen.x, 0.0f, data.screen.y, 0.0f, data.screen.z);
+        data.screen = glm::vec3 { 800, 600, 10 };
+        data.ortho = glm::ortho(-data.screen.x / 2, data.screen.x / 2, -data.screen.y / 2, data.screen.y / 2, -data.screen.z, data.screen.z);
     }
 
     void CanvasRenderer::Initialize(RendererAPI* api)

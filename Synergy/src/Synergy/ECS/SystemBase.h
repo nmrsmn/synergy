@@ -14,6 +14,8 @@ namespace Synergy
     public:
         virtual ~SystemBase() {}
         
+        virtual bool HasEntities() const = 0;
+        
         virtual bool HasInitialize() const = 0;
         virtual bool HasDestroy() const = 0;
         virtual bool HasEnable() const = 0;

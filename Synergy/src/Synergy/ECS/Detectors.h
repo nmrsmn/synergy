@@ -6,17 +6,14 @@
 
 #include <experimental/type_traits>
 
-namespace Synergy
-{
-    template <typename T>
-    struct is_member_function : std::false_type {};
+template <typename T>
+struct is_member_function : std::false_type {};
 
-    template <typename Class, typename Return, typename Args>
-    struct is_member_function<Return (Class::*) (Args...) const> : std::true_type {};
+template <typename C, typename R, typename... Args>
+struct is_member_function<R (C::*)(Args...) const> : std::true_type {};
 
-    template <typename T>
-    constexpr bool is_member_function_v = is_member_function<T>::value;
-}
+template <typename T>
+constexpr bool is_member_function_v = is_member_function<T>::value;
 
 /*
  * Detect vec fields
@@ -114,7 +111,7 @@ template <typename T, typename = void>
 struct has_process_member : std::false_type {};
 
 template <typename T>
-struct has_process_member<T, std::enable_if_t<Synergy::is_member_function_v<decltype(&T::Process)>>> : std::true_type {};
+struct has_process_member<T, std::enable_if_t<is_member_function_v<decltype(&T::Process)>>> : std::true_type {};
 
 // Post Process
 template <typename T>
@@ -136,5 +133,39 @@ using post_update_member_t = decltype(std::declval<T&>().PostUpdate());
 
 template <typename T>
 using has_post_update_member = std::experimental::is_detected<post_update_member_t, T>;
+
+//
+namespace Synergy
+{
+    template <typename... Args>
+    class EntitiesWith;
+}
+
+template <typename T, typename... Args>
+struct is_entities_with : std::false_type {};
+
+template <template <typename...> typename T, typename... Args>
+struct is_entities_with<T<Args...>> : public std::is_same<T<Args...>, Synergy::EntitiesWith<Args...>> {};
+
+template <typename T>
+constexpr bool is_entities_with_v = is_entities_with<T>::value;
+
+template <typename T>
+constexpr bool is_entities_with_v2 = is_entities_with<decltype(T::m_Entities)>::value;
+
+template <typename T>
+using entities_member_t = decltype(T::m_Entities);
+
+template <typename T>
+using has_entities_member = std::experimental::is_detected<entities_member_t, T>;
+
+template <typename T, typename Enable = void>
+struct has_entities : std::false_type {};
+
+template <typename T>
+struct has_entities<T, typename std::enable_if_t<has_entities_member<T>::value>>
+{
+    static constexpr bool value = is_entities_with_v<decltype(T::m_Entities)>;
+};
 
 #endif
