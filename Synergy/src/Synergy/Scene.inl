@@ -39,8 +39,8 @@ Synergy::ComponentAggregate& Synergy::Scene::GetAggregate()
     
     for (auto& aggregate : m_Aggregates)
     {
-        // Check for match
-        // and early return if matched
+        if (aggregate.Matches(hashes))
+            return aggregate;
     }
     
     m_Aggregates.emplace_back(stdext::type_list<Args...> {});
