@@ -23,19 +23,9 @@
 #include "Synergy/Fonts.h"
 #include "Synergy/Font.h"
 
-#include "Synergy/UI/Anchors.h"
-#include "Synergy/UI/Constraints.h"
-#include "Synergy/UI/Element.h"
-#include "Synergy/UI/Element/Button.h"
-#include "Synergy/UI/Element/Container.h"
-#include "Synergy/UI/Element/Label.h"
-#include "Synergy/UI/Manager.h"
-#include "Synergy/UI/Renderer.h"
-#include "Synergy/UI/Style.h"
-#include "Synergy/UI/View.h"
-
 // REFACTORED:
-#include "Synergy/Component/ComponentPool.h"
+#include "Synergy/Components/Transform.h"
+#include "Synergy/Components/UI/Renderable.h"
 #include "Synergy/Entity/ArchetypeRef.h"
 #include "Synergy/Entity/EntitiesWith.h"
 #include "Synergy/Entity/Entity.h"
@@ -45,6 +35,7 @@
 #include "Synergy/Event/EventHandler.h"
 #include "Synergy/Scene.h"
 #include "Synergy/System/System.h"
+#include "Synergy/Systems/UI/ButtonSystem.h"
 #include "Synergy/Util/SlotMap.h"
 
 // Entry point
