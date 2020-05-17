@@ -16,8 +16,6 @@
 #include "Synergy/Renderer/Texture.h"
 #include "Synergy/Renderer/TextureAtlas.h"
 
-// REFACTORED:
-
 #include "Synergy/ResourcePack.h"
 
 #include "Synergy/Renderer/Shaders.h"
@@ -36,6 +34,20 @@
 #include "Synergy/UI/Style.h"
 #include "Synergy/UI/View.h"
 
+// REFACTORED:
+#include "Synergy/Component/ComponentPool.h"
+#include "Synergy/Entity/ArchetypeRef.h"
+#include "Synergy/Entity/EntitiesWith.h"
+#include "Synergy/Entity/Entity.h"
+#include "Synergy/Entity/EntityId.h"
+#include "Synergy/Entity/EntityRef.h"
+#include "Synergy/Event/EventDispatcher.h"
+#include "Synergy/Event/EventHandler.h"
+#include "Synergy/Scene.h"
+#include "Synergy/System/System.h"
+#include "Synergy/Util/SlotMap.h"
+
+// Entry point
 #include "Synergy/EntryPoint.h"
 
 #endif
