@@ -10,6 +10,7 @@ out vec2 v_uv;
 out float v_texture_index;
 
 uniform mat4 u_view_projection;
+
 void main()
 {
     v_color = a_color;

@@ -21,13 +21,13 @@ inline Synergy::System<T>::System(Synergy::Scene& scene, const std::string& name
     if constexpr(Synergy::SystemTraits<T>::HasFrameStart)
         scene.OnEvent([&] (const Synergy::FrameStartEvent& event)
         {
-            this->OnStartFrame();
+            this->OnFrameStart();
         });
     
     if constexpr(Synergy::SystemTraits<T>::HasFrameEnd)
         scene.OnEvent([&] (const Synergy::FrameEndEvent& event)
         {
-            this->OnEndFrame();
+            this->OnFrameEnd();
         });
     
     if constexpr(Synergy::SystemTraits<T>::HasInitialize)

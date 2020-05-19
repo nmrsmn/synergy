@@ -32,6 +32,10 @@ namespace Synergy::UI
                     
                     color = button.background.active.color;
                 }
+                else if (Input::Get(Input::Mouse::BUTTON_LEFT).released)
+                {
+                    button.onclick();
+                }
             }
             
             Synergy::Renderer::CanvasRenderer::Submit(Synergy::Quad { transform.position, transform.scale, background, color });

@@ -26,6 +26,8 @@ namespace Synergy::UI
             Synergy::UI::Background hover;
             Synergy::UI::Background active;
         } background;
+        
+        std::function<void (void)> onclick;
     };
 
     struct Image
