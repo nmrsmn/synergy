@@ -79,8 +79,10 @@ namespace Synergy
     public:
         virtual ~Texture() = default;
         
-        uint32_t GetWidth() const;
-        uint32_t GetHeight() const;
+        const uint32_t GetWidth() const;
+        const uint32_t GetHeight() const;
+        
+        const bool HasTransparancy() const;
         
         virtual const glm::vec2* GetUVs() const;
         
@@ -98,6 +100,8 @@ namespace Synergy
     protected:
         uint32_t width;
         uint32_t height;
+        
+        bool m_HasTransparancy = false;
         
         Texture::Parameters parameters;
     };

@@ -61,5 +61,10 @@ namespace Synergy
         SYNERGY_ASSERT(false, "Unknown Shader::DataType supplied.");
         return 0;
     }
+
+    const uint32_t Shader::Id() const
+    {
+        return m_Id;
+    }
 }
 

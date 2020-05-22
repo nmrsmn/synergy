@@ -34,6 +34,7 @@ namespace Synergy
     Synergy::Ref<Synergy::Texture> Texture::Load(const char* path, Synergy::Texture::Parameters parameters)
     {
         int width, height, channels;
+        bool transparancy = false;
         
         stbi_set_flip_vertically_on_load(1);
         stbi_uc* data = stbi_load(path, &width, &height, &channels, 0);
@@ -41,8 +42,21 @@ namespace Synergy
         
         parameters.format = channels == 4 ? Synergy::Texture::Format::RGBA : Synergy::Texture::Format::RGB;
         
+        if (channels == 4)
+        {
+            for (int index = 0; index < width * height; ++index)
+            {
+                if (data[index * 4 + 3] != 255)
+                {
+                    transparancy = true;
+                    break;
+                }
+            }
+        }
+        
         Synergy::Ref<Texture> texture = Synergy::Texture::Create(width, height, parameters);
         texture->SetData(data, width * height * channels);
+        texture->m_HasTransparancy = transparancy;
         
         stbi_image_free(data);
         
@@ -52,14 +66,19 @@ namespace Synergy
     Texture::Texture(uint32_t width, uint32_t height, Texture::Parameters parameters)
         : width(width), height(height), parameters(parameters) { }
     
-    uint32_t Texture::GetWidth() const
+    const uint32_t Texture::GetWidth() const
     {
         return width;
     }
 
-    uint32_t Texture::GetHeight() const
+    const uint32_t Texture::GetHeight() const
     {
         return height;
+    }
+
+    const bool Texture::HasTransparancy() const
+    {
+        return m_HasTransparancy;
     }
     
     const glm::vec2* Texture::GetUVs() const

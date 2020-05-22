@@ -14,6 +14,7 @@
 #include "Synergy/Fonts.h"
 #include "Synergy/Scene.h"
 #include "Synergy/Renderer/Renderer.h"
+#include "Synergy/Renderer/CanvasRenderer.h"
 
 namespace Synergy
 {
@@ -106,11 +107,31 @@ namespace Synergy
             
             if (!OnUserUpdate(deltaTime)) running = false;
             
+            /**
+             * Fixed update (physics)
+             */
+            
+            
+            
+            /**
+             * Update layers and scenes.
+             */
+            
             for (Layer* layer : layers)
                 layer->OnUpdate(deltaTime);
             
             for (auto& scene : m_Scenes)
                 scene.second.Update(deltaTime);
+            
+            /**
+             * Rendering
+             */
+            
+            Synergy::Renderer::CanvasRenderer::Render();
+            
+            /**
+             * Finalizing frame
+             */
             
             api->DisplayFrame();
             platform->UpdateWindow();

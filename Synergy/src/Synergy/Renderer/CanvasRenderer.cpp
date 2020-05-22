@@ -41,6 +41,11 @@ namespace Synergy::Renderer
 
     static Data data;
 
+    void CanvasRenderer::Render()
+    {
+        Instance().ParseRenderQueue();
+    }
+
     CanvasRenderer& CanvasRenderer::Instance()
     {
         static CanvasRenderer instance;
@@ -68,6 +73,26 @@ namespace Synergy::Renderer
         data.ortho = glm::ortho(0.f, data.screen.x, 0.f, data.screen.y, -10.f, 10.f);
     }
 
+    void CanvasRenderer::ParseRenderQueue()
+    {
+        std::vector<Synergy::RenderQueue::Item> items = m_RenderQueue.Sort();
+        
+        for (auto& item : items)
+        {
+            item.shader->Bind();
+            item.shader->SetMat4("u_projection_view", item.matrix);
+            
+            item.texture->Activate(0);
+            item.texture->Bind();
+            
+            item.vertexArray->Bind();
+            
+            api->DrawIndexed(item.vertexArray);
+        }
+        
+        m_RenderQueue.Reset();
+    }
+
     void CanvasRenderer::Initialize(RendererAPI* api)
     {
         Instance().api = api;
@@ -77,9 +102,6 @@ namespace Synergy::Renderer
     void CanvasRenderer::SubmitRenderable(Renderable2D renderable)
     {
         RendererAPI* api = Instance().api;
-        
-        data.shader->Bind();
-        data.shader->SetMat4("u_projection_view", data.ortho);
         
         Ref<VertexArray> vertexArray = api->CreateVertexArray();
         Ref<VertexBuffer> vertexBuffer = api->CreateVertexBuffer(4 * sizeof(Vertex));
@@ -94,9 +116,6 @@ namespace Synergy::Renderer
         vertexArray->SetIndexBuffer(indexBuffer);
         
         Synergy::Ref<Synergy::Texture> texture = renderable.texture != nullptr ? renderable.texture : data.whiteTexture;
-        
-        texture->Activate(0);
-        texture->Bind();
         
         const glm::vec2* uvs = texture->GetUVs();
         
@@ -116,7 +135,8 @@ namespace Synergy::Renderer
         }
         
         vertexBuffer->SetData(buffer, 4 * sizeof(Vertex));
-        api->DrawIndexed(vertexArray, 6);
+        
+        Instance().m_RenderQueue.Add({ Synergy::RenderCommand::DRAW_INDEXED, renderable.position, data.ortho, data.shader, vertexArray, texture, texture->HasTransparancy() || renderable.color.a < 1 });
     }
 
     void CanvasRenderer::SubmitText(Text text)

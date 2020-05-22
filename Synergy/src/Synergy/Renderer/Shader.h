@@ -52,6 +52,8 @@ namespace Synergy
     public:
         virtual ~Shader() = default;
         
+        const uint32_t Id() const;
+        
         virtual void Bind() const = 0;
         virtual void Unbind() const = 0;
         
@@ -66,7 +68,7 @@ namespace Synergy
         virtual void Compile(const Synergy::Shader::SourceMap sources) = 0;
         
     protected:
-        uint32_t id;
+        uint32_t m_Id;
         
         friend class Synergy::Shaders;
     };

@@ -28,12 +28,12 @@ namespace Synergy::Renderer::OpenGL
 
     Shader::~Shader()
     {
-        glDeleteProgram(id);
+        glDeleteProgram(m_Id);
     }
 
     void Shader::Bind() const
     {
-        glUseProgram(id);
+        glUseProgram(m_Id);
     }
 
     void Shader::Unbind() const
@@ -145,7 +145,7 @@ namespace Synergy::Renderer::OpenGL
             glDeleteShader(shader);
         }
         
-        id = program;
+        m_Id = program;
     }
 
     GLint Shader::getUniformLocation(const std::string& name)
@@ -155,7 +155,7 @@ namespace Synergy::Renderer::OpenGL
             return location->second;
         }
         
-        GLint location = glGetUniformLocation(id, name.c_str());
+        GLint location = glGetUniformLocation(m_Id, name.c_str());
         uniformLocations[name] = location;
         
         return location;
