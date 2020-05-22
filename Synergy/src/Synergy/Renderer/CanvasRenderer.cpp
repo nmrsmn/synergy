@@ -70,7 +70,7 @@ namespace Synergy::Renderer
         data.positions[3] = { -0.5f,  0.5f, -1.0f, 1.0f };
         
         data.screen = glm::vec3 { 800, 600, 10 };
-        data.ortho = glm::ortho(-data.screen.x / 2, data.screen.x / 2, -data.screen.y / 2, data.screen.y / 2, -data.screen.z, data.screen.z);
+        data.ortho = glm::ortho(0.f, data.screen.x, 0.f, data.screen.y, -10.f, 10.f);
     }
 
     void CanvasRenderer::ParseRenderQueue()

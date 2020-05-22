@@ -5,7 +5,6 @@
 
 #include "Synergy/Renderer/CanvasRenderer.h"
 #include "Synergy/Renderer/Renderer2D.h"
-#include "Synergy/UI/Renderer.h"
 
 namespace Synergy::Renderer
 {
@@ -18,8 +17,6 @@ namespace Synergy::Renderer
     {
         Synergy::Renderer::CanvasRenderer::Initialize(api);
         Synergy::Renderer::Renderer2D::Initialize(api);
-        
-        Synergy::UI::Renderer::Initialize(api);
     }
 }
 
