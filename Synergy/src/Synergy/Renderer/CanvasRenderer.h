@@ -6,6 +6,7 @@
 
 #include "Synergy/Core.h"
 #include "Synergy/Camera.h"
+#include "Synergy/Graphics/RenderQueue.h"
 #include "Synergy/Renderer/Renderable.h"
 #include "Synergy/Renderer/RendererAPI.h"
 #include "Synergy/Renderer/Renderer.h"
@@ -14,6 +15,9 @@ namespace Synergy::Renderer
 {
     class SYNERGY_API CanvasRenderer: public Renderer<CanvasRenderer, Renderable2D>
     {
+    public:
+        static void Render();
+        
     private:
         static CanvasRenderer& Instance();
         
@@ -25,6 +29,7 @@ namespace Synergy::Renderer
         CanvasRenderer() {}
         
         void Initialize();
+        void ParseRenderQueue();
         
         static void Initialize(RendererAPI* api);
         
@@ -33,6 +38,8 @@ namespace Synergy::Renderer
         
     private:
         RendererAPI* api;
+        
+        Synergy::RenderQueue m_RenderQueue;
         
         friend class Renderer<CanvasRenderer, Renderable2D>;
         friend class RendererAPI;
