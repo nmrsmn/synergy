@@ -53,6 +53,8 @@ public:
         m_RocketTowerButtonTexture = Synergy::TextureAtlas::Texture::Load(m_Atlas, { 22, 8 }, { 1, 1 });
         m_CannonTowerButtonTexture = Synergy::TextureAtlas::Texture::Load(m_Atlas, { 19, 10 }, { 1, 1 });
         
+        m_GunTowerBaseTexture = Synergy::TextureAtlas::Texture::Load(m_Atlas, { 19, 7 }, { 1, 1 });
+        
         m_ButtonTexture = Synergy::Texture::Load("assets/textures/grey_panel.png");
         m_ButtonTextureHover = Synergy::Texture::Load("assets/textures/yellow_panel.png");
         
@@ -108,6 +110,7 @@ public:
             {
                 Placeholder& placeholder = m_GunTowerArchetype.Add<Placeholder>();
                 placeholder.tower = m_GunTowerButtonTexture;
+                placeholder.base = m_GunTowerBaseTexture;
                 placeholder.atlas = m_Atlas;
                 placeholder.size = tileSize;
                 
@@ -129,6 +132,8 @@ public:
                 {
                     Tower::CreatePlaceholder(scene, archetype, [archetype]()
                     {
+                        Tower::PlaceGunTower();
+                        
                         SYNERGY_LOG_ERROR("Buy Gun Turret.");
                     });
                 };
@@ -210,6 +215,8 @@ private:
     Synergy::Ref<Synergy::TextureAtlas::Texture> m_AntiAirTowerButtonTexture;
     Synergy::Ref<Synergy::TextureAtlas::Texture> m_RocketTowerButtonTexture;
     Synergy::Ref<Synergy::TextureAtlas::Texture> m_CannonTowerButtonTexture;
+    
+    Synergy::Ref<Synergy::TextureAtlas::Texture> m_GunTowerBaseTexture;
     
     Synergy::Ref<Synergy::Texture> m_ButtonTexture;
     Synergy::Ref<Synergy::Texture> m_ButtonTextureHover;
