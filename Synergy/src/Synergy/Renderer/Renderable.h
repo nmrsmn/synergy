@@ -48,26 +48,22 @@ namespace Synergy::Renderer
     {
         
     };
-}
 
-namespace Synergy
-{
     struct SYNERGY_API Quad: public Renderer::Renderable2D
     {
-        Quad(glm::vec2 position, glm::vec2 size, glm::vec4 color) : Renderer::Renderable2D(glm::vec3(position, 1.0), size, color) { }
-        Quad(glm::vec2 position, glm::vec2 size, glm::vec3 color) : Renderer::Renderable2D(glm::vec3(position, 1.0), size, glm::vec4(color, 1.0)) { }
+        Quad(glm::vec2 position, glm::vec2 size, glm::vec4 color) : Renderer::Renderable2D(glm::vec3(position, 1.f), size, color) { }
+        Quad(glm::vec2 position, glm::vec2 size, glm::vec3 color) : Renderer::Renderable2D(glm::vec3(position, 1.f), size, glm::vec4(color, 1.f)) { }
         
-        Quad(glm::vec2 position, glm::vec2 size, Synergy::Ref<Synergy::Texture> texture) : Renderer::Renderable2D(glm::vec3(position, 1.0), size, texture, glm::vec4(1.0)) { }
-        Quad(glm::vec2 position, glm::vec2 size, Synergy::Ref<Synergy::Texture> texture, glm::vec4 color) : Renderer::Renderable2D(glm::vec3(position, 1.0), size, texture) { }
-        Quad(glm::vec2 position, glm::vec2 size, Synergy::Ref<Synergy::Texture> texture, glm::vec3 color) : Renderer::Renderable2D(glm::vec3(position, 1.0), size, texture, glm::vec4(color, 1.0)) { }
+        Quad(glm::vec2 position, glm::vec2 size, Synergy::Ref<Synergy::Texture> texture) : Renderer::Renderable2D(glm::vec3(position, 1.f), size, texture, glm::vec4(1.f)) { }
+        Quad(glm::vec2 position, glm::vec2 size, Synergy::Ref<Synergy::Texture> texture, glm::vec4 color) : Renderer::Renderable2D(glm::vec3(position, 1.f), size, texture) { }
+        Quad(glm::vec2 position, glm::vec2 size, Synergy::Ref<Synergy::Texture> texture, glm::vec3 color) : Renderer::Renderable2D(glm::vec3(position, 1.f), size, texture, glm::vec4(color, 1.f)) { }
         
         Quad(glm::vec3 position, glm::vec2 size, glm::vec4 color) : Renderer::Renderable2D(position, size, color) { }
-        Quad(glm::vec3 position, glm::vec2 size, glm::vec3 color) : Renderer::Renderable2D(position, size, glm::vec4(color, 1.0)) { }
+        Quad(glm::vec3 position, glm::vec2 size, glm::vec3 color) : Renderer::Renderable2D(position, size, glm::vec4(color, 1.f)) { }
         
-        Quad(glm::vec3 position, glm::vec2 size, Synergy::Ref<Synergy::Texture> texture) : Renderer::Renderable2D(position, size, texture, glm::vec4(1.0)) { }
+        Quad(glm::vec3 position, glm::vec2 size, Synergy::Ref<Synergy::Texture> texture) : Renderer::Renderable2D(position, size, texture, glm::vec4(1.f)) { }
         Quad(glm::vec3 position, glm::vec2 size, Synergy::Ref<Synergy::Texture> texture, glm::vec4 color) : Renderer::Renderable2D(position, size, texture, color) { }
-        Quad(glm::vec3 position, glm::vec2 size, Synergy::Ref<Synergy::Texture> texture, glm::vec3 color) : Renderer::Renderable2D(position, size, texture, glm::vec4(color, 1.0)) { }
-        
+        Quad(glm::vec3 position, glm::vec2 size, Synergy::Ref<Synergy::Texture> texture, glm::vec3 color) : Renderer::Renderable2D(position, size, texture, glm::vec4(color, 1.f)) { }
     };
 
     struct SYNERGY_API Text: public Renderer::Renderable2D

@@ -28,14 +28,14 @@ public:
     {
         Synergy::Renderer::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-        float ratio = 800.f / 600.f;
+        float ratio = 1600.f / 1200.f;
         
         if (m_Entities.begin() != m_Entities.end())
         {
             const auto& map = m_Entities[0].Get<const TileMap>();
 
-            float height = (600.f / map.size.y) / 300.f;
-            glm::vec2 tileSize { height * ratio, height };
+            glm::vec2 tileSize { map.tile.x * 2 * ratio, map.tile.y * 2 };
+            glm::vec2 tileOffset { tileSize.x / 2, tileSize.y / 2 };
             
             uint32_t count = 0;
             for (const auto& tile : map.tiles)
@@ -47,9 +47,9 @@ public:
                 }
 
                 glm::vec2 offset { count % (int) map.size.x, count / (int) map.size.x };
-                glm::vec3 position { (offset.x * tileSize.x + tileSize.x / 2) - ratio, 1 - (offset.y * tileSize.y + tileSize.y / 2), .5f };
+                glm::vec3 position { -ratio + (offset.x * tileSize.x) + tileOffset.x, 1 - tileOffset.y - (offset.y * tileSize.y), .5f };
 
-                Synergy::Renderer::Renderer2D::Submit(Synergy::Quad { position, tileSize, m_TileTextures[index] });
+                Synergy::Renderer::Renderer2D::Submit(Synergy::Renderer::Quad { position, tileSize, m_TileTextures[index] });
 
                 count++;
             }
@@ -63,7 +63,7 @@ public:
 private:
     std::unordered_map<uint32_t, Synergy::Ref<Synergy::TextureAtlas::Texture>> m_TileTextures;
     
-    Synergy::CameraController m_CameraController { 800.f / 600.f };
+    Synergy::CameraController m_CameraController { 1600.f / 1200.f };
 };
 
 #endif

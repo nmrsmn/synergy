@@ -8,6 +8,8 @@
 #include <vector>
 
 #include "Synergy/Core.h"
+#include "Synergy/Event/Event.h"
+#include "Synergy/Event/EventHandler.h"
 #include "Synergy/Input.h"
 #include "Synergy/Layer.h"
 #include "Synergy/Platform.h"
@@ -18,7 +20,7 @@ namespace Synergy
     class ArchetypeRef;
     class Scene;
 
-    class SYNERGY_API Application
+    class SYNERGY_API Application : public Synergy::EventHandler
     {
     public:
         virtual ~Application() = default;
@@ -46,6 +48,7 @@ namespace Synergy
         
         void OnEvent();
         
+        void Abc(const Synergy::WindowResizedEvent& event);
         void UpdateWindowSize(glm::vec2 size);
         void UpdateViewPort();
         
@@ -54,7 +57,7 @@ namespace Synergy
         
         std::vector<Layer*> layers;
         
-        glm::vec2 windowSize = { 800, 600 };
+        glm::vec2 windowSize = { 1600, 1200 };
         glm::vec2 viewportPosition = { 0, 0 };
         glm::vec2 viewportSize = { 0, 0 };
         

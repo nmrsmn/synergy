@@ -69,7 +69,7 @@ namespace Synergy::Renderer
         data.positions[2] = {  0.5f,  0.5f, -1.0f, 1.0f };
         data.positions[3] = { -0.5f,  0.5f, -1.0f, 1.0f };
         
-        data.screen = glm::vec3 { 800, 600, 10 };
+        data.screen = glm::vec3 { 1600, 1200, 10 };
         data.ortho = glm::ortho(0.f, data.screen.x, 0.f, data.screen.y, -10.f, 10.f);
     }
 

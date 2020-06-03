@@ -23,7 +23,13 @@ namespace Synergy
 
     Renderer::RendererAPI* Application::current = nullptr;
 
-    Application::Application(): platform(CreatePlatform(this)), api(Renderer::CreateRendererAPI()) {}
+    Application::Application(): platform(CreatePlatform(this)), api(Renderer::CreateRendererAPI())
+    {
+        this->EventHandler::OnEvent([&](const Synergy::WindowResizedEvent& event)
+        {
+            this->UpdateWindowSize(event.size);
+        });
+    }
     
     bool Application::Start()
     {

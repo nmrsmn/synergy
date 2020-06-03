@@ -2,6 +2,7 @@
 // Copyright © 2020 Niels Marsman. All rights reserved.
 
 #include "Synergy/Application.h"
+#include "Synergy/Event/Event.h"
 #include "Synergy/Platform.h"
 
 namespace Synergy
@@ -33,6 +34,6 @@ namespace Synergy
 
     void Platform::UpdateWindowSize(glm::vec2 size)
     {
-        application->UpdateWindowSize(size);
+        application->Emit<Synergy::WindowResizedEvent>({ size });
     }
 }

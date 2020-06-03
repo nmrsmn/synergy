@@ -15,7 +15,7 @@ namespace Synergy::UI
             glm::vec4 color = button.background.normal.color;
             
             glm::vec2 mouse = Synergy::Input::GetMousePosition();
-            glm::vec2 normalized = glm::vec2 { mouse.x / 800.f, 1 - (mouse.y / 600.f) };
+            glm::vec2 normalized = glm::vec2 { mouse.x / 1600.f, 1 - (mouse.y / 1200.f) };
             
             glm::vec2 position { transform.position.x - transform.scale.x / 2, transform.position.y - transform.scale.y / 2 };
             
@@ -38,12 +38,12 @@ namespace Synergy::UI
                 }
             }
             
-            Synergy::Renderer::CanvasRenderer::Submit(Synergy::Quad { transform.position, transform.scale, background, color });
+            Synergy::Renderer::CanvasRenderer::Submit(Synergy::Renderer::Quad { transform.position, transform.scale, background, color });
             
             if (image.texture != nullptr)
             {
                 glm::vec3 offset = { 0.f, 0.f, 0.1f };
-                Synergy::Renderer::CanvasRenderer::Submit(Synergy::Quad { transform.position + offset, transform.scale * .8f, image.texture, color });
+                Synergy::Renderer::CanvasRenderer::Submit(Synergy::Renderer::Quad { transform.position + offset, transform.scale * .8f, image.texture, color });
             }
         }
         

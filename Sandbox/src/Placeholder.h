@@ -29,13 +29,14 @@ public:
         {
             glm::vec2 mouse = Synergy::Input::GetMousePosition();
             glm::vec2 inverted = { mouse.x, mouse.y };
-            glm::ivec2 size { placeholder.size.x * 800.f, placeholder.size.y * 600.f };
+            glm::ivec2 size { placeholder.size.x * 1600.f, placeholder.size.y * 1200.f };
             
             glm::ivec2 tile { inverted.x / size.x, inverted.y / size.y };
             glm::vec3 position { tile.x * placeholder.size.x, 1 - (tile.y * placeholder.size.y), 0.8f };
             
-            Synergy::Renderer::CanvasRenderer::Submit(Synergy::Quad { position + glm::vec3 { placeholder.size.x / 2, 0 - (placeholder.size.y / 2), .10f }, placeholder.size, placeholder.base, glm::vec4 { 1.f, 1.f, 1.f, .6f } });
-            Synergy::Renderer::CanvasRenderer::Submit(Synergy::Quad { position + glm::vec3 { placeholder.size.x / 2, 0 - (placeholder.size.y / 2), .15f }, placeholder.size, placeholder.tower, glm::vec4 { 1.f, 1.f, 1.f, .6f } });
+//            Synergy::Renderer::CanvasRenderer::Submit(Synergy::Circle { position, 3.f, glm::vec4 { .05f, .95f, .05f, .5f }});
+            Synergy::Renderer::CanvasRenderer::Submit(Synergy::Renderer::Quad { position + glm::vec3 { placeholder.size.x / 2, 0 - (placeholder.size.y / 2), .10f }, placeholder.size, placeholder.base, glm::vec4 { 1.f, 1.f, 1.f, .6f } });
+            Synergy::Renderer::CanvasRenderer::Submit(Synergy::Renderer::Quad { position + glm::vec3 { placeholder.size.x / 2, 0 - (placeholder.size.y / 2), .15f }, placeholder.size, placeholder.tower, glm::vec4 { 1.f, 1.f, 1.f, .6f } });
         }
     }
     

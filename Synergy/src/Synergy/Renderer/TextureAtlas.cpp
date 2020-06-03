@@ -51,7 +51,7 @@ namespace Synergy
     }
 
     Synergy::TextureAtlas::Texture::Texture(Synergy::Ref<Synergy::TextureAtlas> atlas, const glm::vec2& min, const glm::vec2& max)
-        : atlas(atlas), Synergy::Texture(atlas->atlas.x, atlas->atlas.y)
+        : atlas(atlas), Synergy::Texture(atlas->tile.x, atlas->tile.y)
     {
         uvs[0] = { min.x, min.y };
         uvs[1] = { max.x, min.y };
